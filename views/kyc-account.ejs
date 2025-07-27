@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Staff Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #232946;
+      color: #f3f6fa;
+      font-family: 'Inter', 'Georgia', serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #1a2238;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #7df9ff !important;
+      font-family: 'Orbitron', 'Inter', sans-serif;
+    }
+
+    .nav-link {
+      color: #e0e7ff !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #7df9ff !important;
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 80px auto;
+      background: #181f2f;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #7df9ff22;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+
+    h1 {
+      color: #7df9ff;
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+    }
+  </style>
+</head>
+<body>      
+<div class="container mt-5">
+  <h2 class="mb-4">KYC Account Details</h2>
+
+  <table class="table table-bordered">
+    <tbody>
+      <tr><th>Application ID</th><td><%= app.application_id %></td></tr>
+      <tr><th>Full Name</th><td><%= app.full_name %></td></tr>
+      <tr><th>Email</th><td><%= app.email %></td></tr>
+      <tr><th>Phone Number</th><td><%= app.phone_number %></td></tr>
+      <tr><th>Date of Birth</th><td><%= new Date(app.date_of_birth).toLocaleDateString() %></td></tr>
+      <tr><th>NRIC</th><td><%= app.nric %></td></tr>
+      <tr><th>Nationality</th><td><%= app.nationality %></td></tr>
+      <tr><th>Address</th><td><%= app.address %></td></tr>
+      <tr><th>Income Source</th><td>$<%= parseFloat(app.income_source).toFixed(2) %></td></tr>
+      <tr><th>Account Type</th><td><%= app.account_type.replace('_', ' ') %></td></tr>
+      <tr><th>Status</th><td><%= app.status %></td></tr>
+      <tr><th>Submitted At</th><td><%= new Date(app.submitted_at).toLocaleString() %></td></tr>
+      <tr>
+        <th>Student ID Photo</th>
+        <td>
+          <% if (app.student_id_upload_path) { %>
+            <a href="/<%= app.student_id_upload_path %>" target="_blank">View Document</a>
+          <% } else { %>
+            Not uploaded
+          <% } %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <a href="/staff/accounts" class="btn btn-secondary mt-3">Back to Staff Dashboard</a>
+</div>
+<%- include('partials/footer') %>

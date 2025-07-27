@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Staff Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1a2238;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #7df9ff !important;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .nav-link {
+      color: #e0e7ff !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #7df9ff !important;
+      text-decoration: underline;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .main-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 50%, #22c55e 100%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      text-shadow: 
+        0 0 20px rgba(125, 249, 255, 0.4),
+        0 0 40px rgba(125, 249, 255, 0.2);
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, #7df9ff, #22c55e);
+      border-radius: 2px;
+    }
+
+    h4 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.4);
+      margin-bottom: 20px;
+    }
+
+    .btn-outline-info {
+      background: linear-gradient(135deg, #22c55e 0%, #7df9ff 100%);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      padding: 12px 20px;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      text-decoration: none;
+    }
+
+    .btn-outline-info:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+    }
+
+    .nav-tabs {
+      border-bottom: 2px solid rgba(125, 249, 255, 0.3);
+      margin-bottom: 30px;
+    }
+
+    .nav-tabs .nav-link {
+      color: #000000 !important;
+      background-color: #ffffff;
+      border: 1px solid rgba(125, 249, 255, 0.3);
+      border-radius: 8px 8px 0 0;
+      font-weight: 600;
+      padding: 12px 20px;
+      margin-right: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-tabs .nav-link:hover {
+      background-color: rgba(125, 249, 255, 0.1);
+      color: #7df9ff !important;
+      border-color: rgba(125, 249, 255, 0.5);
+    }
+
+    .nav-tabs .nav-link.active {
+      background-color: #7df9ff;
+      color: #0f172a !important;
+      border-color: #7df9ff;
+      font-weight: 700;
+    }
+
+    .table {
+      background: rgba(24, 31, 47, 0.6);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(125, 249, 255, 0.1);
+    }
+
+    .table th {
+      background: linear-gradient(135deg, #181f2f 0%, #1e2a3a 100%);
+      color: #7df9ff;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+      border-bottom: 2px solid rgba(125, 249, 255, 0.3);
+      padding: 16px 20px;
+      border: none;
+    }
+
+    .table td {
+      color: #000000 !important;
+      background-color: #ffffff !important;
+      font-size: 1rem;
+      padding: 16px 20px;
+      border: none;
+      vertical-align: middle;
+    }
+
+    .table tbody tr {
+      background: #ffffff !important;
+      transition: all 0.3s ease;
+    }
+
+    .table tbody tr:nth-child(even) {
+      background: #f8f9fa !important;
+    }
+
+    .table tbody tr:hover {
+      background: rgba(125, 249, 255, 0.1) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(125, 249, 255, 0.1);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb 0%, #22c55e 100%);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1e3a8a 0%, #16a34a 100%);
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+      transform: translateY(-2px);
+    }
+
+    .form-select {
+      background-color: #ffffff;
+      color: #000000;
+      border: 1px solid rgba(125, 249, 255, 0.3);
+      border-radius: 6px;
+    }
+
+    .badge {
+      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+ <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/dashboard/staff">HOH Bank Staff</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStaff" aria-controls="navbarStaff" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarStaff">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/users">User Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pending-card">Card Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/product-catalog">Product Catalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/transactions">Transactions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/accounts">Account Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/create-user">Add User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/profile">Staff Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/quiz-monitor">Financial Quiz Results Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="main-container">
+  <h2>Account Management</h2>
+    <div class="d-flex justify-content-end mb-3">
+        <a href="/staff/all-accounts" class="btn btn-outline-info btn-sm">View All Current Accounts</a>
+    </div>
+  <ul class="nav nav-tabs" id="accountTabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="pending-tab" data-bs-toggle="tab" href="#pending" role="tab">Pending</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="approved-tab" data-bs-toggle="tab" href="#approved" role="tab">Approved</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="rejected-tab" data-bs-toggle="tab" href="#rejected" role="tab">Rejected</a>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="accountTabsContent">
+    <!-- Pending -->
+    <div class="tab-pane fade show active" id="pending" role="tabpanel">
+      <h4 class="mt-4">Pending Applications</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Application ID</th>
+            <th>Full Name</th>
+            <th>Account Type</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Student ID Photo</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pendingAccounts.forEach(acc => { %>
+            <tr>
+            <td>
+                <strong><%= acc.application_id %></strong><br>
+                <a href="/kyc-account/<%= acc.application_id %>" class="btn btn-primary btn-sm mt-1">View Details</a>
+            </td>
+              <td><%= acc.full_name %></td>
+              <td><%= acc.account_type %></td>
+              <td><%= acc.email %></td>
+              <td><%= acc.phone_number %></td>
+              <td>
+                <% if (acc.student_id_upload_path) { %>
+                <a href="/<%= acc.student_id_upload_path %>" target="_blank" class="btn btn-info btn-sm">View Photo</a>
+                <% } else { %>
+                <span class="text-muted">No file</span>
+                <% } %>
+              </td>
+              <td><span class="badge bg-warning text-dark"><%= acc.status %></span></td>
+              <td>
+                <form method="POST" action="/staff/account/action" style="display:inline;">
+                  <input type="hidden" name="application_id" value="<%= acc.application_id %>">
+                  <button name="action" value="accept" class="btn btn-success btn-sm mb-1">Accept</button>
+                </form>
+
+                <form method="POST" action="/staff/account/action" style="display:inline;" onsubmit="return confirm('Are you sure you want to reject this account?');">
+                  <input type="hidden" name="application_id" value="<%= acc.application_id %>">
+                  <select name="rejection_reason" required class="form-select form-select-sm d-inline-block w-auto mx-1">
+                    <option value="">--Select Reason--</option>
+                    <option value="User is underage">User is underage</option>
+                    <option value="Incomplete documents">Incomplete documents</option>
+                    <option value="Suspicious activity">Suspicious activity</option>
+                    <option value="Does not meet criteria">Does not meet criteria</option>
+                  </select>
+                  <button name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Approved -->
+    <div class="tab-pane fade" id="approved" role="tabpanel">
+      <h4 class="mt-4">Approved Applications</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Application ID</th>
+            <th>Full Name</th>
+            <th>Account Type</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Student ID Photo</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% approvedAccounts.forEach(acc => { %>
+            <tr>
+              <td>
+                <strong><%= acc.application_id %></strong><br>
+                <a href="/kyc-account/<%= acc.application_id %>" class="btn btn-primary btn-sm mt-1">View Details</a>
+              </td>
+              <td><%= acc.full_name %></td>
+              <td><%= acc.account_type %></td>
+              <td><%= acc.email %></td>
+              <td><%= acc.phone_number %></td>
+              <td>
+                <% if (acc.student_id_upload_path) { %>
+                  <a href="/<%= acc.student_id_upload_path %>" target="_blank" class="btn btn-info btn-sm">View Photo</a>
+                <% } else { %>
+                  <span class="text-muted">N/A</span>
+                <% } %>
+              </td>
+              <td><span class="badge bg-success"><%= acc.status %></span></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Rejected -->
+    <div class="tab-pane fade" id="rejected" role="tabpanel">
+      <h4 class="mt-4">Rejected Applications</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Application ID</th>
+            <th>Full Name</th>
+            <th>Account Type</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Student ID Photo</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% rejectedAccounts.forEach(acc => { %>
+            <tr>
+              <td>
+                <strong><%= acc.application_id %></strong><br>
+                <a href="/kyc-account/<%= acc.application_id %>" class="btn btn-primary btn-sm mt-1">View Details</a>
+              </td>
+              <td><%= acc.full_name %></td>
+              <td><%= acc.account_type %></td>
+              <td><%= acc.email %></td>
+              <td><%= acc.phone_number %></td>
+              <td>
+                <% if (acc.student_id_upload_path) { %>
+                  <a href="/<%= acc.student_id_upload_path %>" target="_blank" class="btn btn-info btn-sm">View Photo</a>
+                <% } else { %>
+                  <span class="text-muted">N/A</span>
+                <% } %>
+              </td>
+              <td><span class="badge bg-danger"><%= acc.status %></span></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

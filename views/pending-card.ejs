@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pending Card Applications</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@700&display=swap');
+
+    
+    body {
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      font-family: 'Inter', 'Georgia', serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1a2238;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #7df9ff !important;
+      font-family: 'Orbitron', 'Inter', sans-serif;
+    }
+
+    .nav-link {
+      color: #e0e7ff !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #7df9ff !important;
+      text-decoration: underline;
+    }
+    .container-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 1rem;
+      min-height: calc(100vh - 200px);
+    }
+
+    .apply-container {
+      width: 100%;
+      max-width: 1400px;
+      padding: 2rem;
+      background: rgba(24, 31, 47, 0.6);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      position: relative;
+    }
+
+    .apply-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b, #d97706, #92400e);
+      border-radius: 24px 24px 0 0;
+    }
+
+    h2 {
+      color: #fbbf24;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
+      position: relative;
+    }
+
+    h2::before {
+      content: '⏳';
+      display: block;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+      animation: pendingPulse 2s infinite;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 3px;
+      background: linear-gradient(90deg, #fbbf24, #f59e0b);
+      border-radius: 2px;
+    }
+
+    @keyframes pendingPulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .header-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .stats-container {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fbbf24;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 0.25rem;
+    }
+.table-container {
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 0.5rem; /* reduced padding further */
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  max-width: 900px; /* reduced width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.7rem; /* smaller font */
+  background: transparent;
+}
+
+thead th {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #0f172a;
+  text-align: center;
+  padding: 0.4rem 0.2rem; /* even less padding */
+  font-weight: 600;
+  font-size: 0.7rem;
+  border: none;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+thead th:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+thead th:last-child {
+  border-radius: 0 8px 8px 0;
+}
+
+tbody tr {
+  background: rgba(24, 31, 47, 0.85);
+  transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+  background: rgba(251, 191, 36, 0.08);
+  transform: scale(1.01);
+  box-shadow: 0 3px 15px rgba(251, 191, 36, 0.1);
+}
+
+tbody td {
+  padding: 0.4rem 0.2rem;
+  text-align: center;
+  color: #e0eaff;
+  border: none;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.08);
+  vertical-align: middle;
+ 
+  overflow: hidden;
+  text-overflow: ellipsis;
+   /* more compact */  white-space: normal; /* Allow wrapping */
+  max-width: none;     /* Let it grow */
+  word-break: break-word;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody td a {
+  color: #7df9ff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+tbody td a:hover {
+  background: rgba(125, 249, 255, 0.1);
+  color: #fff;
+}
+
+tbody td:last-child {
+  white-space: normal;
+  max-width: 200px; /* increase as needed */
+}
+td form {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+    .status-badge {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: #0f172a;
+      padding: 0.3rem 0.6rem;
+      border-radius: 15px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .kyc-verified {
+      color: #22c55e;
+      font-weight: 600;
+    }
+
+    .kyc-not-verified {
+      color: #ef4444;
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-action {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-accept {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #fff;
+    }
+
+    .btn-accept:hover {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4);
+    }
+
+    .btn-reject {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: #fff;
+    }
+
+    .btn-reject:hover {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    }
+
+    .rejection-select {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #e0eaff;
+      border-radius: 6px;
+      padding: 0.3rem;
+      font-size: 0.7rem;
+      margin-bottom: 0.5rem;
+      width: 100%;
+    }
+
+    .rejection-select:focus {
+      outline: none;
+      border-color: #ef4444;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+    }
+
+    .bottom-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-view {
+      background: linear-gradient(135deg, #22c55e 0%, #7df9ff 100%);
+      color: #0f172a;
+      font-weight: 700;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-view::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-view:hover::before {
+      left: 100%;
+    }
+
+    .btn-view:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(34, 197, 94, 0.5);
+      color: #fff;
+    }
+
+    .btn-outline-info {
+      background: transparent;
+      border: 2px solid #7df9ff;
+      color: #7df9ff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-info:hover {
+      background: #7df9ff;
+      color: #0f172a;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(125, 249, 255, 0.3);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      background: rgba(24, 31, 47, 0.6);
+      border-radius: 16px;
+      border: 2px dashed rgba(251, 191, 36, 0.3);
+    }
+
+    .empty-state::before {
+      content: '📋';
+      display: block;
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.6;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem 0;
+      font-weight: 500;
+      font-size: 1rem;
+      color: #94a3b8;
+      border-top: 1px solid rgba(125, 249, 255, 0.2);
+      background: rgba(24, 31, 47, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .stars {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .star {
+      position: absolute;
+      background: #fbbf24;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: twinkle 3s infinite alternate;
+      box-shadow: 0 0 10px #fbbf24, 0 0 20px #fbbf24;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.4; transform: scale(0.8); }
+      100% { opacity: 0.8; transform: scale(1.2); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .apply-container {
+        padding: 1.5rem;
+      }
+      
+      table {
+        font-size: 0.8rem;
+      }
+      
+      thead th,
+      tbody td {
+        padding: 0.8rem 0.3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container-wrapper {
+        margin: 1rem 0.5rem;
+      }
+      
+      .apply-container {
+        padding: 1rem;
+      }
+      
+      h2 {
+        font-size: 2rem;
+      }
+      
+      .header-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .stats-container {
+        justify-content: center;
+      }
+      
+      .stat-card {
+        min-width: 100px;
+      }
+      
+      table {
+        font-size: 0.7rem;
+      }
+      
+      thead th,
+      tbody td {
+        padding: 0.6rem 0.2rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(251, 191, 36, 0.3);
+      border-top: 2px solid #fbbf24;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Tooltips */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .tooltip:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/dashboard/staff">HOH Bank Staff</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStaff" aria-controls="navbarStaff" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarStaff">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/users">User Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pending-card">Card Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/product-catalog">Product Catalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/transactions">Transactions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/accounts">Account Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/create-user">Add User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/profile">Staff Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/quiz-monitor">Financial Quiz Results Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<div class="container-wrapper">
+  <div class="apply-container">
+    <h2>Pending Card Applications</h2>
+  <div class="d-flex justify-content-end mb-3">
+      <a href="/cards" class="btn btn-outline-info">View All Issued Cards</a>
+    </div>
+
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Application ID</th>
+          <th>User ID</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>NRIC</th>
+          <th>Income Source</th>
+          <th>Student ID Upload</th>
+          <th>Card Type</th>
+          <th>Status</th>
+          <th>KYC Verified</th>
+          <th>Submitted At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (applications.length> 0) { %>
+          <% applications.forEach(app=> { %>
+            <tr>
+              <td>
+                <%= app.application_id %>
+              </td>
+              <td><a href="/kyc/<%= app.user_id %>" class="text-primary">
+                  <%= app.user_id %>
+                </a></td>
+              <td>
+                <%= app.full_name %>
+              </td>
+              <td>
+                <%= app.email %>
+              </td>
+              <td>
+                <%= app.phone_number %>
+              </td>
+         
+              <td>
+                <%= app.nric %>
+              </td>
+        
+              <td>
+                <%= Number(app.income_source || 0).toFixed(2) %>
+              </td>
+              <td>
+                <% if (app.student_id_upload_path) { %>
+                  <a href="<%= app.student_id_upload_path %>" target="_blank">View File</a>
+                  <% } else { %>
+                    N/A
+                    <% } %>
+              </td>
+              <td>
+                <%= app.card_type %>
+              </td>
+              <td>
+                <%= app.status %>
+              </td>
+              <td>
+                <%= app.kyc_verified ? 'Yes' : 'No' %>
+              </td>
+              <td>
+                <%= app.submitted_at.toISOString().split('T')[0] %>
+              </td>
+              <td>
+                <form method="POST" action="/pending-card" style="display:inline;">
+                  <input type="hidden" name="application_id" value="<%= app.application_id %>">
+                  <button name="action" value="accept" class="btn btn-success btn-sm">Accept</button>
+                </form>
+                <form method="POST" action="/pending-card" style="display:inline;"
+                  onsubmit="return confirmReject(this);">
+                  <input type="hidden" name="application_id" value="<%= app.application_id %>">
+                  <select name="rejection_reason" required class="form-select form-select-sm"
+                    style="width: auto; display: inline-block;">
+                    <option value="">--Select Reason--</option>
+                    <option value="User is underage">User is underage</option>
+                    <option value="Incomplete documents">Incomplete documents</option>
+                    <option value="Suspicious activity">Suspicious activity</option>
+                    <option value="Does not meet criteria">Does not meet criteria</option>
+                  </select>
+                  <button name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
+                </form>
+</form>
+
+              </td>
+            </tr>
+            <% }) %>
+              <% } else { %>
+                <tr>
+                  <td colspan="16" class="text-center">No pending applications.</td>
+                </tr>
+                <% } %>
+      </tbody>
+    </table>
+
+    <div class="bottom-buttons">
+      <a href="/viewAccepted" class="btn btn-view">View Accepted Cards</a>
+      <a href="/viewRejected" class="btn btn-view">View Rejected Cards</a>
+    </div>
+  </div>
+</div>
+  <footer>
+    &copy; <%= new Date().getFullYear() %> HOH Card System. All rights reserved.
+  </footer>
+</body>
+<script>
+  function confirmReject(form) {
+    const reason = form.querySelector('[name="rejection_reason"]').value;
+    if (!reason) {
+      alert("Please select a reason for rejection.");
+      return false;
+    }
+    return confirm("Are you sure you want to reject this application?");
+  }
+
+</script>
+
+</html>

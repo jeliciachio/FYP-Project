@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Staff Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css' rel='stylesheet' />
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js'></script>
+  <style>
+    body {
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #1a2238;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #7df9ff !important;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .nav-link {
+      color: #e0e7ff !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #7df9ff !important;
+      text-decoration: underline;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .main-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 50%, #22c55e 100%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      text-shadow: 
+        0 0 20px rgba(125, 249, 255, 0.4),
+        0 0 40px rgba(125, 249, 255, 0.2);
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, #7df9ff, #22c55e);
+      border-radius: 2px;
+    }
+
+    h4 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.4);
+    }
+
+    .dashboard-box {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(125, 249, 255, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 
+        0 8px 32px rgba(34, 197, 94, 0.15),
+        0 4px 16px rgba(125, 249, 255, 0.1);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .dashboard-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, #7df9ff, #22c55e);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    .dashboard-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 
+        0 15px 45px rgba(34, 197, 94, 0.2),
+        0 8px 25px rgba(125, 249, 255, 0.15);
+    }
+
+    .dashboard-box h5 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .dashboard-box .fs-4 {
+      color: #22c55e;
+      font-weight: 800;
+      font-size: 2.5rem !important;
+      text-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+    }
+
+    .btn-outline-success {
+      background: linear-gradient(135deg, #22c55e 0%, #7df9ff 100%);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      text-decoration: none;
+    }
+
+    .btn-outline-success:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+    }
+
+    .table {
+      background: rgba(24, 31, 47, 0.6);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(125, 249, 255, 0.1);
+    }
+
+    .table th {
+      background: linear-gradient(135deg, #181f2f 0%, #1e2a3a 100%);
+      color: #7df9ff;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+      border-bottom: 2px solid rgba(125, 249, 255, 0.3);
+      padding: 16px 20px;
+      border: none;
+    }
+
+    .table td {
+      color: #000000 !important;
+      background-color: #ffffff !important;
+      font-size: 1rem;
+      padding: 16px 20px;
+      border: none;
+      vertical-align: middle;
+    }
+
+    .table tbody tr {
+      background: #ffffff !important;
+      transition: all 0.3s ease;
+    }
+
+    .table tbody tr:nth-child(even) {
+      background: #f8f9fa !important;
+    }
+
+    .table tbody tr:hover {
+      background: rgba(125, 249, 255, 0.1) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(125, 249, 255, 0.1);
+    }
+
+    .chart-container {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(125, 249, 255, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 
+        0 8px 32px rgba(34, 197, 94, 0.15),
+        0 4px 16px rgba(125, 249, 255, 0.1);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, #7df9ff, #22c55e);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    .calendar-container {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(125, 249, 255, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 
+        0 8px 32px rgba(34, 197, 94, 0.15),
+        0 4px 16px rgba(125, 249, 255, 0.1);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .calendar-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, #7df9ff, #22c55e);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/dashboard/staff">HOH Bank Staff</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStaff" aria-controls="navbarStaff" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarStaff">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/users">User Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pending-card">Card Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/product-catalog">Product Catalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/transactions">Transactions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/accounts">Account Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/create-user">Add User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/profile">Staff Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/quiz-monitor">Financial Quiz Results Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <h2>Welcome, <%= staff.full_name %></h2>
+
+    <!-- Cards Statistics -->
+    <h4 class="text-center mb-3">Card Applications</h4>
+    <div class="row text-center mb-4">
+      <div class="col-md-4">
+        <div class="dashboard-box">
+          <h5>Pending Card Applications</h5>
+          <p class="fs-4"><%= stats.cardCounts ? stats.cardCounts.pending : 0 %></p>
+          <a href="/pending-card" class="btn btn-outline-success btn-sm">View More Details</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="dashboard-box">
+          <h5>Approved Card Applications</h5>
+          <p class="fs-4"><%= stats.cardCounts ? stats.cardCounts.approved : 0 %></p>
+          <a href="/pending-card" class="btn btn-outline-success btn-sm">View More Details</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="dashboard-box">
+          <h5>Rejected Card Applications</h5>
+          <p class="fs-4"><%= stats.cardCounts ? stats.cardCounts.rejected : 0 %></p>
+          <a href="/pending-card" class="btn btn-outline-success btn-sm">View More Details</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accounts Statistics -->
+    <h4 class="text-center mb-3">Account Applications</h4>
+    <div class="row text-center mb-4">
+      <div class="col-md-4">
+        <div class="dashboard-box">
+          <h5>Pending Account Applications</h5>
+          <p class="fs-4"><%= stats.statusCounts.pending %></p>
+          <a href="/staff/accounts" class="btn btn-outline-success btn-sm">View More Details</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="dashboard-box">
+          <h5>Approved Account Applications</h5>
+          <p class="fs-4"><%= stats.statusCounts.approved %></p>
+          <a href="/staff/accounts" class="btn btn-outline-success btn-sm">View More Details</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="dashboard-box">
+          <h5>Rejected Account Applications</h5>
+          <p class="fs-4"><%= stats.statusCounts.rejected %></p>
+          <a href="/staff/accounts" class="btn btn-outline-success btn-sm">View More Details</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="chart-container text-center">
+          <h4 class="mb-3">Account Types Overview</h4>
+          <p>Total Accounts: <%= stats.totalAccounts %></p>
+          <canvas id="accountPieChart" height="200"></canvas>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="chart-container">
+          <h4 class="mb-3 text-center">Monthly Transactions</h4>
+          <canvas id="monthlyTransactionsChart" height="200"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar and Consultation Details -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="calendar-container">
+          <h4 class="text-center mb-3">Consultation Calendar</h4>
+          <div id="calendar"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12">
+      <div class="chart-container">
+        <h4 class="text-center mb-3">Consultation Details</h4>
+        <div class="table-responsive">
+        <table class="table table-hover text-center">
+          <thead>
+          <tr>
+            <th>Advisor Name</th>
+            <th>Customer Name</th>
+            <th>Appointment Date</th>
+            <th>Time</th>
+            <th>Notes</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% if (consultationDetails.length === 0) { %>
+            <tr>
+            <td colspan="6" class="text-center">No consultations found.</td>
+            </tr>
+          <% } else { %>
+            <% consultationDetails.forEach(c => { %>
+            <tr>
+              <td><%= c.advisor_name || '—' %></td>
+              <td><%= c.customer_name || '—' %></td>
+              <td><%= new Date(c.appointment_date).toLocaleDateString() %></td>
+              <td><%= c.appointment_time %></td>
+              <td><%= c.notes || '—' %></td>
+            </tr>
+            <% }) %>
+          <% } %>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const consultationEvents = JSON.parse('<%- JSON.stringify(consultationEvents || []) %>');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      height: 'auto',
+      events: consultationEvents,
+      eventColor: '#007BFF',
+      eventClick: function(info) {
+        alert('Consultation on: ' + info.event.start.toLocaleString());
+      }
+    });
+    calendar.render();
+  });
+  </script>
+
+  <!-- Hidden div to store data for JavaScript -->
+  <div id="monthlyTransactionsData" style="display: none;"><%- JSON.stringify(stats.monthlyTransactions || [0,0,0,0,0,0,0,0,0,0,0,0]) %></div>
+
+  <script>
+    const accountPieCtx = document.getElementById('accountPieChart').getContext('2d');
+    const accountPieChart = new Chart(accountPieCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Savings', 'Fixed Deposit', 'Credit Card', 'Debit Card'],
+        datasets: [{
+          label: 'Account Types',
+          data: [
+            parseInt('<%= stats.accountTypes.savings %>'),
+            parseInt('<%= stats.accountTypes.fixedDeposit %>'),
+            parseInt('<%= stats.accountTypes.creditCard %>'),
+            parseInt('<%= stats.accountTypes.debitCard %>')
+          ],
+          backgroundColor: ['#22c55e', '#facc15', '#60a5fa', '#ec4899']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' },
+          title: { display: true, text: 'Account Types Distribution' }
+        }
+      }
+    });
+
+    // Monthly Transactions Bar Chart
+    const monthlyTransactionsCtx = document.getElementById('monthlyTransactionsChart').getContext('2d');
+    
+    // Get data from hidden div to avoid EJS syntax in script
+    const monthlyData = JSON.parse(document.getElementById('monthlyTransactionsData').textContent); 
+    
+    const monthlyTransactionsChart = new Chart(monthlyTransactionsCtx, {
+    type: 'bar',
+    data: {
+      labels: [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ],
+      datasets: [{
+        label: 'Number of Transactions',
+        data: monthlyData,
+        backgroundColor: 'rgba(34, 197, 94, 0.8)',
+        borderColor: '#22c55e',
+        borderWidth: 2,
+        borderRadius: 8,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        title: { 
+          display: true, 
+          text: 'Monthly Transactions for <%= new Date().getFullYear() %>',
+          color: '#7df9ff',
+          font: { size: 14, weight: 'bold' }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: 'rgba(125, 249, 255, 0.1)' },
+          ticks: { 
+            color: '#7df9ff',
+            precision: 0
+          }
+        },
+        x: {
+          grid: { color: 'rgba(125, 249, 255, 0.1)' },
+          ticks: { color: '#7df9ff' }
+        }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
+
+

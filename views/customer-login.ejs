@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Login - HoH Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Georgia', serif;
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+    .stars {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0; left: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 1;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: twinkle 2s infinite alternate;
+      box-shadow: 0 0 8px #7df9ff, 0 0 2px #fff;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    .main-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      position: relative;
+    }
+    .auth-card {
+      display: flex;
+      flex-direction: row;
+      background: #232946;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #7df9ff22, 0 1.5px 8px #22c55e22;
+      overflow: hidden;
+      max-width: 850px;
+      width: 100%;
+      min-height: 480px;
+    }
+    .auth-visual {
+      background: linear-gradient(135deg, #232946 0%, #181f2f 100%);
+      color: #7df9ff;
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      min-width: 280px;
+    }
+    .auth-visual h1 {
+      font-size: 2.2rem;
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #7df9ff;
+      text-shadow: 0 0 8px #0ff, 0 0 2px #fff;
+    }
+    .auth-visual p {
+      font-size: 1.1rem;
+      color: #e0eaff;
+      margin-bottom: 0;
+    }
+    .auth-form-panel {
+      flex: 1 1 0;
+      padding: 48px 32px 32px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #232946;
+    }
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+      color: #22c55e;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+    .secure-badge i {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+    .form-title {
+      font-size: 1.6rem;
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+      font-weight: 700;
+      color: #7df9ff;
+      margin-bottom: 0.5rem;
+    }
+    .form-subtext {
+      color: #e0eaff;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 1.2rem;
+    }
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #22c55e;
+      font-size: 1.1rem;
+    }
+    .form-control {
+      padding-left: 2.2rem;
+      border-radius: 6px;
+      font-size: 1.08rem;
+      background: #181f2f;
+      color: #fff;
+      border: 1.5px solid #22c55e;
+    }
+    .form-control:focus {
+      border-color: #7df9ff;
+      box-shadow: 0 0 0 2px #7df9ff44;
+      background: #232946;
+      color: #fff;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #22c55e;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .btn-hoh {
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%);
+      color: #181f2f;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      padding: 10px 0;
+      margin-top: 0.5rem;
+      box-shadow: 0 2px 8px #22c55e33;
+    }
+    .btn-hoh:hover {
+      background: linear-gradient(90deg, #7df9ff 0%, #22c55e 100%);
+      color: #fff;
+    }
+    .singpass-btn-img {
+      max-width: 80%;
+      height: auto;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: block;
+      margin: 15px auto 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px #22c55e22;
+    }
+    .singpass-btn-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 18px #7df9ff44;
+    }
+    .help-link, .privacy-note {
+      display: block;
+      text-align: center;
+      margin-top: 1.2rem;
+      color: #e0eaff;
+      font-size: 0.98rem;
+      text-decoration: none;
+    }
+    .help-link:hover {
+      color: #22c55e;
+      text-decoration: underline;
+    }
+    .privacy-note {
+      font-size: 0.92rem;
+      color: #94a3b8;
+      margin-top: 0.5rem;
+    }
+    @media (max-width: 900px) {
+      .auth-card { flex-direction: column; min-height: unset; }
+      .auth-visual { min-height: 180px; padding: 32px 16px; }
+      .auth-form-panel { padding: 32px 16px; }
+    }
+    @media (max-width: 600px) {
+      .auth-card { box-shadow: none; border-radius: 0; }
+      .auth-visual { display: none; }
+      .auth-form-panel { padding: 24px 8px; }
+    }
+  </style>
+</head>
+<head>
+  <style>
+    input::placeholder {
+      color: #fff !important;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+<div class="stars"></div>
+  <div class="main-container">
+    <div class="auth-card">
+      <div class="auth-visual">
+        <h1>Welcome Back</h1>
+        <p>Secure digital banking for your everyday needs.<br>Trusted by thousands in Singapore.</p>
+      </div>
+      <div class="auth-form-panel">
+        <div class="secure-badge"><i class="bi bi-shield-lock"></i> Secure Login</div>
+        <div class="form-title">Sign in to your account</div>
+        <div class="form-subtext">Access your accounts, cards, and more.</div>
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="alert alert-danger text-center" style="font-size:1.05rem;"> <%= error %> </div>
+        <% } %>
+        <form id="loginForm" action="/login/customer" method="POST">
+          <style>
+            .input-group.custom-input {
+              position: relative;
+              display: flex;
+              align-items: center;
+              background: #23263a;
+              border: 1px solid #2de3e3;
+              border-radius: 8px;
+              margin-bottom: 16px;
+            }
+            .input-group.custom-input .input-icon {
+              position: absolute;
+              left: 12px;
+              color: #2de3e3;
+              font-size: 1.2em;
+              pointer-events: none;
+            }
+            .input-group.custom-input input.form-control {
+              color: #fff;
+              background: transparent;
+              border: none;
+              box-shadow: none;
+              flex: 1;
+              padding-left: 40px;
+            }
+            .input-group.custom-input button.toggle-password {
+              background: none;
+              border: none;
+              color: #fff;
+              font-size: 1.2em;
+              margin-right: 12px;
+              z-index: 2;
+            }
+          </style>
+          <div class="input-group custom-input">
+            <span class="input-icon"><i class="bi bi-envelope"></i></span>
+            <input type="email" id="email" class="form-control" name="email" placeholder="Email Address" required>
+          </div>
+          <div class="input-group custom-input">
+            <span class="input-icon"><i class="bi bi-lock"></i></span>
+            <input type="password" id="password" class="form-control" name="password" placeholder="Password" required>
+            <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+          </div>
+          <button type="submit" class="btn btn-hoh w-100">Login</button>
+          <a href="/auth/myinfo-login-demo">
+            <img src="/images/singpass-button.png" alt="Log in with Singpass" class="img-fluid singpass-btn-img">
+          </a>
+          <a href="#" class="help-link">Need help logging in?</a>
+          <a href="/reset-password" class="help-link">Forgot your password?</a>
+          <div class="privacy-note">By logging in, you agree to our <a href="/terms">Terms</a> and <a href="/conditions">Privacy Policy</a>.</div>
+          <p class="mt-3 text-center">Don't have an account? <a href="/signup/customer">Sign up</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Starfield animation
+    function createStars(num) {
+      const stars = document.querySelector('.stars');
+      for (let i = 0; i < num; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.opacity = Math.random() * 0.7 + 0.3;
+        star.style.animationDuration = `${1.5 + Math.random() * 2}s`;
+        stars.appendChild(star);
+      }
+    }
+    createStars(80);
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    }
+  </script>
+</body>
+</html>

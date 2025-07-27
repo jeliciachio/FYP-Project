@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - RP Digital Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">    <style>
+        body {
+            background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+            color: #f3f6fa;
+            padding-top: 100px;
+            font-family: 'Inter', 'Georgia', serif;
+            min-height: 100vh;
+            line-height: 1.6;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .success-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .success-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: checkmark 0.6s ease-in-out;
+        }
+        
+        .success-icon::after {
+            content: '✓';
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .success-title {
+            color: #f3f6fa;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .success-message {
+            color: #cbd5e1;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .amount-highlight {
+            color: #22c55e;
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        
+        .payment-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .credit-remaining {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn-custom {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .btn-secondary-custom {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #f3f6fa;
+        }
+        
+        .btn-secondary-custom:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #f3f6fa;
+        }
+        
+        .transaction-details {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 40px 20px;
+                margin: 20px;
+            }
+            
+            .success-title {
+                font-size: 2rem;
+            }
+            
+            .btn-custom {
+                display: block;
+                margin: 10px 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">        <div class="success-card">
+            <div class="success-icon"></div>
+            
+            <h1 class="success-title"><%= title || 'Payment Successful!' %></h1>
+            
+            <p class="success-message">
+                <%= message || 'Your payment has been processed successfully.' %>
+                <% if (typeof amount !== 'undefined') { %>
+                    <br><span class="amount-highlight">$<%= amount %></span>
+                <% } %>
+            </p>
+              <% if (typeof paymentDetails !== 'undefined' && paymentDetails) { %>
+            <div class="payment-info">
+                <h5><i class="fas fa-receipt me-2"></i><%= paymentDetails.title || 'Payment Details' %></h5>
+                <% if (paymentDetails.recipient) { %>
+                    <p class="mb-1"><strong>Payment To:</strong> <%= paymentDetails.recipient %></p>
+                <% } %>
+                <% if (paymentDetails.type) { %>
+                    <p class="mb-1"><strong>Payment Type:</strong> <%= paymentDetails.type %></p>
+                <% } %>
+                <% if (paymentDetails.reference) { %>
+                    <p class="mb-0"><strong>Reference:</strong> <%= paymentDetails.reference %></p>
+                <% } %>
+            </div>
+            <% } %>
+            
+            <% if (typeof creditRemaining !== 'undefined') { %>
+                <div class="credit-remaining">
+                    <h6><i class="fas fa-info-circle me-2"></i>Credit Status</h6>
+                    <p class="mb-0">Remaining Credit Debt: <strong>$<%= creditRemaining %></strong></p>
+                </div>
+            <% } %>
+            
+            <div class="transaction-details">
+                <i class="fas fa-clock me-1"></i>
+                Payment processed at <%= new Date().toLocaleString() %>
+            </div>
+              <div class="mt-4">
+                <a href="<%= redirectUrl || '/my-products' %>" class="btn-custom">
+                    <i class="fas fa-credit-card me-2"></i><%= redirectText || 'View My Products' %>
+                </a>
+                <a href="/dashboard" class="btn-custom btn-secondary-custom">
+                    <i class="fas fa-home me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

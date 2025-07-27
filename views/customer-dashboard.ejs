@@ -1,0 +1,1332 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Dashboard - HoH Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Georgia', serif;
+      background: linear-gradient(120deg, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+        .navbar {
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(125, 249, 255, 0.2);
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: #7df9ff !important;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.6);
+      letter-spacing: 1.2px;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .navbar-nav .nav-link {
+      color: #cbd5e1 !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem !important;
+      border-radius: 8px;
+      margin: 0 0.25rem;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #7df9ff !important;
+      background: rgba(125, 249, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: #22c55e !important;
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .navbar-toggler {
+      border-color: rgba(125, 249, 255, 0.3);
+    }
+
+    .navbar-toggler-icon {
+      filter: brightness(0) invert(1) drop-shadow(0 0 2px #7df9ff);
+    }
+    /* Financial Learning Tool Dropdown Styles */
+    .dropdown-menu {
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border: 1px solid rgba(125, 249, 255, 0.3);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+      padding: 0.5rem 0;
+      margin-top: 0.5rem;
+    }
+
+    .dropdown-item {
+      color: #e0eaff !important;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 0 0.25rem;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(125, 249, 255, 0.1) !important;
+      color: #7df9ff !important;
+      transform: translateX(5px);
+    }
+
+    .dropdown-item:focus {
+      background: rgba(125, 249, 255, 0.1) !important;
+      color: #7df9ff !important;
+    }
+
+    .dropdown-divider {
+      border-color: rgba(125, 249, 255, 0.2);
+      margin: 0.5rem 0;
+    }
+
+    .nav-link.dropdown-toggle::after {
+      border-top-color: #7df9ff;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-link.dropdown-toggle[aria-expanded="true"]::after {
+      transform: rotate(180deg);
+    }
+
+    /* Hover effect for dropdown toggle */
+    .dropdown:hover .dropdown-menu {
+      display: block;
+      animation: dropdownFadeIn 0.3s ease-out;
+    }
+
+    @keyframes dropdownFadeIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(-10px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    } 
+    .dashboard-header {
+      background: linear-gradient(90deg, #232946 60%, #22c55e22 100%);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #7df9ff22;
+      padding: 2.5rem 2rem 2rem 2rem;
+      margin-top: 32px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .dashboard-header h1 {
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+      color: #7df9ff;
+      font-size: 2.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .dashboard-header .welcome {
+      color: #e0eaff;
+      font-size: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+    .dashboard-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      background: #181f2f;
+      border-radius: 12px;
+      padding: 1.2rem 2.2rem;
+      box-shadow: 0 2px 8px #22c55e22;
+      min-width: 180px;
+      text-align: center;
+    }
+    .stat-card h4 {
+      color: #22c55e;
+      font-size: 1.2rem;
+      margin-bottom: 0.2rem;
+    }
+    .stat-card .stat-value {
+      font-size: 1.5rem;
+      color: #7df9ff;
+      font-weight: bold;
+    }
+    .dashboard-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem 2rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .dashboard-section {
+      flex: 1 1 370px;
+      min-width: 340px;
+      max-width: 520px;
+      margin: 0 0.5rem 2rem 0.5rem;
+      background: #181f2f;
+      border-radius: 16px;
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      box-shadow: 0 4px 18px #22c55e22;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .dashboard-section:hover {
+      box-shadow: 0 8px 32px #7df9ff33;
+      transform: translateY(-2px) scale(1.01);
+    }
+    .dashboard-section h3 {
+      color: #7df9ff;
+      font-size: 1.35rem;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.01em;
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+      border-bottom: 1.5px solid #232946;
+      padding-bottom: 0.5rem;
+    }
+    .btn-hoh {
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%);
+      color: #181f2f;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      padding: 10px 0;
+      margin-top: 0.5rem;
+      box-shadow: 0 2px 8px #22c55e33;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-hoh:hover {
+      background: linear-gradient(90deg, #7df9ff 0%, #22c55e 100%);
+      color: #fff;
+    }
+    .table {
+      background: #232946;
+      color: #f3f6fa;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+      padding: 0.75rem 1.1rem;
+      font-size: 1.01rem;
+    }
+    .table th {
+      color: #7df9ff;
+      background: #181f2f;
+      border-bottom: 2px solid #22c55e33;
+    }
+    .table-striped > tbody > tr:nth-of-type(odd) {
+      background-color: #232946 !important;
+    }
+    .table-striped > tbody > tr:nth-of-type(even) {
+      background-color: #1a2033 !important;
+    }
+    .table-hover tbody tr:hover {
+      background-color: #22c55e22 !important;
+      color: #fff;
+    }
+    .dashboard-section p, .dashboard-section .table-responsive {
+      margin-bottom: 0.5rem;
+    }
+    .dashboard-section.wide {
+      max-width: 1100px;
+      width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media (max-width: 1200px) {
+      .dashboard-section.wide {
+        max-width: 98vw;
+        width: 100%;
+      }
+    }
+    @media (max-width: 900px) {
+      .dashboard-header, .dashboard-grid { padding: 0.5rem; }
+      .dashboard-grid { gap: 1.2rem 0.5rem; }
+      .dashboard-section { padding: 1.2rem 0.7rem; }
+    }
+    @media (max-width: 600px) {
+      .dashboard-header { padding: 1rem 0.3rem; }
+      .dashboard-section { padding: 0.7rem 0.2rem; min-width: 95vw; }
+      .dashboard-grid { flex-direction: column; gap: 1rem; }
+    }
+    /* Chatbot Widget Styles */
+    #faq-chatbot-btn {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 2147483647;
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%);
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      box-shadow: 0 4px 24px #22c55e55;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      pointer-events: auto;
+      transition: box-shadow 0.2s, background 0.2s;
+    }
+    .chatbot-btn-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      box-shadow: 0 0 8px #22c55e55;
+      border: 2px solid #fff;
+      background: #232946;
+      display: block;
+      aspect-ratio: 1/1;
+      pointer-events: none;
+    }
+    #faq-chatbot-window {
+      position: fixed;
+      bottom: 100px;
+      right: 32px;
+      z-index: 2147483647;
+      width: 370px;
+      max-width: 98vw;
+      background: #232946;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #7df9ff44, 0 2px 8px #22c55e33;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1.5px solid #22c55e;
+      animation: chatbot-pop 0.25s cubic-bezier(.4,1.4,.6,1) 1;
+    }
+    @keyframes chatbot-pop {
+      0% { transform: scale(0.8) translateY(40px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .chatbot-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: linear-gradient(90deg, #232946 60%, #22c55e22 100%);
+      color: #7df9ff;
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 0.7rem 1.2rem 0.7rem 1.2rem;
+      border-bottom: 1.5px solid #232946;
+      position: relative;
+    }
+    .chatbot-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #232946;
+      border: 2px solid #7df9ff;
+      box-shadow: 0 0 8px #22c55e55;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+    }
+    .chatbot-header-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .chatbot-title {
+      font-size: 1.08rem;
+      color: #7df9ff;
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+    }
+    .chatbot-status {
+      font-size: 0.92rem;
+      color: #22c55e;
+      display: flex;
+      align-items: center;
+      gap: 0.3em;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      background: #22c55e;
+      border-radius: 50%;
+      margin-right: 0.3em;
+      box-shadow: 0 0 6px #22c55e99;
+    }
+    .chatbot-close {
+      color: #7df9ff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color 0.2s;
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 2;
+    }
+    .chatbot-close:hover { color: #22c55e; }
+    .chatbot-messages {
+      flex: 1;
+      padding: 1rem 1.2rem;
+      background: #232946;
+      overflow-y: auto;
+      max-height: 320px;
+      font-size: 1.05rem;
+      color: #e0eaff;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .faq-chatbot-msg {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.7rem;
+      animation: fadeInMsg 0.25s cubic-bezier(.4,1.4,.6,1);
+    }
+    @keyframes fadeInMsg {
+      0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+      100% { opacity: 1; transform: none; }
+    }
+    .faq-chatbot-msg.user {
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
+    .faq-chatbot-msg.bot {
+      justify-content: flex-start;
+      align-items: flex-end;
+    }
+    .bubble {
+      padding: 0.7rem 1.1rem;
+      border-radius: 18px 18px 6px 18px;
+      background: linear-gradient(90deg, #22c55e33 0%, #7df9ff22 100%);
+      color: #fff;
+      max-width: 80%;
+      word-break: break-word;
+      box-shadow: 0 2px 8px #22c55e22;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1.04rem;
+    }
+    .bot-bubble {
+      background: linear-gradient(90deg, #232946 0%, #22c55e33 100%);
+      color: #7df9ff;
+      border-radius: 18px 18px 18px 6px;
+      border: 1.2px solid #22c55e44;
+    }
+    .user .bubble {
+      background: linear-gradient(90deg, #7df9ff 0%, #22c55e 100%);
+      color: #181f2f;
+      border-radius: 18px 6px 18px 18px;
+      border: 1.2px solid #7df9ff44;
+      font-weight: 600;
+    }
+    .bubble-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #232946;
+      border: 1.5px solid #22c55e;
+      object-fit: cover;
+      object-position: center;
+      box-shadow: 0 0 6px #22c55e55;
+      display: block;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+    }
+    .chatbot-quickreplies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0.5rem 1.2rem 0.5rem 1.2rem;
+      background: #232946;
+      border-top: 1px solid #181f2f;
+      justify-content: flex-start;
+    }
+    .quickreply-btn {
+      background: #232946;
+      color: #7d6fff;
+      border: 1.5px solid #7df9ff;
+      border-radius: 20px;
+      padding: 0.4rem 1.2rem;
+      font-size: 1.01rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+    }
+    .quickreply-btn:hover {
+      background: #7df9ff;
+      color: #232946;
+      border: 1.5px solid #22c55e;
+    }
+    #faq-chatbot-form {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.8rem 1.2rem 1.1rem 1.2rem;
+      background: #181f2f;
+      border-top: 1.5px solid #232946;
+    }
+    #faq-chatbot-input {
+      flex: 1;
+      border-radius: 8px;
+      border: 1.5px solid #22c55e;
+      background: #232946;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      font-size: 1.05rem;
+    }
+    #faq-chatbot-input:focus {
+      outline: none;
+      border-color: #7df9ff;
+    }
+    #faq-chatbot-send {
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%);
+      color: #181f2f;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 0.5rem 1.2rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    #faq-chatbot-send:hover {
+      background: linear-gradient(90deg, #7df9ff 0%, #22c55e 100%);
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      #faq-chatbot-window { right: 2vw; width: 98vw; }
+      #faq-chatbot-btn { right: 2vw; }
+    }
+    .navbar-nav .nav-link {
+      color: #7df9ff !important;
+      font-weight: 700;
+      transition: color 0.3s ease;
+      text-shadow: 0 0 8px #0ff, 0 0 2px #fff;
+    }
+    .navbar-nav .nav-link:hover,
+    .navbar-nav .nav-link.active {
+      text-decoration: underline;
+      color: #7df9ff !important;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+ <a class="navbar-brand" href="/dashboard">HoH Bank</a>      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/my-products">My Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="/goals">Goals</a></li>          
+          <li class="nav-item"><a class="nav-link" href="/customer/consultations">Consultations</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user-transactions">Transactions</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="financialLearningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Financial Learning Tool
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="financialLearningDropdown">
+              <li><a class="dropdown-item" href="/financial-education">📘 Student Financial Education</a></li>
+              <li><a class="dropdown-item" href="/financial-resources">📚 Financial Resources</a></li>
+              <li><a class="dropdown-item" href="/financial-quiz">🧠 Financial Quiz</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/profile-edit">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout/customer">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container py-4" style="margin-top: 80px;">
+    <!-- Personalized Greeting and Profile -->
+    <div class="row align-items-center mb-4">
+      <div class="col-md-8">
+        <h1 class="display-5 fw-bold" style="color:#7df9ff;">Good <span id="greetingTime"></span>, <%= (user && user.full_name) ? user.full_name.split(' ')[0] : (accounts && accounts[0] && accounts[0].full_name ? accounts[0].full_name.split(' ')[0] : 'Customer') %>!</h1>
+        <div class="lead" style="color:#e0eaff;">Welcome to your digital banking dashboard.</div>
+      </div>
+      <div class="col-md-4 text-end d-none d-md-block">
+        <img src="<%= user && user.profile_picture ? user.profile_picture : '/images/welcome-gift.png' %>" alt="Profile" class="rounded-circle shadow" style="width:70px;height:70px;background:#232946;object-fit:cover;">
+      </div>
+    </div>
+    <!-- Total Balance (Improved UI) -->
+    <!-- Total Balance (Compact, Right-Aligned) -->
+    <div class="row mb-4">
+      <div class="col-12 d-flex flex-row-reverse align-items-center justify-content-between" style="gap: 2rem;">
+        <div class="text-end" style="min-width: 320px;">
+          <div style="color: #22c55e; font-size: 1.1rem; font-weight: 600;">
+            <i class="bi bi-wallet2"></i> Total Balance <i class="bi bi-info-circle" title="Includes all active accounts and cards."></i>
+          </div>
+          <div style="font-size: 2.6rem; font-weight: bold; color: #7df9ff; line-height: 1;">
+            $<%= typeof totalBalance !== 'undefined' ? totalBalance.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : (
+              accounts && accounts.length
+                ? accounts.map(a => Number(a.balance) || 0).reduce((a, b) => a + b, 0).toFixed(2)
+                : '0.00') %>
+          </div>
+          <div style="color: #e0eaff; font-size: 1rem;">Includes all active accounts and cards.</div>
+        </div>
+        <div class="d-flex align-items-center" style="gap: 0.7rem;">
+          <span style="color: #e0eaff; font-size: 1.05rem;">Sort by:</span>
+          <select class="form-select form-select-sm" style="width: 120px; background: #232946; color: #7df9ff; border: 1.5px solid #22c55e;" id="sortBySelect">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="highest">Highest Balance</option>
+            <option value="lowest">Lowest Balance</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grouped Accounts & Cards Section (Tabbed) -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="d-flex mb-4" style="gap: 1.2rem;">
+          <button class="tab-pill" id="tab-accounts" type="button">Bank Accounts</button>
+          <button class="tab-pill" id="tab-cards" type="button">Cards</button>
+        </div>
+        <div id="accounts-group" class="account-card-grid">
+          <% if(accounts && accounts.length) { %>
+            <% accounts.filter(function(acc) {
+              return acc.account_type && (acc.account_type.toLowerCase().includes('savings') || acc.account_type.toLowerCase().includes('fixed'));
+            }).forEach(function(acc) { %>
+              <div class="account-card">
+                <div class="account-card-icon"><i class="bi bi-wallet2"></i></div>
+                <div class="account-card-title"><%= acc.account_type %> <span class="account-card-number">•••• <%= (acc.account_number||'').slice(-4) %></span></div>
+                <div class="account-card-balance">$<%= (Number(acc.balance) || 0).toFixed(2) %></div>
+                <span class="account-card-status">active</span>
+              </div>
+            <% }) %>
+          <% } %>
+          <div class="account-card add-card">
+            <div class="account-card-icon add"><i class="bi bi-plus-circle"></i></div>
+            <div class="account-card-title add">Add Account</div>
+          </div>
+        </div>
+        <div id="cards-group" class="account-card-grid" style="display:none;">
+          <% if(cards && cards.length) { %>
+            <% cards.forEach(function(card) { %>
+              <div class="account-card">
+                <div class="account-card-icon"><i class="bi bi-credit-card-2-front"></i></div>
+                <div class="account-card-title"><%= card.card_type %> <span class="account-card-number">•••• <%= (card.card_number||'').slice(-4) %></span></div>
+                <div class="account-card-balance">$<%= (Number(card.balance) || 0).toFixed(2) %></div>
+                <span class="account-card-status"><%= card.card_status %></span>
+              </div>
+            <% }) %>
+          <% } %>
+          <div class="account-card add-card">
+            <div class="account-card-icon add"><i class="bi bi-plus-circle"></i></div>
+            <div class="account-card-title add">Add Card</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <style>
+      .tab-pill {
+        background: none;
+        color: #7df9ff;
+        font-weight: 700;
+        padding: 0.7rem 2.2rem;
+        border-radius: 12px;
+        border: none;
+        outline: none;
+        font-size: 1.13rem;
+        transition: background 0.18s, color 0.18s;
+        box-shadow: none;
+        margin-bottom: 0;
+      }
+      .tab-pill.active, .tab-pill:focus, .tab-pill.selected {
+        background: #22c55e33;
+        color: #22c55e;
+        box-shadow: 0 2px 8px #22c55e22;
+      }
+      .account-card-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.2rem;
+        justify-content: flex-start;
+        margin-top: 0.5rem;
+      }
+      .account-card {
+        background: #181f2f;
+        border-radius: 18px;
+        min-width: 240px;
+        max-width: 260px;
+        flex: 1 1 240px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        padding: 2.2rem 1.3rem 1.7rem 1.3rem;
+        box-shadow: 0 4px 18px #22c55e22;
+        transition: box-shadow 0.18s, transform 0.18s;
+        position: relative;
+      }
+      .account-card:hover {
+        box-shadow: 0 8px 32px #7df9ff33;
+        transform: translateY(-2px) scale(1.02);
+      }
+      .account-card-icon {
+        font-size: 2.5rem;
+        color: #7df9ff;
+        margin-bottom: 0.7rem;
+      }
+      .account-card-title {
+        color: #7df9ff;
+        font-size: 1.13rem;
+        font-weight: 700;
+        margin-bottom: 0.2rem;
+        text-align: center;
+      }
+      .account-card-number {
+        color: #b5eaff;
+        font-size: 0.98em;
+        margin-left: 0.3em;
+      }
+      .account-card-balance {
+        color: #22c55e;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+      .account-card-status {
+        background: #232946;
+        color: #b5eaff;
+        border-radius: 8px;
+        padding: 0.25em 1.1em;
+        font-size: 1.01rem;
+        font-weight: 600;
+        margin-top: 0.2rem;
+      }
+      .add-card {
+        background: repeating-linear-gradient(135deg, #232946 0px, #232946 10px, #22c55e22 10px, #22c55e22 20px);
+        border: 2px dashed #22c55e;
+        cursor: pointer;
+      }
+      .add-card .account-card-icon.add {
+        color: #22c55e;
+      }
+      .add-card .account-card-title.add {
+        color: #22c55e;
+      }
+    </style>
+    <script>
+      // Tab switching for accounts/cards, improved for pill style
+      document.addEventListener('DOMContentLoaded', function() {
+        const tabAccounts = document.getElementById('tab-accounts');
+        const tabCards = document.getElementById('tab-cards');
+        const groupAccounts = document.getElementById('accounts-group');
+        const groupCards = document.getElementById('cards-group');
+        function activateTab(tab) {
+          if(tab === 'accounts') {
+            tabAccounts.classList.add('active');
+            tabCards.classList.remove('active');
+            groupAccounts.style.display = 'flex';
+            groupCards.style.display = 'none';
+          } else {
+            tabCards.classList.add('active');
+            tabAccounts.classList.remove('active');
+            groupAccounts.style.display = 'none';
+            groupCards.style.display = 'flex';
+          }
+        }
+        tabAccounts.onclick = function() { activateTab('accounts'); };
+        tabCards.onclick = function() { activateTab('cards'); };
+        // Default to accounts tab
+        activateTab('accounts');
+      });
+    </script>
+    <!-- Three Dashboard Boxes Row -->
+    <!-- Quick Access Boxes -->
+    <div class="row mb-4 justify-content-center">
+      <div class="col-lg-4 col-md-6 mb-3">
+        <a href="/my-products" class="text-decoration-none">
+          <div class="card dashboard-section h-100 text-center shadow-lg" style="transition:box-shadow 0.2s,transform 0.2s;cursor:pointer;">
+            <div class="card-body py-4">
+              <i class="bi bi-box-seam display-4 mb-2" style="color:#7df9ff;"></i>
+              <h4 class="fw-bold mb-2" style="color:#7df9ff;">My Products</h4>
+              <p class="mb-0" style="color:#7df9ff;">View all your accounts and cards in one place.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-3">
+        <a href="/apply-card" class="text-decoration-none">
+          <div class="card dashboard-section h-100 text-center shadow-lg" style="transition:box-shadow 0.2s,transform 0.2s;cursor:pointer;">
+            <div class="card-body py-4">
+              <i class="bi bi-credit-card-2-front display-4 mb-2" style="color:#22c55e;"></i>
+              <h4 class="fw-bold mb-2" style="color:#22c55e;">Apply Card</h4>
+              <p class="mb-0" style="color:#22c55e;">Apply for a new debit or credit card easily.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-3">
+        <a href="/apply-account" class="text-decoration-none">
+          <div class="card dashboard-section h-100 text-center shadow-lg" style="transition:box-shadow 0.2s,transform 0.2s;cursor:pointer;">
+            <div class="card-body py-4">
+              <i class="bi bi-journal-plus display-4 mb-2" style="color:#fbbf24;"></i>
+              <h4 class="fw-bold mb-2" style="color:#fbbf24;">Apply Account</h4>
+              <p class="mb-0" style="color:#fbbf24;">Open a new savings or fixed deposit account.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="row g-4 mb-4">
+      <!-- Accounts Section -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card dashboard-section h-100">
+          <div class="card-body">
+            <h3 class="card-title"><i class="bi bi-wallet2"></i> Accounts</h3>
+            <% if(accounts && accounts.length) { %>
+              <% accounts.forEach(function(acc) { %>
+                <div class="mb-3 p-2 rounded bg-secondary bg-opacity-10">
+                  <div class="fw-bold" style="color:#7df9ff;"><%= acc.account_type %> Account</div>
+                  <div class="small text-muted">•••• <%= (acc.account_number||'').slice(-4) %></div>
+                  <div class="fs-5" style="color:#22c55e;">$<%= (Number(acc.balance) || 0).toFixed(2) %></div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="text-muted">No accounts found.</div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <!-- Cards Section -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card dashboard-section h-100">
+          <div class="card-body">
+            <h3 class="card-title"><i class="bi bi-credit-card-2-front"></i> Cards</h3>
+            <% if(cards && cards.length) { %>
+              <% cards.forEach(function(card) { %>
+                <div class="mb-3 p-2 rounded bg-secondary bg-opacity-10 d-flex align-items-center justify-content-between">
+                  <div>
+                    <div class="fw-bold" style="color:#7df9ff;"><%= card.card_type %> Card</div>
+                    <div class="small text-muted">•••• <%= (card.card_number||'').slice(-4) %> | <%= card.card_status %></div>
+                    <div class="fs-6" style="color:#22c55e;">Exp: <%= card.expiry_date %></div>
+                  </div>
+                  <div class="ms-2 d-flex flex-column gap-1">
+                    <form method="post" action="/cards/freeze/<%= card.card_id %>" style="display:inline;">
+                      <button type="submit" class="btn btn-sm btn-outline-warning" <%= card.card_status === 'cancelled' || card.card_status === 'frozen' ? 'disabled' : '' %> title="Freeze Card"><i class="bi bi-snow"></i></button>
+                    </form>
+                    <a href="/cards?cardId=<%= card.card_id %>" class="btn btn-sm btn-outline-info" title="View Details"><i class="bi bi-eye"></i></a>
+                  </div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="text-muted">No cards found.</div>
+            <% } %>
+            <a href="/my-cards" class="btn btn-outline-info w-100 mt-2">View All Cards</a>
+          </div>
+        </div>
+      </div>
+      <!-- Budget Goals Section -->
+      <div class="col-lg-4 col-md-12">
+        <div class="card dashboard-section h-100" style="overflow-x:auto; max-width:100%;">
+          <div class="card-body">
+            <h3 class="card-title"><i class="bi bi-bullseye"></i> Budget Goals</h3>
+            <!-- Inline Add Goal Form -->
+            <form class="mb-3" method="post" action="/goals/add" style="background:rgba(34,197,94,0.07);border-radius:8px;padding:10px 12px;">
+              <div class="row g-1 align-items-end">
+                <div class="col-5">
+                  <input type="text" name="goal_name" class="form-control form-control-sm" placeholder="Goal name" required>
+                </div>
+                <div class="col-3">
+                  <input type="number" name="goal_amount" class="form-control form-control-sm" placeholder="Amount" min="1" required>
+                </div>
+                <div class="col-4">
+                  <input type="date" name="target_date" class="form-control form-control-sm" required>
+                </div>
+                <div class="col-12 mt-1">
+                  <input type="text" name="category" class="form-control form-control-sm" placeholder="Category (optional)">
+                </div>
+                <div class="col-12 mt-1 text-end">
+                  <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-plus-circle"></i> Add Goal</button>
+                </div>
+              </div>
+            </form>
+            <div style="max-height:220px; overflow-y:auto;">
+            <% if(goals && goals.length) { %>
+              <% goals.forEach(function(goal) { %>
+                <div class="mb-3">
+                  <form class="d-flex align-items-center flex-wrap" method="post" action="/goals/edit/<%= goal.goal_id %>" style="gap:8px;">
+                    <input type="text" name="goal_name" value="<%= goal.goal_name %>" class="form-control form-control-sm w-auto" style="max-width:110px; min-width:80px;" required>
+                    <input type="number" name="goal_amount" value="<%= goal.goal_amount %>" class="form-control form-control-sm w-auto" style="max-width:80px; min-width:60px;" min="1" required>
+                    <input type="date" name="target_date" value="<%= goal.target_date ? goal.target_date.toISOString ? goal.target_date.toISOString().slice(0,10) : goal.target_date : '' %>" class="form-control form-control-sm w-auto" style="max-width:120px; min-width:90px;" required>
+                    <input type="text" name="category" value="<%= goal.category %>" class="form-control form-control-sm w-auto" style="max-width:90px; min-width:70px;" placeholder="Category">
+                    <input type="hidden" name="current_savings" value="<%= goal.current_savings || 0 %>">
+                    <button type="submit" class="btn btn-sm btn-outline-primary" title="Save"><i class="bi bi-save"></i></button>
+                  </form>
+                  <div class="progress mb-1 mt-1" style="height: 8px; max-width: 100%; overflow: hidden;">
+                    <% 
+                      let progressPercentage = 0;
+                      if (goal.current_savings && goal.goal_amount && goal.goal_amount > 0) {
+                        progressPercentage = Math.min(100, Math.round((goal.current_savings / goal.goal_amount) * 100));
+                      }
+                    %>
+                    <div class="progress-bar" role="progressbar" data-width="<%= progressPercentage %>" aria-valuenow="<%= goal.current_savings || 0 %>" aria-valuemin="0" aria-valuemax="<%= goal.goal_amount || 1 %>"></div>
+                  </div>
+                  <div class="small text-muted text-truncate" style="max-width: 100%; overflow: hidden;">$<%= goal.current_savings || 0 %> / $<%= goal.goal_amount || 0 %> by <%= goal.target_date ? goal.target_date.toISOString ? goal.target_date.toISOString().slice(0,10) : goal.target_date : '' %></div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="text-muted">No goals set.</div>
+            <% } %>
+            </div>
+            <a href="/goals" class="btn btn-outline-info w-100 mt-2">Manage Goals</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Main Dashboard Sections -->
+    <div class="row g-4 mb-4">
+      <!-- Recent Transactions (extra wide) -->
+      <div class="col-12">
+        <div class="card dashboard-section wide h-100">
+          <div class="card-body">
+            <h3 class="card-title"><i class="bi bi-clock-history"></i> Recent Transactions</h3>
+            <% if(transactions && transactions.length) { %>
+              <div class="table-responsive">
+                <table class="table table-sm table-hover table-striped mb-0">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Description</th>
+                      <th>Amount</th>
+                      <th>Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% transactions.forEach(function(tx) { %>
+                      <tr>
+                        <td><%= tx.transaction_date ? tx.transaction_date.toISOString ? tx.transaction_date.toISOString().slice(0,10) : tx.transaction_date : '' %></td>
+                        <td><%= tx.description || tx.transaction_type || 'N/A' %></td>
+                        <td class="<%= tx.amount < 0 ? 'text-danger' : 'text-success' %>"><%= tx.amount < 0 ? '-' : '+' %>$<%= Math.abs(tx.amount).toFixed(2) %></td>
+                        <td><%= tx.category || tx.transaction_type || 'Other' %></td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              </div>
+            <% } else { %>
+              <div class="text-muted">No recent transactions.</div>
+            <% } %>
+            <a href="/user-transactions" class="btn btn-outline-info w-100 mt-2">View All Transactions</a>
+          </div>
+        </div>
+      </div>
+      <!-- Analytics Preview (extra wide) -->
+      <div class="col-12">
+        <div class="card dashboard-section wide">
+          <div class="card-body">
+            <h3 class="card-title"><i class="bi bi-bar-chart"></i> Analytics & Insights</h3>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <canvas id="spendingChart" height="120"></canvas>
+              </div>
+              <div class="col-md-4">
+                <canvas id="balanceChart" height="120"></canvas>
+              </div>
+              <div class="col-md-4">
+                <canvas id="budgetChart" height="120"></canvas>
+              </div>
+            </div>
+            <a href="/analytics" class="btn btn-outline-info w-100 mt-3">View Full Analytics</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Chatbot Floating Button -->
+  <button id="faq-chatbot-btn" title="Ask a question">
+    <img src="/images/bot-avatar.png" alt="Chatbot" class="chatbot-btn-avatar" />
+  </button>
+  <!-- Chatbot Popup Window -->
+  <div id="faq-chatbot-window">
+    <div class="chatbot-header">
+      <img src="/images/bot-avatar.png" class="chatbot-avatar" alt="Bot" />
+      <div class="chatbot-header-info">
+        <div class="chatbot-title">HOH Assistant</div>
+        <div class="chatbot-status"><span class="status-dot"></span> Online Now</div>
+      </div>
+      <button class="chatbot-maximize" id="faq-chatbot-maximize" title="Maximize" style="margin-right:8px;font-size:1.5rem;background:none;border:none;color:#7df9ff;cursor:pointer;">
+        <i class="bi bi-fullscreen"></i>
+      </button>
+      <button class="chatbot-close" id="faq-chatbot-close" title="Close">&times;</button>
+    </div>
+    <div id="faq-chatbot-messages" class="chatbot-messages">
+      <div class="faq-chatbot-msg bot">
+        <div class="bubble bot-bubble">
+          <img src="/images/bot-avatar.png" class="bubble-avatar" alt="Bot" />
+          <span>👋 Hi! I’m your digital bank assistant. How can I help you today?</span>
+        </div>
+      </div>
+    </div>
+    <div id="faq-chatbot-quickreplies" class="chatbot-quickreplies" style="display:none;"></div>
+    <form id="faq-chatbot-form" autocomplete="off" style="display: flex; align-items: center; gap: 8px;">
+      <input id="faq-chatbot-input" type="text" placeholder="Type your question..." required style="flex: 1; min-width: 0;" />
+      <button id="faq-chatbot-mic-btn" type="button" style="background:#232946;border:none;border-radius:8px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;margin:0 2px 0 0;">
+        <i class="bi bi-mic" style="color:#7df9ff;font-size:1.5rem;"></i>
+      </button>
+      <button id="faq-chatbot-send" type="submit" style="background:linear-gradient(90deg,#22c55e 0%,#7df9ff 100%);border:none;border-radius:8px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
+        <i class="bi bi-send" style="color:#232946;font-size:1.5rem;"></i>
+      </button>
+    </form>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Greeting based on time
+    const hour = new Date().getHours();
+    let greeting = 'day';
+    if(hour < 12) greeting = 'morning';
+    else if(hour < 18) greeting = 'afternoon';
+    else greeting = 'evening';
+    document.getElementById('greetingTime').innerText = greeting;
+    let analyticsData = null;
+    let spendingChart, balanceChart, budgetChart;
+    function renderCharts(filter) {
+      const transactions = (analyticsData.transactions || []).filter(tx => {
+        let ok = true;
+        if (filter.from && tx.transaction_date) ok = ok && (new Date(tx.transaction_date) >= new Date(filter.from));
+        if (filter.to && tx.transaction_date) ok = ok && (new Date(tx.transaction_date) <= new Date(filter.to));
+        if (filter.account && tx.account_id) ok = ok && (tx.account_id == filter.account);
+        if (filter.category) ok = ok && ((tx.category || tx.transaction_type) === filter.category);
+        return ok;
+      });
+      // --- Spending by Category (Bar Chart) ---
+      const spendingByCategory = {};
+      const spendingByMonth = {};
+      transactions.forEach(tx => {
+        const cat = tx.category || tx.transaction_type || 'Other';
+        if (!spendingByCategory[cat]) spendingByCategory[cat] = 0;
+        if (tx.amount < 0) spendingByCategory[cat] += Math.abs(tx.amount);
+        // By month
+        const month = tx.transaction_date ? new Date(tx.transaction_date).toISOString().slice(0,7) : 'Unknown';
+        if (!spendingByMonth[month]) spendingByMonth[month] = 0;
+        if (tx.amount < 0) spendingByMonth[month] += Math.abs(tx.amount);
+      });
+      // Destroy old charts if exist
+      if (spendingChart) spendingChart.destroy();
+      if (balanceChart) balanceChart.destroy();
+      // --- Chart: Spending by Category (Bar) ---
+      const catLabels = Object.keys(spendingByCategory);
+      const catData = Object.values(spendingByCategory);
+      spendingChart = new Chart(document.getElementById('spendingChart'), {
+        type: 'bar',
+        data: {
+          labels: catLabels,
+          datasets: [{
+            label: 'Spending by Category',
+            data: catData,
+            backgroundColor: '#22c55e',
+            borderColor: '#7df9ff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } }, tooltip: { enabled: true } },
+          responsive: true,
+          scales: { x: { ticks: { color: '#fff' } }, y: { ticks: { color: '#fff' } } }
+        }
+      });
+      // --- Chart: Spending by Month (Line) ---
+      const monthLabels = Object.keys(spendingByMonth).sort();
+      const monthData = monthLabels.map(m => spendingByMonth[m]);
+      balanceChart = new Chart(document.getElementById('balanceChart'), {
+        type: 'line',
+        data: {
+          labels: monthLabels,
+          datasets: [{
+            label: 'Spending by Month',
+            data: monthData,
+            borderColor: '#7df9ff',
+            backgroundColor: '#22c55e33',
+            tension: 0.3
+          }]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } }, tooltip: { enabled: true } },
+          scales: { x: { ticks: { color: '#fff' } }, y: { ticks: { color: '#fff' } } },
+          responsive: true
+        }
+      });
+      // --- Budget Progress (Real Data, with Category) ---
+      const goals = analyticsData.goals || [];
+      const goalLabels = goals.map(g => g.goal_name + (g.category ? ` (${g.category})` : ''));
+      const goalProgress = goals.map(g => g.current_savings);
+      const goalTargets = goals.map(g => g.goal_amount);
+      if (budgetChart) budgetChart.destroy();
+      budgetChart = new Chart(document.getElementById('budgetChart'), {
+        type: 'bar',
+        data: {
+          labels: goalLabels,
+          datasets: [
+            {
+              label: 'Current Savings',
+              data: goalProgress,
+              backgroundColor: '#22c55e'
+            },
+            {
+              label: 'Goal Amount',
+              data: goalTargets,
+              backgroundColor: '#7df9ff'
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } }, tooltip: { enabled: true } },
+          scales: { x: { ticks: { color: '#fff' } }, y: { ticks: { color: '#fff' } } },
+          responsive: true
+        }
+      });
+      // Populate category filter
+      const catSelect = document.getElementById('filterCategory');
+      if (catSelect) {
+        const uniqueCats = Array.from(new Set((analyticsData.transactions || []).map(tx => tx.category || tx.transaction_type || 'Other')));
+        catSelect.innerHTML = '<option value="">All Categories</option>' + uniqueCats.map(c => `<option value="${c}">${c}</option>`).join('');
+        catSelect.value = filter.category || '';
+      }
+    }
+    fetch('/dashboard/analytics-data')
+      .then(res => res.json())
+      .then(data => {
+        analyticsData = data;
+        renderCharts({});
+      });
+    const analyticsForm = document.getElementById('analyticsFilterForm');
+    if (analyticsForm) {
+      analyticsForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const filter = {
+          from: document.getElementById('filterDateFrom').value,
+          to: document.getElementById('filterDateTo').value,
+          account: document.getElementById('filterAccount').value,
+          category: document.getElementById('filterCategory').value
+        };
+        renderCharts(filter);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+    // Chatbot Widget Script
+    const chatbotBtn = document.getElementById('faq-chatbot-btn');
+    const chatbotWindow = document.getElementById('faq-chatbot-window');
+    const chatbotClose = document.getElementById('faq-chatbot-close');
+    const chatbotForm = document.getElementById('faq-chatbot-form');
+    const chatbotInput = document.getElementById('faq-chatbot-input');
+    const chatbotMessages = document.getElementById('faq-chatbot-messages');
+    const quickReplies = document.getElementById('faq-chatbot-quickreplies');
+    const chatbotMaximize = document.getElementById('faq-chatbot-maximize');
+    let isMaximized = false;
+    // Personalized greeting for logged-in user
+    const userFirstName = '<%= (user && user.full_name) ? user.full_name.split(" ")[0] : (accounts && accounts[0] && accounts[0].full_name ? accounts[0].full_name.split(" ")[0] : "") %>';
+    let greeted = false;
+    // Popup logic
+    chatbotBtn.onclick = function(e) {
+      e.stopPropagation();
+      chatbotWindow.style.display = 'flex';
+      if (!greeted && userFirstName) {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'faq-chatbot-msg bot';
+        botMsg.innerHTML = `<div class=\"bubble bot-bubble\"><img src='/images/bot-avatar.png' class='bubble-avatar' alt='Bot' /><span>Hi ${userFirstName}! How can I help you today?</span></div>`;
+        chatbotMessages.appendChild(botMsg);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        greeted = true;
+      }
+    };
+    chatbotClose.onclick = function(e) {
+      e.stopPropagation();
+      chatbotWindow.style.display = 'none';
+    };
+    chatbotMaximize.onclick = function(e) {
+      e.stopPropagation();
+      isMaximized = !isMaximized;
+      if (isMaximized) {
+        chatbotWindow.style.position = 'fixed';
+        chatbotWindow.style.top = '2vh';
+        chatbotWindow.style.left = '2vw';
+        chatbotWindow.style.right = '2vw';
+        chatbotWindow.style.bottom = '2vh';
+        chatbotWindow.style.width = '96vw';
+        chatbotWindow.style.height = '96vh';
+        chatbotMaximize.innerHTML = '<i class="bi bi-fullscreen-exit"></i>';
+        chatbotMaximize.title = 'Restore';
+      } else {
+        chatbotWindow.style = '';
+        chatbotMaximize.innerHTML = '<i class="bi bi-fullscreen"></i>';
+        chatbotMaximize.title = 'Maximize';
+      }
+    };
+    // Demo quick reply system
+    function showQuickReplies(options) {
+      quickReplies.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'quickreply-btn';
+        btn.innerText = opt;
+        btn.onclick = function() {
+          chatbotInput.value = opt;
+          chatbotForm.dispatchEvent(new Event('submit', {cancelable:true, bubbles:true}));
+          quickReplies.style.display = 'none';
+        };
+        quickReplies.appendChild(btn);
+      });
+      quickReplies.style.display = 'flex';
+    }
+    // Chatbot form logic
+    chatbotForm.onsubmit = async function(e) {
+      e.preventDefault();
+      const question = chatbotInput.value.trim();
+      if (!question) return;
+      // Show user message
+      const userMsg = document.createElement('div');
+      userMsg.className = 'faq-chatbot-msg user';
+      userMsg.innerHTML = `<div class="bubble"><span>${question}</span></div>`;
+      chatbotMessages.appendChild(userMsg);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      chatbotInput.value = '';
+      // Show loading...
+      const botMsg = document.createElement('div');
+      botMsg.className = 'faq-chatbot-msg bot';
+      botMsg.innerHTML = `<div class="bubble bot-bubble"><img src='/images/bot-avatar.png' class='bubble-avatar' alt='Bot' /><span style='opacity:0.7;'>Thinking...</span></div>`;
+      chatbotMessages.appendChild(botMsg);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      // Demo: show quick replies for certain questions
+      if (question.toLowerCase().includes('help') || question.toLowerCase().includes('services')) {
+        setTimeout(() => {
+          botMsg.innerHTML = `<div class=\"bubble bot-bubble\"><img src='/images/bot-avatar.png' class='bubble-avatar' alt='Bot' /><span>What do you need help with?</span></div>`;
+          showQuickReplies(['Accounts', 'Cards', 'Budget Goals', 'Transactions']);
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }, 700);
+        return;
+      }
+      // Fetch answer from Dialogflow (with language support)
+      const lang = navigator.language ? navigator.language.split('-')[0] : 'en';
+      try {
+        const res = await fetch(`/api/dialogflow?question=${encodeURIComponent(question)}&lang=${lang}`);
+        const data = await res.json();
+        botMsg.innerHTML = `<div class=\"bubble bot-bubble\"><img src='/images/bot-avatar.png' class='bubble-avatar' alt='Bot' /><span>${data.answer}</span></div>`;
+        // --- Feedback UI ---
+        const feedbackDiv = document.createElement('div');
+        feedbackDiv.className = 'chatbot-feedback';
+        feedbackDiv.innerHTML = `Was this helpful? <button class='btn btn-sm btn-success chatbot-feedback-yes'>👍</button> <button class='btn btn-sm btn-danger chatbot-feedback-no'>👎</button>`;
+        botMsg.appendChild(feedbackDiv);
+        feedbackDiv.querySelector('.chatbot-feedback-yes').onclick = () => {
+          fetch('/api/chatbot-feedback', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,answer:data.answer,helpful:true})});
+          feedbackDiv.innerHTML = 'Thank you for your feedback!';
+        };
+        feedbackDiv.querySelector('.chatbot-feedback-no').onclick = () => {
+          fetch('/api/chatbot-feedback', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,answer:data.answer,helpful:false})});
+          feedbackDiv.innerHTML = 'Thank you for your feedback!';
+        };
+        // --- Escalation UI ---
+        if (data.escalation) {
+          const escDiv = document.createElement('div');
+          escDiv.className = 'chatbot-escalation';
+          escDiv.innerHTML = `<button class='btn btn-warning btn-sm mt-2'>Connect to a human agent</button>`;
+          escDiv.querySelector('button').onclick = () => {
+            escDiv.innerHTML = 'A human agent will contact you soon!';
+            // Optionally, trigger backend notification here
+          };
+          botMsg.appendChild(escDiv);
+        }
+      } catch {
+        botMsg.innerHTML = `<div class=\"bubble bot-bubble\"><img src='/images/bot-avatar.png' class='bubble-avatar' alt='Bot' /><span>Sorry, I couldn't connect to the FAQ service.</span></div>`;
+      }
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    };
+    const micBtn = document.getElementById('faq-chatbot-mic-btn');
+    let recognition;
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-US'; // You can set this dynamically if needed
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      micBtn.onclick = function() {
+        recognition.start();
+        micBtn.disabled = true;
+        micBtn.innerHTML = '<i class="bi bi-mic-fill"></i>';
+      };
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        chatbotInput.value = transcript;
+        micBtn.disabled = false;
+        micBtn.innerHTML = '<i class="bi bi-mic"></i>';
+        // Optionally auto-submit:
+        // chatbotForm.dispatchEvent(new Event('submit', {cancelable:true, bubbles:true}));
+      };
+
+      recognition.onerror = function() {
+        micBtn.disabled = false;
+        micBtn.innerHTML = '<i class="bi bi-mic"></i>';
+      };
+
+      recognition.onend = function() {
+        micBtn.disabled = false;
+        micBtn.innerHTML = '<i class="bi bi-mic"></i>';
+      };
+    } else {
+      micBtn.style.display = 'none'; // Hide if not supported
+    }
+  });
+  </script>
+  <script>
+    // Set progress bar widths from data attributes
+    document.addEventListener('DOMContentLoaded', function() {
+      const progressBars = document.querySelectorAll('.progress-bar[data-width]');
+      progressBars.forEach(bar => {
+        const width = bar.getAttribute('data-width');
+        bar.style.width = width + '%';
+      });
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.getElementById('toggle-balance-btn');
+      const icon = document.getElementById('toggle-balance-icon');
+      const value = document.getElementById('total-balance-value');
+      let shown = true;
+      const actual = value.innerHTML;
+      btn.addEventListener('click', function() {
+        shown = !shown;
+        if (shown) {
+          value.innerHTML = actual;
+          icon.classList.remove('bi-eye-slash');
+          icon.classList.add('bi-eye');
+        } else {
+          value.innerHTML = '$ •••••';
+          icon.classList.remove('bi-eye');
+          icon.classList.add('bi-eye-slash');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

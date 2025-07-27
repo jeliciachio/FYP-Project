@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDPA Policy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@800&display=swap" rel="stylesheet" />
+
+   <style>
+    /* Body & general */
+    body {
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      font-family: 'Inter', 'Georgia', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #f3f6fa;
+      font-size: 18px;
+      margin: 0;
+      padding-top: 100px;
+      overflow-x: hidden;
+    }
+
+    /* Container */
+    .apply-container {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+      padding: 80px 80px;
+      background: #232946;
+      box-shadow: 0 10px 40px rgba(34, 197, 94, 0.25);
+      border-radius: 20px;
+      margin-top: 80px;
+      margin-bottom: 60px;
+      animation: fadeIn 0.5s ease-in-out;
+      color: #f3f6fa;
+    }
+
+    @media (max-width: 768px) {
+      .apply-container {
+        padding: 60px 40px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Headings */
+    h2 {
+      text-align: center;
+      margin-bottom: 50px;
+      color: #7df9ff;
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+      font-weight: 800;
+      font-size: 3rem;
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 12px #7df9ff;
+    }
+
+    /* Form Labels */
+    .form-label {
+      font-weight: 700;
+      color: #f3f6fa;
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* Form Inputs */
+    .form-control {
+      border-radius: 12px;
+      border: 2px solid #7df9ff;
+      background-color: #181f2f;
+      color: #f3f6fa;
+      font-size: 1.2rem;
+      padding: 14px 18px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #22c55e;
+      outline: none;
+      box-shadow: 0 0 12px #7df9ffcc;
+    }
+
+    /* Primary Button */
+    .btn-primary {
+      width: 100%;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%);
+      color: #181f2f;
+      font-weight: 700;
+      font-size: 1.3rem;
+      border: none;
+      padding: 16px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.5);
+      user-select: none;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #16a34a 0%, #22c55e 100%);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.8);
+      color: #f3f6fa;
+      outline: none;
+    }
+
+    /* Secondary Button */
+    .btn-secondary {
+      width: 100%;
+      border-radius: 16px;
+      background-color: transparent;
+      color: #7df9ff;
+      border: 2px solid #7df9ff;
+      font-weight: 700;
+      font-size: 1.3rem;
+      padding: 16px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+      user-select: none;
+    }
+
+    .btn-secondary:hover {
+      background-color: #7df9ff22;
+      color: #22c55e;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.7);
+      outline: none;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      padding: 20px 0;
+      margin-top: auto;
+      background-color: #181f2f;
+      border-top: 1px solid #22c55e44;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+
+    /* Links */
+    a {
+      color: #7df9ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: text-decoration 0.3s ease;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+
+</head>
+<body>
+  <div class="apply-container">
+    <h2>PDPA Policy</h2>
+    
+    <p><strong>1. Purpose of Data Collection:</strong><br>
+    We collect personal data such as your name, email, NRIC, and phone number to process your account application and for identity verification purposes as required by KYC regulations.</p>
+    
+    <p><strong>2. How We Use Your Data:</strong><br>
+    Your data will be used strictly to support services such as applying for credit cards, managing consultation appointments, and maintaining your account with us. We do not sell or share your personal data with third parties without your consent.</p>
+    
+    <p><strong>3. Consent:</strong><br>
+    By submitting your application, you give consent for us to collect, use, and disclose your personal data for the stated purposes. You may withdraw your consent at any time by contacting our support team.</p>
+    
+    <p><strong>4. Data Protection:</strong><br>
+    All personal data is securely stored and protected using modern encryption and security protocols. Only authorized staff have access to your information.</p>
+    
+    <p><strong>5. Access and Correction:</strong><br>
+    You have the right to access and correct your personal data held by us. Please contact us via our support page to request access.</p>
+    
+    <p><strong>6. Retention:</strong><br>
+    We retain your personal data only for as long as necessary to fulfill the purposes for which it was collected, or as required by law.</p>
+    
+    <div class="mt-4">
+      <a href="/apply-card" class="btn-secondary">Back to Application</a>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 HOH Digital Bank. All Rights Reserved.
+  </footer>
+</body>
+</html>

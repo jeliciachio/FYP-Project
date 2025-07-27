@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cancel Card</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Georgia', serif;
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+    .cancel-card-container {
+      max-width: 600px;
+      margin: 120px auto;
+      padding: 40px;
+      background: #1e293b;
+      border-radius: 20px;
+      box-shadow: 0 0 24px #22c55e33;
+      text-align: center;
+    }
+    .cancel-card-container h2 {
+      color: #7df9ff;
+      margin-bottom: 1rem;
+    }
+    .cancel-card-container p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    label {
+      color: #fff; /* white font for labels */
+      font-weight: 600;
+    }
+    input.form-control {
+      width: 100%;
+      padding: 10px;
+      font-size: 1.05rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+      color: #000; /* keep input text black for readability */
+    }
+    .btn-cancel, .btn-send-otp {
+      padding: 12px 28px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-cancel {
+      background: linear-gradient(90deg, #ff4d4f 0%, #ff7f50 100%);
+      color: white;
+    }
+    .btn-cancel:hover {
+      background: linear-gradient(90deg, #ff7f50 0%, #ff4d4f 100%);
+    }
+    .btn-send-otp {
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%);
+      color: #181f2f;
+      margin-bottom: 1rem;
+    }
+    .btn-send-otp:hover {
+      background: linear-gradient(90deg, #7df9ff 0%, #22c55e 100%);
+      color: #fff;
+    }
+    .error-message {
+      color: #f87171;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    .success-message {
+      color: #4ade80;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+ <div class="cancel-card-container">
+  <h2>Cancel Card</h2>
+  <p>You are about to cancel the card linked to:</p>
+  <h4 style="color: #facc15"><%= accountNumber %></h4>
+
+ <% if (typeof error !== 'undefined' && error) { %>
+  <div class="error-message"><%= error %></div>
+<% } %>
+
+  
+<% if (typeof success !== 'undefined' && success) { %>
+  <div class="success-message" style="margin-bottom: 1rem;"><%= success %></div>
+<% } %>
+
+
+  <!-- Send OTP Button -->
+  <% if (!otpSent) { %>
+    <form action="/send-cancel-otp" method="POST">
+      <input type="hidden" name="account_number" value="<%= accountNumber %>" />
+      <button type="submit" class="btn-send-otp">Send OTP to Email</button>
+    </form>
+  <% } %>
+
+  <!-- Show form only if OTP sent -->
+  <% if (otpSent) { %>
+    <form action="/confirm-cancel-card" method="POST">
+      <input type="hidden" name="account_number" value="<%= accountNumber %>" />
+
+      <label for="otp">Enter OTP</label>
+      <input type="text" name="otp" id="otp" class="form-control" placeholder="Enter OTP" required />
+
+      <label for="confirmText">Type <strong>"cancel account"</strong> to confirm:</label>
+      <input
+        type="text"
+        id="confirmText"
+        name="confirm_text"
+        class="form-control"
+        placeholder="Type here..."
+        required
+      />
+      <button type="submit" class="btn-cancel">Confirm Cancel</button>
+    </form>
+  <% } %>
+
+  <!-- Back to My Products button -->
+  <div style="margin-top: 20px;">
+    <a href="/my-products" class="btn btn-secondary" style="padding: 12px 28px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; text-decoration: none; display: inline-block; background-color: #6c757d; color: white;">
+      Back to My Products
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

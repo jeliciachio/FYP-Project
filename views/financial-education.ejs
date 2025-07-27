@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Financial Education Center | HoH Bank</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Georgia', serif;
+      background: linear-gradient(120deg, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(125, 249, 255, 0.2);
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: #7df9ff !important;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.6);
+      letter-spacing: 1.2px;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .student-edu-container {
+      max-width: 1000px;
+      margin: 100px auto 40px;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      padding: 40px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      text-shadow: 
+        0 0 20px rgba(125, 249, 255, 0.4),
+        0 0 40px rgba(125, 249, 255, 0.2);
+    }
+
+    .module {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(125, 249, 255, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .module:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 45px rgba(34, 197, 94, 0.2);
+    }
+
+    .module h3 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.4);
+    }
+
+    .module p {
+      color: #e0eaff;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .module ul, .module ol {
+      margin-left: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .module li {
+      color: #e0eaff;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .module ul li::before {
+      content: "▸";
+      color: #22c55e;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    .module ol {
+      counter-reset: step-counter;
+    }
+
+    .module ol li {
+      counter-increment: step-counter;
+    }
+
+    .module ol li::before {
+      content: counter(step-counter);
+      background: #22c55e;
+      color: #0f172a;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 0;
+      top: 2px;
+      font-size: 0.9rem;
+    }
+
+    .module strong {
+      color: #7df9ff;
+      font-weight: 700;
+    }
+
+    .quiz-cta {
+      background: linear-gradient(135deg, rgba(125, 249, 255, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+      border: 1px solid rgba(125, 249, 255, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(125, 249, 255, 0.15);
+    }
+
+    .quiz-cta p {
+      color: #e0eaff;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn, .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #7df9ff);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn:hover, .btn-primary:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .student-edu-container {
+        margin: 80px 20px 40px;
+        padding: 20px;
+      }
+      
+      h2 {
+        font-size: 2rem;
+      }
+      
+      .module {
+        padding: 1.5rem;
+      }
+      
+      .module h3 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+ <a class="navbar-brand" href="/dashboard">HoH Bank</a>      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/my-products">My Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="/goals">Goals</a></li>          
+          <li class="nav-item"><a class="nav-link" href="/customer/consultations">Consultations</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user-transactions">Transactions</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="financialLearningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Financial Learning Tool
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="financialLearningDropdown">
+              <li><a class="dropdown-item" href="/financial-education">📘 Student Financial Education</a></li>
+              <li><a class="dropdown-item" href="/financial-resources">📚 Financial Resources</a></li>
+              <li><a class="dropdown-item" href="/financial-quiz">🧠 Financial Quiz</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/profile-edit">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout/customer">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="student-edu-container">
+    <h2>📘 Student Financial Education Center</h2>
+
+    <section class="module">
+      <h3>What is a Savings Account?</h3>
+      <p>A savings account is a secure place to store money while earning interest. It's ideal for managing daily finances and building emergency funds.</p>
+    </section>
+
+    <section class="module">
+      <h3>What is a Fixed Deposit Account?</h3>
+      <p>A fixed deposit lets you lock in a lump sum of money for a set period in exchange for higher interest. The longer the term, the more you earn.</p>
+    </section>
+
+    <section class="module">
+      <h3>Why Saving Early Matters</h3>
+      <ul>
+        <li>💡 Builds good financial habits</li>
+        <li>📈 Allows money to grow through interest and compounding</li>
+        <li>🧘 Gives peace of mind for unexpected expenses</li>
+      </ul>
+    </section>
+
+    <section class="module">
+      <h3>Budgeting Basics for Students</h3>
+      <ul>
+        <li>📊 Track your income and expenses monthly</li>
+        <li>📅 Follow the 50/30/20 rule: 50% needs, 30% wants, 20% savings</li>
+        <li>💳 Use top-up and transaction tools to avoid overspending</li>
+      </ul>
+    </section>
+
+    <section class="module">
+      <h3>Tips for Smart Money Management</h3>
+      <ol>
+        <li>✅ Set monthly savings goals and track progress</li>
+        <li>💸 Avoid unnecessary spending and impulse purchases</li>
+        <li>📥 Top up only what you need, don't overspend your balance</li>
+        <li>📆 Schedule reminders for fixed deposit maturity or repayment dates</li>
+        <li>📚 Learn about interest rates and compare banking products</li>
+      </ol>
+    </section>
+
+    <section class="module">
+      <h3>Interactive Tools</h3>
+      <ul>
+        <li>🧮 <strong>Budget Calculator</strong> – Track income vs expenses</li>
+        <li>🎯 <strong>Goal Savings Planner</strong> – Plan how much to save monthly for a target</li>
+        <li>� <strong>Quiz Mode</strong> – Test what you've learned and earn vouchers!</li>
+      </ul>
+    </section>
+
+    <section class="quiz-cta">
+      <p>Ready to test your knowledge?</p>
+      <a href="/financial-quiz" class="btn btn-primary">Take the Financial Quiz 🧠</a>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

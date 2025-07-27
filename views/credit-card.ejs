@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply for a Card | HOH</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Body & general */
+  body {
+  background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+  font-family: 'Inter', 'Georgia', serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #f3f6fa;
+  font-size: 12px; /* smaller font */
+  margin: 0;
+  padding-top: 40px; /* less top padding */
+  overflow-x: hidden;
+}
+
+/* Container */
+.apply-container {
+  width: 100%;
+  max-width: 600px;      /* narrower max width */
+  margin: auto;
+  padding: 25px 25px;    /* less padding */
+  background: #232946;
+  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.15);
+  border-radius: 18px;
+  margin-top: 30px;      /* less top margin */
+  margin-bottom: 30px;
+  animation: fadeIn 0.5s ease-in-out;
+  color: #f3f6fa;
+  transform: scale(0.85); /* 85% scale */
+  transform-origin: top center;
+}
+
+@media (max-width: 768px) {
+  .apply-container {
+    padding: 20px 15px;
+    max-width: 90vw;
+    transform: scale(1); /* no scaling on small screens */
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+    /* Headings */
+    h2 {
+      text-align: center;
+      margin-bottom: 50px;
+      color: #7df9ff;
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+      font-weight: 800;
+      font-size: 3rem;
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 12px #7df9ff;
+    }
+
+    /* Form Labels */
+    .form-label {
+      font-weight: 700;
+      color: #f3f6fa;
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* Form Inputs */
+    .form-control {
+      border-radius: 12px;
+      border: 2px solid #7df9ff;
+      background-color: #181f2f;
+      color: #f3f6fa;
+      font-size: 1.2rem;
+      padding: 14px 18px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #22c55e;
+      outline: none;
+      box-shadow: 0 0 12px #7df9ffcc;
+    }
+
+    /* Primary Button */
+    .btn-primary {
+      width: 100%;
+      border-radius: 16px;
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%);
+      color: #181f2f;
+      font-weight: 700;
+      font-size: 1.3rem;
+      border: none;
+      padding: 16px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.5);
+      user-select: none;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #16a34a 0%, #22c55e 100%);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.8);
+      color: #f3f6fa;
+      outline: none;
+    }
+
+    /* Secondary Button */
+    .btn-secondary {
+      width: 100%;
+      border-radius: 16px;
+      background-color: transparent;
+      color: #7df9ff;
+      border: 2px solid #7df9ff;
+      font-weight: 700;
+      font-size: 1.3rem;
+      padding: 16px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+      user-select: none;
+    }
+
+    .btn-secondary:hover {
+      background-color: #7df9ff22;
+      color: #22c55e;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.7);
+      outline: none;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      padding: 20px 0;
+      margin-top: auto;
+      background-color: #181f2f;
+      border-top: 1px solid #22c55e44;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+
+    /* Links */
+    a {
+      color: #7df9ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: text-decoration 0.3s ease;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="apply-container">
+    <h2>Apply for a HOH Credit Card</h2>
+    <form id="cardApplicationForm" action="/submit-credit-application" method="POST" enctype="multipart/form-data"
+      class="row g-3">
+
+      <div class="col-md-6">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-control" value="<%= user.full_name %>" readonly>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" value="<%= user.email %>" readonly>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Phone Number</label>
+        <input type="text" class="form-control" value="<%= user.phone_number %>" readonly>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Date of Birth</label>
+        <input type="text" class="form-control" value="<%= user.date_of_birth.toISOString().split('T')[0] %>" readonly>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">NRIC</label>
+        <input type="text" class="form-control" value="<%= user.nric %>" readonly>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Nationality</label>
+        <input type="text" class="form-control" name="nationality" required>
+      </div>
+
+      <div class="col-md-12">
+        <label class="form-label">Residential Address</label>
+        <input type="text" class="form-control" name="address" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Monthly Income / Source of Funds</label>
+        <input type="number" step="0.01" class="form-control" name="income_source" required>
+      </div>
+
+      <div class="col-md-12 mt-3">
+        <label class="form-label">Upload Student ID / NRIC (Front)</label>
+        <input type="file" class="form-control" name="student_id" accept="image/*,.pdf" required>
+      </div>
+
+
+
+
+      <!-- PDPA Consent -->
+      <div class="col-12 form-check mt-2">
+        <input class="form-check-input" type="checkbox" id="pdpaConsent" required>
+        <label class="form-check-label" for="pdpaConsent">
+          I consent to the collection, use, and disclosure of my personal data for the purpose of identity verification,
+          in accordance with the <a href="/pdpa-policy" target="_blank">PDPA Policy</a>.
+        </label>
+      </div>
+
+      <!-- KYC Confirmation -->
+      <div class="col-12 form-check mt-2">
+        <input class="form-check-input" type="checkbox" id="kycConfirm" required>
+        <label class="form-check-label" for="kycConfirm">
+          I confirm that the personal details provided are accurate and true for the purpose of KYC verification.
+        </label>
+      </div>
+
+      <!-- New Declaration -->
+      <div class="col-12 form-check mt-2">
+        <input class="form-check-input" type="checkbox" id="documentDeclaration" required>
+        <label class="form-check-label" for="documentDeclaration">
+          I declare that all the information and uploaded documents are true, accurate, and not falsified.
+        </label>
+      </div>
+
+      <!-- Terms & Submit -->
+      <div class="col-12 form-check mt-4">
+        <input class="form-check-input" type="checkbox" id="terms" required>
+        <label class="form-check-label" for="terms">
+          I agree to the <a href="/terms" target="_blank">Terms and Conditions</a>.
+        </label>
+      </div>
+
+      <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-primary">Submit Application</button>
+      </div>
+    </form>
+
+    <div class="col-12 mt-3">
+      <a href="/apply-card" class="btn btn-secondary">Back to Home</a>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 HOH Financial Group. All rights reserved.
+  </footer>
+
+</body>
+
+</html>

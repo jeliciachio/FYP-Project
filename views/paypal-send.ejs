@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>Send Money - RP Digital Bank</title>
+  <script src="https://www.paypal.com/sdk/js?client-id=AdgDE_vy-X5pdVPIWA-ybx6IWkb82O4CUneAhP8eLgJbtWQTYTpB72-EXlBalhYGA11REVVGR3j0I4E-&currency=SGD"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      font-family: 'Inter', 'Georgia', serif;
+      min-height: 100vh;
+      color: #f3f6fa;
+      padding: 20px;
+      line-height: 1.6;
+    }    .apply-container {
+      max-width: 650px;
+      margin: 80px auto;
+      padding: 50px 40px;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.2),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      animation: fadeInUp 0.8s ease-out;
+      border: 1px solid rgba(125, 249, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .apply-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 50%, #22c55e 100%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      text-align: center;
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      text-shadow: 
+        0 0 20px rgba(125, 249, 255, 0.5),
+        0 0 40px rgba(125, 249, 255, 0.3);
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, #7df9ff, #22c55e);
+      border-radius: 2px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }    .form-section {
+      margin-bottom: 30px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #e2e8f0;
+    }
+
+    .form-icon {
+      color: #7df9ff;
+      font-size: 1.1rem;
+    }
+
+    select,
+    .form-control {
+      border-radius: 16px;
+      border: 2px solid rgba(125, 249, 255, 0.3);
+      background: linear-gradient(135deg, rgba(24, 31, 47, 0.8), rgba(30, 42, 58, 0.6));
+      color: #f3f6fa;
+      font-size: 1.1rem;
+      padding: 16px 20px;
+      width: 100%;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      backdrop-filter: blur(5px);
+    }
+
+    select:focus,
+    .form-control:focus {
+      outline: none;
+      border-color: #22c55e;
+      box-shadow: 
+        0 0 0 3px rgba(34, 197, 94, 0.1),
+        0 0 20px rgba(125, 249, 255, 0.3);
+      background: rgba(24, 31, 47, 0.9);
+      transform: translateY(-2px);
+    }
+
+    select:hover,
+    .form-control:hover {
+      border-color: rgba(125, 249, 255, 0.5);
+      background: linear-gradient(135deg, rgba(24, 31, 47, 0.9), rgba(30, 42, 58, 0.8));
+    }
+
+    select option {
+      background: #181f2f;
+      color: #f3f6fa;
+      padding: 12px;
+    }
+
+    .form-hint {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }    #paypal-button-container {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .payment-section {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .payment-title {
+      color: #22c55e;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .btn-select {
+      background: linear-gradient(135deg, #22c55e 0%, #7df9ff 100%);
+      border: none;
+      color: #181f2f;
+      font-weight: 700;
+      border-radius: 16px;
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      box-shadow: 
+        0 8px 25px rgba(34, 197, 94, 0.4),
+        0 4px 12px rgba(125, 249, 255, 0.2);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-select::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-select:hover::before {
+      left: 100%;
+    }
+
+    .btn-select:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      transform: translateY(-3px);
+      box-shadow: 
+        0 12px 35px rgba(34, 197, 94, 0.6),
+        0 6px 20px rgba(125, 249, 255, 0.3);
+      color: #fff;
+    }
+
+    .btn-select:active {
+      transform: translateY(-1px);
+    }
+
+    .back-button {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .security-note {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 30px;
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 0.95rem;
+    }
+
+    .security-note i {
+      color: #22c55e;
+      font-size: 1.2rem;
+      margin-right: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 30px;
+      color: #64748b;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(125, 249, 255, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .apply-container {
+        margin: 40px 15px;
+        padding: 30px 25px;
+      }
+      
+      h2 {
+        font-size: 2.2rem;
+      }
+      
+      .form-label {
+        font-size: 1.1rem;
+      }
+      
+      select,
+      .form-control {
+        font-size: 1rem;
+        padding: 14px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>  <div class="apply-container">
+    <h2>
+      <i class="bi bi-paypal" style="margin-right: 15px;"></i>
+      Send Money via PayPal
+    </h2>
+    <p class="subtitle">Send money securely using PayPal's trusted payment system</p>
+
+    <div class="form-section">
+      <label for="fromAccount" class="form-label">
+        <i class="bi bi-bank form-icon"></i>
+        Select Account
+      </label>
+      <select id="fromAccount" name="account_id" required>
+        <option value="" disabled selected>Choose your account...</option>
+        <% accounts.forEach(acc=> { %>
+          <option value="<%= acc.account_id %>">
+            <%= acc.product_name %> - <%= acc.account_type %> (Balance: $<%= Number(acc.balance).toFixed(2) %>)
+          </option>
+        <% }) %>
+      </select>
+      <div class="form-hint">
+        <i class="bi bi-info-circle"></i>
+        Select the account to deduct funds from
+      </div>
+    </div>
+
+    <div class="form-section">
+      <label for="amount" class="form-label">
+        <i class="bi bi-currency-dollar form-icon"></i>
+        Enter Amount to Send (SGD)
+      </label>
+      <input type="number" id="amount" name="amount" class="form-control" placeholder="e.g., 5.00" min="1" step="0.01" required />
+      <div class="form-hint">
+        <i class="bi bi-info-circle"></i>
+        Minimum amount: $1.00
+      </div>
+    </div>
+
+    <div class="payment-section">
+      <div class="payment-title">
+        <i class="bi bi-shield-check"></i>
+        Complete Payment with PayPal
+      </div>
+      <div id="paypal-button-container"></div>
+    </div>
+
+    <div class="security-note">
+      <i class="bi bi-shield-check"></i>
+      Your payment is protected by PayPal's secure payment system with industry-leading fraud protection.
+    </div>
+
+    <div class="back-button">
+      <a href="/my-products" class="btn-select">
+        <i class="bi bi-arrow-left"></i>
+        Back to My Products
+      </a>
+    </div>
+  </div>
+  <div class="footer">
+    &copy; 2025 RP Digital Bank — All Rights Reserved | Secure Digital Banking
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const accountSelect = document.getElementById('fromAccount');
+      const amountInput = document.getElementById('amount');
+
+      paypal.Buttons({
+        createOrder: function (data, actions) {
+          const account = accountSelect.value;
+          const amount = parseFloat(amountInput.value);
+
+          if (!account) {
+            alert("Please select an account.");
+            return;
+          }
+          if (!amount || isNaN(amount) || amount < 1) {
+            alert("Please enter a valid amount.");
+            return;
+          }
+
+          return actions.order.create({
+            purchase_units: [
+              {
+                amount: { value: amount.toFixed(2).toString() }
+              }
+            ]
+          });
+        },
+        onApprove: function (data, actions) {
+          return actions.order.capture().then(function (details) {
+            const amount = parseFloat(amountInput.value);
+            const account = accountSelect.value;
+
+            fetch('/paypal-spend', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                amount: amount,
+                account_id: account
+              })
+            })
+            .then(res => res.ok ? alert("Spending recorded!") : alert("Failed to log transaction."))
+            .catch(err => {
+              console.error(err);
+              alert("An error occurred.");
+            });
+          });
+        }
+      }).render('#paypal-button-container');
+    });
+  </script>
+</body>
+
+</html>

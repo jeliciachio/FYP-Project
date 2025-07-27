@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Transaction History - HOH Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Georgia', serif;
+            background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+            color: #f3f6fa;
+            overflow-x: hidden;
+        }        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            padding: 0.8rem 1rem;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(125, 249, 255, 0.2);
+        }
+   .navbar {
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(125, 249, 255, 0.2);
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: #7df9ff !important;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.6);
+      letter-spacing: 1.2px;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .navbar-nav .nav-link {
+      color: #cbd5e1 !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem !important;
+      border-radius: 8px;
+      margin: 0 0.25rem;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #7df9ff !important;
+      background: rgba(125, 249, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: #22c55e !important;
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .navbar-toggler {
+      border-color: rgba(125, 249, 255, 0.3);
+    }
+
+    .navbar-toggler-icon {
+      filter: brightness(0) invert(1) drop-shadow(0 0 2px #7df9ff);
+    }    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+
+        .main-container {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 100px;
+            margin-bottom: 100px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(125, 249, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #7df9ff, transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .filter-section {
+            background: rgba(15, 28, 42, 0.8);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(125, 249, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: linear-gradient(135deg, #0f4c4b 0%, #1e293b 100%);
+            color: #7df9ff;
+            border: 1px solid rgba(125, 249, 255, 0.3);
+            border-radius: 25px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover {
+            background: linear-gradient(135deg, #7df9ff 0%, #22c55e 100%);
+            color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(125, 249, 255, 0.3);
+        }
+
+        .filter-btn:disabled {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: #ffffff;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .date-filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 0.8rem;
+            border-radius: 12px;
+            border: 1px solid rgba(125, 249, 255, 0.1);
+        }
+
+        .date-filter-group label {
+            color: #7df9ff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .date-filter-group input[type="date"] {
+            background: rgba(15, 28, 42, 0.9);
+            border: 1px solid rgba(125, 249, 255, 0.3);
+            border-radius: 8px;
+            padding: 6px 12px;
+            color: #7df9ff;
+            font-size: 0.85rem;
+            width: 150px;
+        }
+
+        .date-filter-group input[type="date"]:focus {
+            outline: none;
+            border-color: #7df9ff;
+            box-shadow: 0 0 0 2px rgba(125, 249, 255, 0.2);
+        }
+
+        h2 {
+            color: #7df9ff;
+            font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+            font-weight: 700;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(125, 249, 255, 0.5);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #7df9ff, transparent);
+            border-radius: 2px;
+        }        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            font-size: 0.9rem;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+
+        thead th {
+            background: linear-gradient(135deg, #0f4c4b 0%, #1e293b 100%) !important;
+            color: #7df9ff !important;
+            text-align: center;
+            padding: 15px 12px;
+            font-weight: 700;
+            border-radius: 12px;
+            user-select: none;
+            box-shadow: 0 0 20px rgba(125, 249, 255, 0.3);
+            font-size: 0.95rem;
+            text-shadow: 0 0 10px rgba(125, 249, 255, 0.5);
+            position: relative;
+        }
+
+        thead th::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #7df9ff, transparent);
+        }
+
+        table.table thead th {
+            background: linear-gradient(135deg, #0f4c4b 0%, #1e293b 100%) !important;
+            color: #7df9ff !important;
+            user-select: none;
+        }
+
+        tbody tr {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            cursor: default;
+            border: 1px solid rgba(125, 249, 255, 0.1);
+        }
+
+        tbody tr:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow: 0 12px 30px rgba(34, 197, 94, 0.3);
+        }
+
+        tbody tr:hover td {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        tbody td {
+            padding: 15px 12px;
+            text-align: center;
+            color: #e0eaff;
+            vertical-align: middle;
+            user-select: text;
+            font-size: 0.9rem;
+        }
+
+        tbody td:first-child,
+        thead th:first-child {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        tbody td:last-child,
+        thead th:last-child {
+            padding-right: 20px;
+        }
+
+        .text-danger {
+            color: #ef4444 !important;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+
+        .text-success {
+            color: #22c55e !important;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+        }
+
+        .no-transactions {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(15, 28, 42, 0.8);
+            border-radius: 15px;
+            border: 1px solid rgba(125, 249, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .no-transactions p {
+            font-size: 1.3rem;
+            color: #94a3b8;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .no-transactions .icon {
+            font-size: 4rem;
+            color: #7df9ff;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .transaction-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(15, 28, 42, 0.8);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid rgba(125, 249, 255, 0.1);
+            backdrop-filter: blur(5px);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stat-card h4 {
+            color: #7df9ff;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stat-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .account-info {
+            background: rgba(15, 28, 42, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(125, 249, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .account-info h3 {
+            color: #7df9ff;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .account-info p {
+            color: #e0eaff;
+            margin: 0;
+            font-size: 1rem;
+        }        footer {
+            text-align: center;
+            margin-top: auto;
+            padding: 25px 0;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(125, 249, 255, 0.2);
+            user-select: none;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            letter-spacing: 0.04em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .filter-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .date-filter-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .transaction-stats {
+                flex-direction: column;
+            }
+            
+            .main-container {
+                margin: 80px 10px 100px;
+                padding: 1rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            table {
+                font-size: 0.8rem;
+            }
+            
+            tbody td, thead th {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+ <a class="navbar-brand" href="/dashboard">HoH Bank</a>      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/my-products">My Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="/goals">Goals</a></li>          
+          <li class="nav-item"><a class="nav-link" href="/customer/consultations">Consultations</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user-transactions">Transactions</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="financialLearningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Financial Learning Tool
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="financialLearningDropdown">
+              <li><a class="dropdown-item" href="/financial-education">📘 Student Financial Education</a></li>
+              <li><a class="dropdown-item" href="/financial-resources">📚 Financial Resources</a></li>
+              <li><a class="dropdown-item" href="/financial-quiz">🧠 Financial Quiz</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/profile-edit">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout/customer">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <div class="container">
+        <div class="main-container">
+            <h2>Transaction History for <%= user.full_name %></h2>
+
+            <div class="account-info">
+                <h3>Account Information</h3>
+                <p><strong>Account Holder:</strong> <%= user.full_name %></p>
+            </div>
+
+            <div class="filter-section">
+                <form method="GET" action="/user-transactions" class="filter-buttons">
+                    <button name="filter" value="today" type="submit" class="filter-btn" 
+                        <%= filter === 'today' ? 'disabled' : '' %>>
+                        📅 Today
+                    </button>
+                    <button name="filter" value="month" type="submit" class="filter-btn" 
+                        <%= filter === 'month' ? 'disabled' : '' %>>
+                        📊 This Month
+                    </button>
+                    <div class="date-filter-group">
+                        <label for="dateFilter">Select Date:</label>
+                        <input type="date" id="dateFilter" name="date" value="<%= selectedDate || '' %>">
+                        <button type="submit" class="filter-btn">🔍 Filter</button>
+                    </div>
+                    <a href="/user-transactions" class="filter-btn">🔄 Reset</a>
+                </form>
+            </div>
+
+            <% if (transactions.length > 0) { %>
+                <div class="transaction-stats">
+                    <div class="stat-card">
+                        <h4>Total Transactions</h4>
+                        <div class="value"><%= transactions.length %></div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Credits</h4>
+                        <div class="value text-success"><%= transactions.filter(tx => tx.amount > 0).length %></div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Debits</h4>
+                        <div class="value text-danger"><%= transactions.filter(tx => tx.amount < 0).length %></div>
+                    </div>
+                </div>
+            <% } %>
+
+            <% if (transactions.length === 0) { %>
+                <div class="no-transactions">
+                    <div class="icon">📊</div>
+                    <p>No transactions found for the selected period.</p>
+                </div>
+            <% } else { %>
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Account Number</th>
+                            <th>Account Type</th>
+                            <th>Transaction Type</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% transactions.forEach(tx => { %>
+                            <tr>
+                                <td><%= tx.account_number %></td>
+                                <td><%= tx.account_type.replace('_', ' ') %></td>
+                                <td><%= tx.transaction_type.charAt(0).toUpperCase() + tx.transaction_type.slice(1) %></td>
+                                <td class="<%= tx.amount < 0 ? 'text-danger' : 'text-success' %>">
+                                    <%= tx.amount < 0 ? '-' : '+' %>$<%= Math.abs(tx.amount).toFixed(2) %>
+                                </td>
+                                <td><%= tx.description %></td>
+                                <td><%= new Date(tx.transaction_date).toLocaleString() %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </div>
+
+
+    <footer>
+        &copy;
+        <script>document.write(new Date().getFullYear())</script> HOH Bank. Designed for Students.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

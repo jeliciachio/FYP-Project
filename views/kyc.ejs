@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User KYC Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />  <style>
+/* Body & Layout */
+body {
+  background: 
+    radial-gradient(ellipse at top left, rgba(34, 197, 94, 0.1), transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(125, 249, 255, 0.08), transparent 50%),
+    linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+  min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #f3f6fa;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 60px 20px 40px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Animated Background Elements */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(125, 249, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(34, 197, 94, 0.05) 0%, transparent 50%);
+  animation: backgroundMove 20s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes backgroundMove {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(-10px) translateY(-5px); }
+  50% { transform: translateX(10px) translateY(5px); }
+  75% { transform: translateX(-5px) translateY(10px); }
+}
+
+/* Container */
+.container {
+  background: rgba(24, 31, 47, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(125, 249, 255, 0.2);
+  color: #f3f6fa;
+  border-radius: 20px;
+  padding: 50px 60px;
+  margin: 0 auto 40px;
+  max-width: 800px;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(125, 249, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+  animation: containerSlideIn 0.8s ease-out;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(125, 249, 255, 0.5), transparent);
+}
+
+@keyframes containerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Heading */
+h1 {
+  text-align: center;
+  margin-bottom: 50px;
+  color: #7df9ff;
+  font-weight: 800;
+  font-size: 3.2rem;
+  letter-spacing: 0.08em;
+  text-shadow: 
+    0 0 20px rgba(125, 249, 255, 0.6),
+    0 0 40px rgba(125, 249, 255, 0.3),
+    0 0 60px rgba(125, 249, 255, 0.1);
+  position: relative;
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+h1::before {
+  content: '👤';
+  position: absolute;
+  left: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.5rem;
+  animation: iconBounce 2s ease-in-out infinite;
+}
+
+h1::after {
+  content: '📋';
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.5rem;
+  animation: iconBounce 2s ease-in-out infinite reverse;
+}
+
+@keyframes titleGlow {
+  from { text-shadow: 0 0 20px rgba(125, 249, 255, 0.6), 0 0 40px rgba(125, 249, 255, 0.3); }
+  to { text-shadow: 0 0 30px rgba(125, 249, 255, 0.8), 0 0 50px rgba(125, 249, 255, 0.4); }
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-60%) scale(1.1); }
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 15px;
+  font-size: 1.15rem;
+}
+
+th, td {
+  padding: 18px 25px;
+  vertical-align: middle;
+  position: relative;
+}
+
+th {
+  text-align: left;
+  background: linear-gradient(135deg, #22c55e 0%, #7df9ff 100%);
+  color: #0f172a;
+  font-weight: 700;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 
+    0 4px 15px rgba(34, 197, 94, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+th::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+th:hover::before {
+  left: 100%;
+}
+
+tr {
+  background: rgba(24, 31, 47, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(125, 249, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+tr:hover {
+  background: rgba(34, 197, 94, 0.05);
+  border-color: rgba(125, 249, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(125, 249, 255, 0.2);
+}
+
+tr::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #22c55e, #7df9ff);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+tr:hover::before {
+  opacity: 1;
+}
+
+td {
+  border-bottom: none;
+  color: #e0eaff;
+  border-radius: 0 0 12px 12px;
+  font-weight: 500;
+  position: relative;
+}
+
+td:first-child {
+  font-weight: 600;
+  color: #7df9ff;
+}
+
+/* Info Cards Animation */
+tr {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+tr:nth-child(1) { animation-delay: 0.1s; }
+tr:nth-child(2) { animation-delay: 0.2s; }
+tr:nth-child(3) { animation-delay: 0.3s; }
+tr:nth-child(4) { animation-delay: 0.4s; }
+tr:nth-child(5) { animation-delay: 0.5s; }
+tr:nth-child(6) { animation-delay: 0.6s; }
+tr:nth-child(7) { animation-delay: 0.7s; }
+tr:nth-child(8) { animation-delay: 0.8s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Back Button */
+a.btn-back {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #22c55e 0%, #7df9ff 100%);
+  color: #0f172a;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1.2rem;
+  box-shadow: 
+    0 8px 25px rgba(34, 197, 94, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid transparent;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+a.btn-back::before {
+  content: '←';
+  margin-right: 8px;
+  font-size: 1.3rem;
+  transition: transform 0.3s ease;
+}
+
+a.btn-back::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+a.btn-back:hover {
+  background: linear-gradient(135deg, #16a34a 0%, #0891b2 100%);
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 
+    0 12px 35px rgba(34, 197, 94, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(125, 249, 255, 0.3);
+}
+
+a.btn-back:hover::before {
+  transform: translateX(-3px);
+}
+
+a.btn-back:hover::after {
+  left: 100%;
+}
+
+a.btn-back:active {
+  transform: translateY(-1px);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 30px 20px;
+  color: #94a3b8;
+  background: rgba(24, 31, 47, 0.3);
+  backdrop-filter: blur(10px);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  user-select: none;
+  border-top: 1px solid rgba(125, 249, 255, 0.2);
+  margin-top: auto;
+  position: relative;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(125, 249, 255, 0.5), transparent);
+}
+
+/* Floating Particles */
+.particle {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: rgba(125, 249, 255, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  animation: float 15s infinite linear;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .container {
+    padding: 40px 30px;
+    margin: 20px 10px 40px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+  }
+
+  h1::before,
+  h1::after {
+    display: none;
+  }
+
+  table {
+    font-size: 1rem;
+  }
+
+  th, td {
+    padding: 15px 20px;
+  }
+
+  a.btn-back {
+    width: 100%;
+    text-align: center;
+    padding: 16px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 30px 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  table {
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    padding: 12px 15px;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>User KYC Details</h1>
+    <table>
+      <tr><th>User ID</th><td><%= user.user_id %></td></tr>
+      <tr><th>Full Name</th><td><%= user.full_name %></td></tr>
+      <tr><th>Email</th><td><%= user.email %></td></tr>
+      <tr><th>Phone Number</th><td><%= user.phone_number %></td></tr>
+      <tr><th>Role</th><td><%= user.role ? user.role.charAt(0).toUpperCase() + user.role.slice(1).replace('_', ' ') : 'Unknown' %></td></tr>
+      <tr><th>Date of Birth</th><td><%= user.date_of_birth ? user.date_of_birth.toISOString().split('T')[0] : '-' %></td></tr>
+      <tr><th>NRIC</th><td><%= user.nric || '-' %></td></tr>
+      <tr><th>Created At</th><td><%= user.created_at ? new Date(user.created_at).toISOString().replace('T', ' ').split('.')[0]: '-' %></td></tr>
+    </table>
+    <a href="/pending-card" class="btn-back">Back to Users List</a>
+  </div>
+  <footer>
+    &copy; <%= new Date().getFullYear() %> HOH Card System. All rights reserved.
+  </footer>
+
+  <script>
+    // Create floating particles
+    function createParticles() {
+      const particleCount = 15;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        
+        // Random size variations
+        const size = Math.random() * 3 + 2;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        
+        document.body.appendChild(particle);
+      }
+    }
+
+    // Add interactive hover effects
+    function addInteractiveEffects() {
+      const rows = document.querySelectorAll('tr');
+      rows.forEach((row, index) => {
+        row.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-3px) scale(1.01)';
+          this.style.zIndex = '10';
+        });
+        
+        row.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+          this.style.zIndex = '1';
+        });
+      });
+
+      // Add click ripple effect to button
+      const button = document.querySelector('.btn-back');
+      button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        ripple.style.position = 'absolute';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+        ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple 0.6s linear';
+        ripple.style.left = (e.clientX - e.target.offsetLeft) + 'px';
+        ripple.style.top = (e.clientY - e.target.offsetTop) + 'px';
+        ripple.style.width = ripple.style.height = '20px';
+        
+        this.style.position = 'relative';
+        this.style.overflow = 'hidden';
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    }
+
+    // Add CSS for ripple animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Initialize effects when page loads
+    window.addEventListener('load', function() {
+      createParticles();
+      addInteractiveEffects();
+      
+      // Add entrance animation to container
+      const container = document.querySelector('.container');
+      container.style.opacity = '0';
+      container.style.transform = 'translateY(50px)';
+      
+      setTimeout(() => {
+        container.style.transition = 'all 0.8s ease';
+        container.style.opacity = '1';
+        container.style.transform = 'translateY(0)';
+      }, 100);
+    });
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' || e.key === 'Backspace') {
+        window.location.href = '/pending-card';
+      }
+    });
+  </script>
+</body>
+</html>

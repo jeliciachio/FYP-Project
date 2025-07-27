@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Results | HoH Bank</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Georgia', serif;
+      background: linear-gradient(120deg, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(125, 249, 255, 0.2);
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: #7df9ff !important;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.6);
+      letter-spacing: 1.2px;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .result-container {
+      max-width: 1000px;
+      margin: 100px auto 40px;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      padding: 40px;
+      animation: fadeInUp 0.6s ease-out;
+      text-align: center;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      text-shadow: 
+        0 0 20px rgba(125, 249, 255, 0.4),
+        0 0 40px rgba(125, 249, 255, 0.2);
+    }
+
+    .score-display {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(125, 249, 255, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+    }
+
+    .score-display p {
+      color: #e0eaff;
+      font-size: 1.3rem;
+      margin-bottom: 0;
+    }
+
+    .score-display strong {
+      color: #22c55e;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      text-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+    }
+
+    .reward-popup {
+      background: linear-gradient(135deg, rgba(125, 249, 255, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+      border: 1px solid rgba(125, 249, 255, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(125, 249, 255, 0.15);
+      animation: celebration 1s ease-out;
+    }
+
+    @keyframes celebration {
+      0% { transform: scale(0.95); opacity: 0; }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .reward-popup h3 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.4);
+    }
+
+    .reward-popup p {
+      color: #e0eaff;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .reward-popup strong {
+      color: #22c55e;
+      font-weight: 700;
+    }
+
+    #redeemBtn {
+      background: linear-gradient(135deg, #22c55e, #7df9ff);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 1rem;
+    }
+
+    #redeemBtn:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+    }
+
+    #qrSection {
+      background: rgba(24, 31, 47, 0.6);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid rgba(125, 249, 255, 0.1);
+      animation: slideDown 0.5s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #qrSection p {
+      color: #e0eaff;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    #qrSection img {
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(125, 249, 255, 0.2);
+      border: 2px solid rgba(125, 249, 255, 0.3);
+    }
+
+    .no-reward {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(125, 249, 255, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+    }
+
+    .no-reward p {
+      color: #e0eaff;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #22c55e, #7df9ff);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .result-container {
+        margin: 80px 20px 40px;
+        padding: 20px;
+      }
+      
+      h2 {
+        font-size: 2rem;
+      }
+      
+      .reward-popup, .score-display, .no-reward {
+        padding: 1.5rem;
+      }
+      
+      #qrSection img {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">HoH Bank</a>
+    </div>
+  </nav>
+
+  <div class="result-container">
+    <h2>🎉 Quiz Completed!</h2>
+    
+    <div class="score-display">
+      <p>You scored: <strong><%= score %> / 10</strong></p>
+    </div>
+
+    <% if (reward) { %>
+      <div class="reward-popup">
+        <h3>🎁 Congratulations!</h3>
+        <p>You earned a <strong>$2 voucher</strong> from Artease or Kofu!</p>
+        <p>Click the button below to redeem your voucher:</p>
+
+        <button id="redeemBtn">🎫 Redeem Now</button>
+
+        <div id="qrSection" style="display:none; margin-top: 20px;">
+          <p>Take a screenshot of QR code and claim your reward:</p>
+          <p>This voucher is valid for 30 days.</p>
+          <img src="/images/voucher-qr.png" alt="Voucher QR Code" width="200" height="200" />
+        </div>
+      </div>
+
+      <script>
+        document.getElementById('redeemBtn').addEventListener('click', () => {
+          document.getElementById('qrSection').style.display = 'block';
+          document.getElementById('redeemBtn').style.display = 'none';
+        });
+      </script>
+
+    <% } else if (exhausted) { %>
+    <div class="no-reward">
+        <p>All vouchers have been claimed. Try again next campaign!</p>
+        <p>✨ But don’t worry—your effort has helped you learn valuable financial knowledge!</p>
+    </div>
+    <% } else { %>
+    <p>💡 Keep learning! Try again to get full marks and claim your reward.</p>
+    <% } %>
+
+    <a href="/financial-education" class="btn">Back to Education</a>
+    <a href="/dashboard" class="btn">Return to Dashboard</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

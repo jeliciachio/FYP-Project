@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pay Credit Card Debt - RP Digital Bank</title>
+  <script src="https://www.paypal.com/sdk/js?client-id=AdgDE_vy-X5pdVPIWA-ybx6IWkb82O4CUneAhP8eLgJbtWQTYTpB72-EXlBalhYGA11REVVGR3j0I4E-&currency=SGD"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  
+  <style>
+    body {
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      font-family: 'Inter', 'Georgia', serif;
+      min-height: 100vh;
+      color: #f3f6fa;
+      margin: 0;
+      padding: 120px 20px 60px;
+      line-height: 1.6;
+    }
+
+    .payment-container {
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 50px 40px;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.2),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      animation: fadeInUp 0.8s ease-out;
+      border: 1px solid rgba(125, 249, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .payment-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 50%, #22c55e 100%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .main-title {
+      text-align: center;
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+      text-shadow: 
+        0 0 20px rgba(125, 249, 255, 0.5),
+        0 0 40px rgba(125, 249, 255, 0.3);
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .main-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, #7df9ff, #22c55e);
+      border-radius: 2px;
+    }    .subtitle {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .debt-info {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.05));
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 35px;
+      text-align: center;
+      position: relative;
+      backdrop-filter: blur(10px);
+    }
+
+    .debt-info::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #ef4444, #dc2626, #ef4444);
+      border-radius: 18px;
+      z-index: -1;
+      opacity: 0.3;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+    }
+
+    .debt-amount {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #7df9ff;
+      margin-bottom: 8px;
+      font-family: 'Orbitron', sans-serif;
+    }    .debt-label {
+      color: #e2e8f0;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .debt-progress {
+      width: 100%;
+      height: 8px;
+      background: rgba(24, 31, 47, 0.6);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 15px;      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    }    .debt-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #7df9ff);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .debt-progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: progressShine 2s ease-in-out infinite;
+    }
+
+    @keyframes progressShine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .form-section {
+      margin-bottom: 30px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #e2e8f0;
+    }    .form-icon {
+      color: #7df9ff;
+      font-size: 1.1rem;
+    }
+
+    select,
+    input[type="number"] {
+      border-radius: 12px;
+      border: 2px solid rgba(125, 249, 255, 0.3);
+      background: linear-gradient(135deg, rgba(24, 31, 47, 0.8), rgba(30, 42, 58, 0.6));
+      color: #f3f6fa;
+      font-size: 1.1rem;
+      padding: 16px 20px;
+      width: 100%;
+      margin-bottom: 8px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      backdrop-filter: blur(5px);
+    }
+
+    select:focus,
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #22c55e;
+      box-shadow: 
+        0 0 0 3px rgba(34, 197, 94, 0.1),
+        0 0 20px rgba(125, 249, 255, 0.3);
+      background: rgba(24, 31, 47, 0.9);
+      transform: translateY(-2px);
+    }
+
+    select:hover,
+    input[type="number"]:hover {
+      border-color: rgba(125, 249, 255, 0.5);
+      background: linear-gradient(135deg, rgba(24, 31, 47, 0.9), rgba(30, 42, 58, 0.8));
+    }
+
+    select option {
+      background: #181f2f;
+      color: #f3f6fa;
+      padding: 10px;
+    }
+
+    .form-hint {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-pay {
+      background: linear-gradient(135deg, #22c55e 0%, #7df9ff 100%);
+      border: none;
+      color: #181f2f;
+      font-weight: 700;
+      border-radius: 16px;
+      padding: 18px 40px;
+      font-size: 1.2rem;
+      width: 100%;
+      box-shadow: 
+        0 8px 25px rgba(34, 197, 94, 0.4),
+        0 4px 12px rgba(125, 249, 255, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-pay::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-pay:hover::before {
+      left: 100%;
+    }
+
+    .btn-pay:hover {
+      color: #f3f6fa;
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 
+        0 12px 35px rgba(34, 197, 94, 0.6),
+        0 6px 20px rgba(125, 249, 255, 0.3);
+    }
+
+    .btn-pay:active {
+      transform: translateY(-1px) scale(1.01);
+    }
+
+    .security-note {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 30px;
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 0.95rem;
+    }
+
+    .security-note i {
+      color: #22c55e;
+      font-size: 1.2rem;
+      margin-right: 8px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #7df9ff;
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      background: rgba(125, 249, 255, 0.1);
+    }
+
+    .back-btn:hover {
+      color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+      transform: translateX(-3px);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(125, 249, 255, 0.2);
+      color: #94a3b8;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .payment-container {
+        padding: 30px 25px;
+        margin: 0 15px;
+      }
+      
+      .main-title {
+        font-size: 2.2rem;
+      }
+      
+      .debt-amount {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="payment-container">
+    <a href="/my-products" class="back-btn">
+      <i class="bi bi-arrow-left"></i>
+      Back to My Products
+    </a>
+
+    <h1 class="main-title">
+      <i class="bi bi-credit-card" style="margin-right: 15px;"></i>
+      Pay Credit Card Debt
+    </h1>
+    <p class="subtitle">Manage your credit card payments securely and efficiently</p>
+
+    <div class="debt-info">
+      <div class="debt-amount">$<%= creditRemaining.toFixed(2) %></div>
+      <div class="debt-label">Outstanding Balance</div>      <div style="color: #94a3b8; font-size: 0.9rem; margin-top: 5px;">
+        out of $2,000.00 credit limit
+      </div>      <div class="debt-progress">
+        <!-- EJS template code below may show red underline in editor - this is normal and not an error -->
+      </div>
+      <div style="font-size: 0.85rem; color: #94a3b8; margin-top: 8px;">
+        <%= ((2000 - creditRemaining) / 2000 * 100).toFixed(1) %>% paid
+      </div>
+    </div>
+
+    <form action="/pay-bank" method="POST">
+      <div class="form-section">
+        <label for="from_account" class="form-label">
+          <i class="bi bi-bank form-icon"></i>
+          Select Payment Source Account
+        </label>
+        <select name="from_account_id" id="from_account" required>
+          <option value="" disabled selected>Choose an account to pay from...</option>
+          <% accounts.forEach(acc => { %>
+            <option value="<%= acc.account_id %>">
+              Account •••<%= acc.account_number.slice(-4) %> - $<%= Number(acc.balance).toFixed(2) %> Available
+            </option>
+          <% }) %>
+        </select>
+        <div class="form-hint">
+          <i class="bi bi-info-circle"></i>
+          Ensure sufficient balance for the payment amount
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label for="amount" class="form-label">
+          <i class="bi bi-currency-dollar form-icon"></i>
+          Payment Amount
+        </label>
+        <input type="number" name="amount" id="amount" step="0.01" min="0.01" max="<%= creditRemaining %>" placeholder="0.00" required>
+        <div class="form-hint">
+          <i class="bi bi-info-circle"></i>
+          Maximum payment: $<%= creditRemaining.toFixed(2) %>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-pay">
+        <i class="bi bi-send-fill"></i>
+        Submit Payment
+      </button>
+    </form>
+
+    <div class="security-note">
+      <i class="bi bi-shield-check"></i>
+      Your payment is protected by 256-bit SSL encryption and processed securely through our banking infrastructure.
+    </div>
+
+    <footer>
+      &copy; 2025 RP Digital Bank — All Rights Reserved | Secure Digital Banking
+    </footer>
+  </div>
+</body>
+
+</html>

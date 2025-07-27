@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify OTP - HoH Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%); color: #f3f6fa; font-family: 'Inter', 'Georgia', serif; }
+    .otp-container { max-width: 400px; margin: 80px auto; background: #232946; border-radius: 18px; box-shadow: 0 8px 32px #7df9ff22; padding: 2.5rem 2rem; }
+    .form-label { color: #7df9ff; font-weight: 600; }
+    .btn-hoh { background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%); color: #181f2f; font-weight: bold; border: none; border-radius: 8px; font-size: 1.1rem; padding: 10px 0; margin-top: 0.5rem; box-shadow: 0 2px 8px #22c55e33; }
+    .btn-hoh:hover { background: linear-gradient(90deg, #7df9ff 0%, #22c55e 100%); color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="otp-container text-center">
+    <!-- SVG LOGO -->
+    <div style="margin-bottom:1.2rem;">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="22" fill="#181f2f" stroke="#7df9ff" stroke-width="3"/>
+        <text x="50%" y="56%" text-anchor="middle" fill="#22c55e" font-family="Orbitron, Inter, Arial" font-size="18" font-weight="bold" dy=".3em">HOH</text>
+        <polygon points="24,6 27,18 39,18 29,25 32,37 24,30 16,37 19,25 9,18 21,18" fill="#fbbf24" opacity="0.7"/>
+      </svg>
+    </div>
+    <h2 class="mb-2" style="font-family: 'Orbitron', 'Inter', 'Georgia', serif; color: #7df9ff;">Verify OTP</h2>
+    <div style="margin-bottom:1.2rem;">
+      <svg width="36" height="36" fill="none" viewBox="0 0 24 24"><rect width="24" height="24" rx="12" fill="#232946"/><path d="M17 11V9a5 5 0 0 0-10 0v2" stroke="#7df9ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><rect x="7" y="11" width="10" height="7" rx="2" stroke="#22c55e" stroke-width="2"/><circle cx="12" cy="14.5" r="1" fill="#fbbf24"/></svg>
+    </div>
+    <p style="color:#b6c2e2;">For your security, we've sent a one-time code to your email.<br>Please enter it below to continue.</p>
+    <form action="<%= typeof otp2fa !== 'undefined' && otp2fa ? '/verify-otp-2fa' : '/verify-otp' %>" method="POST" id="otpForm" class="text-start mt-4">
+      <input type="hidden" name="email" value="<%= email %>">
+      <div class="mb-3">
+        <label for="otp" class="form-label">OTP Code</label>
+        <input type="text" class="form-control" id="otp" name="otp" required maxlength="6" pattern="\d{6}" autofocus autocomplete="one-time-code">
+        <div id="otpError" class="text-danger mt-2" style="display:none;"></div>
+      </div>
+      <div class="mb-3">
+        <span id="otpCountdown" class="text-info"></span>
+        <button type="button" class="btn btn-link p-0 ms-2" id="resendOtpBtn" style="display:none;">Resend OTP</button>
+        <span id="resendSuccess" class="text-success ms-2" style="display:none;">OTP resent!</span>
+      </div>
+      <button type="submit" class="btn btn-hoh w-100">Verify OTP</button>
+    </form>
+    <div class="mt-4">
+      <a href="/customer-login" style="color:#7df9ff;text-decoration:underline;">Back to Login</a>
+    </div>
+  </div>
+  <footer class="text-center mt-5" style="color:#b6c2e2;font-size:0.95rem;">&copy; <%= new Date().getFullYear() %> HoH Bank. All rights reserved.</footer>
+  <script>
+    // --- OTP Expiry Countdown ---
+    let countdown = 600; // 10 minutes in seconds
+    let timer = setInterval(function() {
+      if (countdown > 0) {
+        countdown--;
+        const min = Math.floor(countdown / 60);
+        const sec = countdown % 60;
+        document.getElementById('otpCountdown').textContent = `OTP expires in ${min}:${sec.toString().padStart(2,'0')}`;
+      } else {
+        document.getElementById('otpCountdown').textContent = 'OTP expired.';
+        document.getElementById('resendOtpBtn').style.display = '';
+        clearInterval(timer);
+      }
+    }, 1000);
+
+    // --- Resend OTP Button ---
+    document.getElementById('resendOtpBtn').addEventListener('click', function() {
+      // Determine purpose based on form action
+      var formAction = document.getElementById('otpForm').getAttribute('action');
+      var purpose = formAction.includes('2fa') ? 'login_2fa' : 'password_reset';
+      fetch('/resend-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: document.querySelector('input[name="email"]').value, purpose: purpose })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          countdown = 600;
+          document.getElementById('resendOtpBtn').style.display = 'none';
+          document.getElementById('resendSuccess').style.display = '';
+          setTimeout(() => document.getElementById('resendSuccess').style.display = 'none', 2000);
+        } else {
+          document.getElementById('otpError').textContent = 'Failed to resend OTP. Please try again.';
+          document.getElementById('otpError').style.display = '';
+        }
+      });
+    });
+    // --- Error Message Handling (for server-side errors) ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error')) {
+      document.getElementById('otpError').textContent = decodeURIComponent(urlParams.get('error'));
+      document.getElementById('otpError').style.display = '';
+    }
+  </script>
+</body>
+</html>

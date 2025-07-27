@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Client Summary | HoH Advisor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+    .stars {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: twinkle 2s infinite alternate;
+      box-shadow: 0 0 8px #7df9ff;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    .navbar {
+      background-color: #1a2238;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #7df9ff !important;
+      font-family: 'Orbitron', sans-serif;
+    }
+    .nav-link {
+      color: #e0e7ff !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover,
+    .nav-link.active {
+      color: #7df9ff !important;
+      text-decoration: underline;
+    }
+    .main-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow:
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      padding: 40px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 8px rgba(125, 249, 255, 0.3);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .btn-hoh {
+      background: linear-gradient(135deg, #22c55e, #7df9ff);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      padding: 6px 16px;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    }
+    .btn-hoh:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+    }
+    .table thead {
+      background-color: #22c55e;
+      color: #000;
+    }
+    textarea {
+      width: 100%;
+      border-radius: 6px;
+      padding: 5px;
+      background-color: #0f172a;
+      color: #f3f6fa;
+      border: 1px solid #7df9ff;
+    }
+    .student-section {
+      margin-bottom: 3rem;
+      padding: 1.5rem;
+      border-radius: 16px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+    }
+    .student-section h4 {
+      color: #7df9ff;
+      margin-bottom: 1rem;
+    }
+    .student-section p {
+      margin-bottom: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="/advisor/dashboard">HoH Advisor</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav gap-3">
+          <li class="nav-item"><a class="nav-link" href="/advisor/dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/advisor/notes">Clients</a></li>
+          <li class="nav-item"><a class="nav-link" href="/advisor/myslots">Calendar</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Tools</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/advisor/tools/budget">💰 Budget Calculator</a></li>
+              <li><a class="dropdown-item" href="/advisor/tools/goals">🎯 Goal Savings Calculator</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/advisor/profile">My Profile</a></li>
+          <li class="nav-item"><a class="btn btn-outline-warning btn-sm" href="/login/customer">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-container">
+    <h2>🧾 Client Summary Notes</h2>
+
+    <% if (Object.keys(groupedNotes).length === 0) { %>
+      <p class="text-center">No student data found.</p>
+    <% } else { %>
+      <% for (let studentId in groupedNotes) { 
+           const student = groupedNotes[studentId];
+      %>
+        <div class="student-section">
+          <h4><%= student.full_name %></h4>
+          <p>Email: <%= student.email %></p>
+          <p>DOB: <%= new Date(student.date_of_birth).toLocaleDateString() %></p>
+          <p>NRIC: <%= student.nric.slice(0, 5) + "*****" %></p>
+
+          <table class="table table-bordered table-hover mt-3">
+            <thead>
+              <tr>
+                <th>Appointment Date</th>
+                <th>Status</th>
+                <th>Notes</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% student.consultations.forEach(c => { %>
+                <tr>
+                  <td><%= new Date(c.appointment_date).toLocaleString() %></td>
+                  <td><%= c.status.charAt(0).toUpperCase() + c.status.slice(1) %></td>
+                  <td>
+                    <div id="display-<%=c.consultation_id%>">
+                      <%= c.notes || 'No notes yet' %>
+                    </div>
+                    <form id="form-<%=c.consultation_id%>" action="/advisor/consultations/<%= c.consultation_id %>/notes" method="POST" style="display:none;">
+                      <textarea name="notes"><%= c.notes || '' %></textarea>
+                      <button type="submit" class="btn btn-hoh btn-sm mt-2">Save</button>
+                      <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="cancelEdit(<%=c.consultation_id%>)">Cancel</button>
+                    </form>
+                  </td>
+                  <td>
+                    <button class="btn btn-hoh btn-sm" onclick="editNote(<%=c.consultation_id%>)">Edit</button>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    <% } %>
+  </div>
+
+  <script>
+    function editNote(id) {
+      document.getElementById('display-' + id).style.display = 'none';
+      document.getElementById('form-' + id).style.display = 'block';
+    }
+    function cancelEdit(id) {
+      document.getElementById('display-' + id).style.display = 'block';
+      document.getElementById('form-' + id).style.display = 'none';
+    }
+
+    function createStars(num) {
+      const stars = document.querySelector('.stars');
+      for (let i = 0; i < num; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.opacity = Math.random() * 0.7 + 0.3;
+        star.style.animationDuration = `${1.5 + Math.random() * 2}s`;
+        stars.appendChild(star);
+      }
+    }
+    createStars(100);
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <style>
+    /* Animated stars background */
+    .star { position: absolute; border-radius: 50%; background: #7df9ff; opacity: 0.7; animation: twinkle 2s infinite alternate; }
+    @keyframes twinkle { 0% { opacity: 0.7; } 100% { opacity: 0.2; } }
+  </style>
+  <meta charset="UTF-8">
+  <title>Staff Sign Up - HoH Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Georgia', serif;
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+    .stars {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0; left: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 1;
+    }
+    .main-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      position: relative;
+    }
+    .auth-card {
+      display: flex;
+      flex-direction: row;
+      background: #232946;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #7df9ff22, 0 1.5px 8px #22c55e22;
+      overflow: hidden;
+      max-width: 850px;
+      width: 100%;
+      min-height: 520px;
+    }
+    .auth-visual {
+      background: linear-gradient(120deg, #22c55e 0%, #7df9ff 100%);
+      color: #181f2f;
+      min-width: 320px;
+      max-width: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+    }
+    .auth-visual h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #181f2f;
+    }
+    .auth-visual p {
+      font-size: 1.1rem;
+      color: #181f2f;
+      margin-bottom: 0;
+    }
+    .auth-form-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 48px 40px;
+      background: #232946;
+    }
+    .secure-badge {
+      color: #22c55e;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .form-title {
+      font-family: 'Orbitron', 'Inter', 'Georgia', serif;
+      font-size: 2rem;
+      color: #7df9ff;
+      margin-bottom: 0.5rem;
+    }
+    .form-subtext {
+      color: #e0eaff;
+      margin-bottom: 1.5rem;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      background: #181f2f;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 2px 8px #22c55e22;
+    }
+    .input-icon {
+      color: #7df9ff;
+      font-size: 1.2rem;
+      margin-right: 0.7rem;
+    }
+    .form-control, .form-select {
+      background: #181f2f !important;
+      border: none;
+      color: #22c55e !important;
+      font-size: 1.08rem !important;
+      outline: none;
+      box-shadow: none;
+      flex: 1;
+      transition: color 0.2s;
+    }
+    .form-control::placeholder {
+      color: #22c55e !important;
+      opacity: 1;
+    }
+    .form-select option {
+      color: #22c55e !important;
+      background: #181f2f !important;
+    }
+    .form-control:focus, .form-select:focus {
+      background: #181f2f !important;
+      color: #fff !important;
+      box-shadow: none;
+    }
+    .btn-hoh {
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%);
+      color: #181f2f;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      padding: 10px 0;
+      margin-top: 0.5rem;
+      box-shadow: 0 2px 8px #22c55e33;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-hoh:hover {
+      background: linear-gradient(90deg, #7df9ff 0%, #22c55e 100%);
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .auth-card { flex-direction: column; min-height: unset; }
+      .auth-visual { min-width: 100%; max-width: unset; padding: 32px 16px; }
+      .auth-form-panel { padding: 32px 16px; }
+    }
+    @media (max-width: 600px) {
+      .auth-card { box-shadow: none; border-radius: 0; }
+      .auth-visual { display: none; }
+      .auth-form-panel { padding: 24px 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="stars"></div>
+  <div class="main-container">
+    <div class="auth-card">
+      <div class="auth-visual">
+        <h1>Staff Portal</h1>
+        <p>Sign up for secure access to HoH Bank staff and advisor tools.</p>
+      </div>
+      <div class="auth-form-panel">
+        <div class="secure-badge"><i class="bi bi-shield-lock"></i> Staff Sign Up</div>
+        <div class="form-title">Create your staff account</div>
+        <div class="form-subtext">For authorized bank staff and financial advisors only.</div>
+        <form action="/signup/staff" method="POST" autocomplete="off">
+          <!-- Honeypot anti-bot field -->
+          <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
+          <div class="input-group mb-3">
+            <span class="input-icon"><i class="bi bi-person"></i></span>
+            <input type="text" id="name" class="form-control" name="name" placeholder="Full Name" required>
+          </div>
+          <div class="invalid-feedback mb-2">Please enter your full name.</div>
+          <div class="input-group mb-3">
+            <span class="input-icon"><i class="bi bi-envelope"></i></span>
+            <input type="email" id="email" class="form-control" name="email" placeholder="Email Address" required>
+          </div>
+          <small class="text-muted ms-2 mb-2">Use your HoH Bank corporate email</small>
+          <div class="invalid-feedback mb-2">Please enter a valid email.</div>
+          <div class="input-group mb-3">
+            <span class="input-icon"><i class="bi bi-telephone"></i></span>
+            <input type="text" id="phone" class="form-control" name="phone" placeholder="Phone Number" inputmode="numeric" pattern="[0-9]{8,15}" required>
+          </div>
+          <div class="invalid-feedback mb-2">Please enter a valid phone number.</div>
+          <div class="input-group mb-3">
+            <span class="input-icon"><i class="bi bi-calendar"></i></span>
+            <input type="date" id="dob" class="form-control" name="dob" placeholder="Date of Birth" required>
+          </div>
+          <div class="invalid-feedback mb-2">Please enter your date of birth.</div>
+          <div class="input-group mb-3">
+            <span class="input-icon"><i class="bi bi-credit-card"></i></span>
+            <input type="text" id="nric" class="form-control" name="nric" placeholder="NRIC" inputmode="text" pattern="[A-Za-z0-9]{9}" required>
+          </div>
+          <div class="invalid-feedback mb-2">Please enter a valid NRIC.</div>
+          <div class="input-group mb-3 position-relative">
+            <span class="input-icon"><i class="bi bi-lock"></i></span>
+            <input type="password" id="password" class="form-control" name="password" placeholder="Password" required oninput="checkStrength(this.value)">
+            <span class="input-icon position-absolute end-0 top-50 translate-middle-y me-3" style="cursor:pointer;z-index:2;right:1.5rem;" onclick="togglePassword()"><i class="bi bi-eye" id="toggle-eye"></i></span>
+          </div>
+          <small id="password-strength" class="text-muted ms-2 mb-2">Strength: —</small>
+          <div class="invalid-feedback mb-2">Please enter a strong password.</div>
+          <div class="mb-3">
+            <label for="role" class="form-label" style="color:#7df9ff;">Role</label>
+            <select id="role" name="role" class="form-select" required>
+              <option value="staff">&#128188; Bank Staff</option>
+              <option value="financial_advisor">&#128100; Financial Advisor</option>
+            </select>
+            <small class="text-muted">Select your authorized role at HoH Bank</small>
+            <div class="invalid-feedback">Please select a role.</div>
+          </div>
+          <button type="submit" class="btn btn-hoh w-100">Sign Up</button>
+        </form>
+        <script>
+        // Password strength meter
+        function checkStrength(pwd) {
+          const strength = document.getElementById('password-strength');
+          let score = 0;
+          if (!pwd) { strength.textContent = 'Strength: —'; strength.style.color = '#aaa'; return; }
+          if (pwd.length >= 8) score++;
+          if (/[A-Z]/.test(pwd)) score++;
+          if (/[a-z]/.test(pwd)) score++;
+          if (/[0-9]/.test(pwd)) score++;
+          if (/[^A-Za-z0-9]/.test(pwd)) score++;
+          let label = 'Weak', color = '#ef4444';
+          if (score >= 4) { label = 'Strong'; color = '#22c55e'; }
+          else if (score === 3) { label = 'Medium'; color = '#fbbf24'; }
+          strength.textContent = 'Strength: ' + label;
+          strength.style.color = color;
+        }
+        // Show/hide password toggle
+        function togglePassword() {
+          const pwd = document.getElementById('password');
+          const icon = document.getElementById('toggle-eye');
+          if (pwd.type === 'password') {
+            pwd.type = 'text';
+            icon.classList.replace('bi-eye', 'bi-eye-slash');
+          } else {
+            pwd.type = 'password';
+            icon.classList.replace('bi-eye-slash', 'bi-eye');
+          }
+        }
+        // Animated stars background
+        document.addEventListener('DOMContentLoaded', function() {
+          // Add animated stars
+          const stars = document.querySelector('.stars');
+          for (let i = 0; i < 40; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.width = s.style.height = (Math.random() * 2 + 1) + 'px';
+            s.style.left = (Math.random() * 100) + 'vw';
+            s.style.top = (Math.random() * 100) + 'vh';
+            s.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            stars.appendChild(s);
+          }
+        });
+        // Form validation feedback
+        document.addEventListener('DOMContentLoaded', function() {
+          const form = document.querySelector('form[action="/signup/staff"]');
+          form.setAttribute('novalidate', 'novalidate');
+          form.addEventListener('submit', function(e) {
+            let valid = true;
+            form.querySelectorAll('input,select').forEach(input => {
+              if (input.hasAttribute('required')) {
+                if (!input.value || !input.checkValidity()) {
+                  input.classList.add('is-invalid');
+                  input.reportValidity();
+                  valid = false;
+                } else {
+                  input.classList.remove('is-invalid');
+                  input.classList.add('is-valid');
+                }
+              }
+            });
+            // Honeypot check
+            if (form.website && form.website.value) valid = false;
+            if (!valid) {
+              e.preventDefault();
+            }
+          });
+        });
+        </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const form = document.querySelector('form[action="/signup/staff"]');
+          form.setAttribute('novalidate', 'novalidate');
+          form.addEventListener('submit', function(e) {
+            let valid = true;
+            form.querySelectorAll('input,select').forEach(input => {
+              if (input.hasAttribute('required')) {
+                if (!input.value || !input.checkValidity()) {
+                  input.classList.add('is-invalid');
+                  input.reportValidity();
+                  valid = false;
+                } else {
+                  input.classList.remove('is-invalid');
+                  input.classList.add('is-valid');
+                }
+              }
+            });
+            if (!valid) {
+              e.preventDefault();
+            }
+          });
+        });
+        </script>
+        <div class="mt-3 text-center">
+          <span>Already registered? <a href="/login/staff" style="color:#7df9ff;">Login here</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

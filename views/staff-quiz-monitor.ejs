@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=devi      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border: 2px solid #22c55e;
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(34, 197, 94, 0.2);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #7df9ff;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: #ffffff;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .table-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }dth, initial-scale=1.0">
+  <title>Student Quiz Monitor | HoH Bank Staff</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Georgia', serif;
+      background: linear-gradient(120deg, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+
+ 
+    .navbar {
+      background-color: #1a2238;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      color: #7df9ff !important;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .nav-link {
+      color: #e0e7ff !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #7df9ff !important;
+      text-decoration: underline;
+    }
+    .staff-quiz-monitor-container {
+      max-width: 1200px;
+      margin: 100px auto 40px;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      padding: 40px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      text-shadow: 
+        0 0 20px rgba(125, 249, 255, 0.4),
+        0 0 40px rgba(125, 249, 255, 0.2);
+    }
+
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn-export-top {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+      white-space: nowrap;
+      position: relative;
+      z-index: 5;
+    }
+
+    .btn-export-top:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .stats-section {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(125, 249, 255, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .stats-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 45px rgba(34, 197, 94, 0.2);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    .stat-number {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.4);
+    }
+
+    .stat-label {
+      color: #e0eaff;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .table-container {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(125, 249, 255, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+      border-collapse: collapse;
+      margin: 0;
+    }
+
+    table thead {
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+    }
+
+    table th {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 2px solid rgba(34, 197, 94, 0.3);
+      font-size: 1.1rem;
+      text-shadow: 0 0 10px rgba(125, 249, 255, 0.3);
+    }
+
+    table td {
+      color: #e0eaff;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(125, 249, 255, 0.1);
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    table tbody tr:hover {
+      background: rgba(34, 197, 94, 0.1);
+      transform: scale(1.01);
+      transition: all 0.3s ease;
+    }
+
+    table tbody tr:nth-child(even) {
+      background: rgba(15, 23, 42, 0.4);
+    }
+
+    .score-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .score-perfect {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #fff;
+    }
+
+    .score-good {
+      background: linear-gradient(135deg, #eab308, #ca8a04);
+      color: #fff;
+    }
+
+    .score-average {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: #fff;
+    }
+
+    .score-poor {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: #fff;
+    }
+
+    .no-data {
+      text-align: center;
+      padding: 3rem;
+      color: #e0eaff;
+      font-size: 1.2rem;
+    }
+
+    .no-data i {
+      font-size: 3rem;
+      color: #7df9ff;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .btn, .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #7df9ff);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      margin: 0.25rem;
+    }
+
+    .btn:hover, .btn-primary:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+      text-decoration: none;
+    }
+
+    .action-buttons {
+      text-align: center;
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-export {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+      margin: 0.25rem;
+    }
+
+    .btn-export:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .staff-quiz-monitor-container {
+        margin: 80px 20px 40px;
+        padding: 20px;
+      }
+      
+      .header-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+      }
+      
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 0;
+      }
+      
+      .btn-export-top {
+        font-size: 0.9rem;
+        padding: 10px 16px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .table-container {
+        padding: 1rem;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      table th,
+      table td {
+        padding: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+ <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/dashboard/staff">HOH Bank Staff</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarStaff" aria-controls="navbarStaff" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarStaff">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/users">User Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pending-card">Card Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/product-catalog">Product Catalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/transactions">Transactions</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/accounts">Account Management</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/create-user">Add User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/profile">Staff Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/staff/quiz-monitor">Financial Quiz Results Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="staff-quiz-monitor-container">
+
+<div class="header-section">
+  <h2>📊 Student Quiz Participation</h2>
+  <a href="/exports/staff-quizmonitor" class="btn-export-top" download>
+    📊 Export to CSV
+  </a>
+</div>
+
+<div class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number"><%= results.length %></div>
+      <div class="stat-label">Total Attempts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number"><%= results.filter(r => r.score === 10).length %></div>
+      <div class="stat-label">Perfect Scores</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number"><%= results.length > 0 ? Math.round(results.reduce((sum, r) => sum + r.score, 0) / results.length * 10) / 10 : 0 %></div>
+      <div class="stat-label">Average Score</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number"><%= [...new Set(results.map(r => r.user_id))].length %></div>
+      <div class="stat-label">Unique Students</div>
+    </div>
+  </div>
+</div>
+
+<div class="table-container">
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>Score</th>
+      <th>Date Taken</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (results.length === 0) { %>
+      <tr><td colspan="5" class="no-data">
+        <i>📝</i>
+        No quiz attempts yet.
+      </td></tr>
+    <% } else { %>
+      <% results.forEach((row, index) => { %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= row.full_name || row.first_name + ' ' + row.last_name %></td>
+          <td><%= row.email %></td>
+          <td>
+            <span class="score-badge <%= row.score === 10 ? 'score-perfect' : row.score >= 8 ? 'score-good' : row.score >= 5 ? 'score-average' : 'score-poor' %>">
+              <%= row.score %>/10
+            </span>
+          </td>
+          <td><%= new Date(row.created_at || row.date_taken).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }) %></td>
+        </tr>
+      <% }) %>
+    <% } %>
+  </tbody>
+</table>
+</div>
+
+<div class="action-buttons">
+  <a href="/dashboard/staff" class="btn">
+    ← Back to Dashboard
+  </a>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const exportButton = document.querySelector('.btn-export-top');
+      exportButton.addEventListener('click', () => {
+        // Add any additional logic for exporting if needed
+      });
+    });
+  </script>
+</body>
+</html>

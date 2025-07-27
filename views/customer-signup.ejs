@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HoH Bank Customer Sign Up</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css"/>
+  <style>
+    body {
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #7df9ff;
+      font-family: 'Segoe UI', 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .step-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .step {
+      flex: 1;
+      text-align: center;
+      padding: 1rem;
+      border-bottom: 4px solid #444;
+      color: #ccc;
+      font-weight: bold;
+    }
+    .step.active {
+      border-bottom-color: #22c55e;
+      color: #22c55e;
+    }
+    fieldset {
+      display: none;
+      border: none;
+    }
+    fieldset.active {
+      display: block;
+    }
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .form-group {
+      flex: 1 1 45%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    label {
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+      color: #7df9ff;
+    }
+    input, select {
+      padding: 0.6rem;
+      background: #232946;
+      border: 1.5px solid #22c55e;
+      border-radius: 6px;
+      color: #7df9ff;
+      font-size: 1.08rem;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    input:focus, select:focus {
+      border: 2px solid #7df9ff;
+      outline: none;
+      box-shadow: 0 0 12px #7df9ff88;
+    }
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+    .form-actions button {
+      padding: 0.8rem 1.6rem;
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%);
+      border: none;
+      border-radius: 6px;
+      color: #10182a;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px #22c55e33;
+    }
+    .form-actions button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .invalid-feedback {
+      color: #f87171;
+      font-size: 0.95rem;
+      margin-top: 0.15rem;
+      display: none;
+    }
+    input.is-invalid, select.is-invalid {
+      border-color: #f87171 !important;
+      box-shadow: 0 0 0 0.2rem #f8717188 !important;
+    }
+    input.is-valid, select.is-valid {
+      border-color: #22c55e !important;
+      box-shadow: 0 0 0 0.2rem #22c55e55 !important;
+    }
+    @media (max-width: 768px) {
+      .form-group {
+        flex: 1 1 100%;
+      }
+      .form-actions {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <!-- Firebase Authentication -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBLBqUyBM6NTgrFU2lyGfmd0WiqjQibq38",
+      authDomain: "rpfyp-1381b.firebaseapp.com",
+      projectId: "rpfyp-1381b",
+      storageBucket: "rpfyp-1381b.firebasestorage.app",
+      messagingSenderId: "41766588318",
+      appId: "1:41766588318:web:6fb609151f7e621a23908f",
+      measurementId: "G-BWFJ7QF3B8"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h2>HoH Bank Customer Sign Up</h2>
+    <div class="mb-3 text-center">
+      <a href="http://localhost:3080/auth/singpass" id="singpass-btn">
+        <img src="/images/singpass-button.png" alt="Sign up with Singpass" style="height:48px;">
+      </a>
+      <script>
+        // After Singpass login, fetch userinfo and autofill form
+        async function autofillFromSingpass() {
+          try {
+            const res = await fetch('http://localhost:3080/user', { credentials: 'include' });
+            if (!res.ok) return;
+            const data = await res.json();
+            if (data && data.name) {
+              document.getElementById('full_name').value = data.name;
+            }
+            if (data && data.uinfin) {
+              document.getElementById('nric').value = data.uinfin;
+            }
+            if (data && data.dob) {
+              document.getElementById('dob').value = data.dob;
+            }
+            if (data && data.email) {
+              document.getElementById('email').value = data.email;
+            }
+            if (data && data.mobileno) {
+              document.getElementById('phone').value = data.mobileno;
+            }
+          } catch (e) {}
+        }
+        // Autofill if user session exists (after Singpass login)
+        window.addEventListener('DOMContentLoaded', autofillFromSingpass);
+      </script>
+      <div class="small text-muted mt-1">Sign up faster with Singpass</div>
+    </div>
+    <div class="step-indicator">
+      <div class="step active">Step 1: Identity</div>
+      <div class="step">Step 2: Contact</div>
+      <div class="step">Step 3: Credentials</div>
+      <div class="step">Step 4: Consent</div>
+    </div>
+    <form id="signupForm" action="/signup/customer" method="POST" autocomplete="off" aria-label="Sign up form">
+      <!-- Step 1 -->
+      <fieldset class="active" data-step="1">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="full_name">Full Name <span class="text-danger">*</span></label>
+            <input type="text" id="full_name" name="full_name" required autocomplete="name" aria-required="true" pattern="^[A-Za-z]+( [A-Za-z]+)+$" />
+            <div class="invalid-feedback">Please enter your full name (at least two words, letters only).</div>
+          </div>
+          <div class="form-group">
+            <label for="nric">NRIC / Passport <span class="text-danger">*</span></label>
+            <input type="text" id="nric" name="nric" required pattern="^[STFG]\d{7}[A-Z]$" autocomplete="off" aria-required="true" />
+            <div class="invalid-feedback">Invalid NRIC format. (e.g. S1234567A)</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dob">Date of Birth <span class="text-danger">*</span></label>
+            <input type="date" id="dob" name="dob" required min="1900-01-01" max="<%= new Date().toISOString().slice(0,10) %>" autocomplete="bday" aria-required="true" />
+            <div class="invalid-feedback">You must be at least 18 years old.</div>
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender <span class="text-danger">*</span></label>
+            <select id="gender" name="gender" required aria-required="true">
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+            <div class="invalid-feedback">Please select your gender.</div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="next-btn" data-step="1">Next</button>
+        </div>
+      </fieldset>
+      <!-- Step 2 -->
+      <fieldset data-step="2">
+        <div class="form-row">
+          <div class="form-group" style="position:relative;">
+            <label for="email">Email <span class="text-danger">*</span></label>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <input type="email" id="email" name="email" required autocomplete="email" aria-required="true" class="form-control" style="flex:1; min-width:220px; font-size:1.05rem;" />
+              <button type="button" id="send-otp-btn" class="btn verify-btn" style="min-width:120px; font-size:1.05rem; font-weight:500; border-radius:8px; box-shadow:0 2px 8px #22c55e33; background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%); color: #10182a; border: none;">Verify</button>
+            </div>
+            <div class="invalid-feedback">Only Gmail, Outlook, or Yahoo addresses allowed.</div>
+            <div id="otp-section" style="display:none;margin-top:0.5rem;">
+              <input type="text" id="otp" name="otp" maxlength="6" placeholder="Enter OTP" class="form-control mt-2" style="width:180px; min-width:180px; font-size:1.05rem; display:inline-block; border-radius:8px;" autocomplete="one-time-code" />
+              <button type="button" id="verify-otp-btn" class="btn verify-btn" style="margin-left:0.5rem; min-width:120px; font-size:1.05rem; font-weight:500; border-radius:8px; box-shadow:0 2px 8px #22c55e33; background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%); color: #10182a; border: none;">Verify OTP</button>
+              <span id="otp-status" style="margin-left:1rem;font-size:0.95rem;"></span>
+            </div>
+          </div>
+          <div class="form-group" style="position:relative;">
+            <label for="phone">Mobile Number <span class="text-danger">*</span></label>
+            <input id="phone" type="tel" name="phone" required autocomplete="tel" aria-required="true" style="flex:1;" />
+            <div class="invalid-feedback">Please enter a valid phone number.</div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="prev-btn" data-step="2">Previous</button>
+          <button type="button" class="next-btn" data-step="1">Next</button>
+        </div>
+      </fieldset>
+      <!-- Step 3 -->
+      <fieldset data-step="3">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">Password <span class="text-danger">*</span></label>
+            <div style="position:relative;display:flex;align-items:center;">
+              <input type="password" id="password" name="password" required autocomplete="new-password" minlength="8" aria-required="true" oninput="checkPasswordStrength(this.value); validateConfirmPassword();" style="flex:1; padding-right:40px;" />
+              <span id="togglePwd" style="position:absolute;right:10px;cursor:pointer;color:#7df9ff;font-size:1.2rem;">
+                <i class="bi bi-eye" id="pwdIcon"></i>
+              </span>
+            </div>
+            <small id="strengthMsg" style="color:#22c55e; font-size: 0.95rem; font-weight:500;"></small>
+            <div id="password-error" class="invalid-feedback">Password must be at least 8 characters, include uppercase, lowercase, number, and special character.</div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password <span class="text-danger">*</span></label>
+            <div style="position:relative;display:flex;align-items:center;">
+              <input type="password" id="confirmPassword" name="confirmPassword" required autocomplete="new-password" aria-required="true" oninput="validateConfirmPassword()" style="flex:1; padding-right:40px;" />
+              <span id="toggleConfirmPwd" style="position:absolute;right:10px;cursor:pointer;color:#7df9ff;font-size:1.2rem;">
+                <i class="bi bi-eye" id="confirmPwdIcon"></i>
+              </span>
+            </div>
+            <small id="confirmMsg" style="color: red; font-size: 0.85rem;"></small>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="prev-btn" data-step="3">Previous</button>
+          <button type="button" class="next-btn" data-step="2">Next</button>
+        </div>
+      </fieldset>
+      <!-- Step 4 -->
+      <fieldset data-step="4">
+        <style>
+          .centered-signup-final {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+          }
+          .custom-checkbox-label {
+            display: flex;
+            align-items: center;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #7df9ff;
+            background: #232946;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 8px #22c55e22;
+            margin-bottom: 1.2rem;
+          }
+          .custom-checkbox-label input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            accent-color: #22c55e;
+            margin-right: 0.8rem;
+            border-radius: 4px;
+            border: 2px solid #22c55e;
+            box-shadow: 0 0 0 2px #232946;
+          }
+          .custom-checkbox-label a {
+            color: #22c55e;
+            text-decoration: underline;
+            margin: 0 0.2rem;
+          }
+        </style>
+        <div class="centered-signup-final">
+          <label class="custom-checkbox-label">
+            <input type="checkbox" id="agree" name="agree" required aria-required="true" />
+            I agree to the <a href="/terms" target="_blank">Terms</a> and <a href="/conditions" target="_blank">PDPA Policy</a>
+          </label>
+          <div class="g-recaptcha mb-2" data-sitekey="6LdMtn4rAAAAANb2LE0wIiZJ08uTljNa3TObZQmq"></div>
+        </div>
+        <div class="form-actions" style="justify-content: center;">
+          <button type="button" class="prev-btn" data-step="4">Previous</button>
+          <button type="submit">Submit</button>
+          <div id="recaptcha-error" class="invalid-feedback" style="display:none;margin-top:0.5rem; text-align:center;">Please complete the reCAPTCHA before submitting.</div>
+          <div id="consent-error" class="invalid-feedback" style="display:none;margin-top:0.5rem; text-align:center;">You must agree to the Terms and PDPA Policy.</div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Singpass autofill logic
+      fetch('http://localhost:3080/user', { credentials: 'include' })
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data) {
+            if (data.name) document.getElementById('full_name').value = data.name;
+            if (data.uinfin) document.getElementById('nric').value = data.uinfin;
+            if (data.dob) document.getElementById('dob').value = data.dob;
+            // Add more fields as needed based on Singpass response
+          }
+        });
+      // ...existing code...
+      console.log('Script loaded');
+      console.log('verifyOtpBtn:', document.getElementById('verify-otp-btn'));
+      // Step navigation logic
+      let currentStep = 1;
+      function showStep(step) {
+        document.querySelectorAll("fieldset").forEach(fs => {
+          fs.classList.remove("active");
+          if (parseInt(fs.dataset.step) === step) fs.classList.add("active");
+        });
+        document.querySelectorAll(".step").forEach((s, i) => {
+          s.classList.toggle("active", i + 1 === step);
+        });
+        currentStep = step;
+      }
+      function nextStep() {
+        if (validateStep(currentStep)) {
+          if (currentStep < 4) showStep(currentStep + 1);
+        }
+      }
+      function prevStep() {
+        if (currentStep > 1) showStep(currentStep - 1);
+      }
+      // Real-time validation for DOB (18+)
+      document.getElementById('dob').addEventListener('change', function () {
+        const dob = new Date(this.value);
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        const m = today.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+        if (age < 18) {
+          this.setCustomValidity("You must be at least 18 years old.");
+          this.classList.add('is-invalid');
+          this.reportValidity();
+        } else {
+          this.setCustomValidity("");
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
+        }
+      });
+      // Real-time email validation
+      document.getElementById('email').addEventListener('input', function () {
+        const pattern = /^[a-zA-Z0-9._%+-]+@(gmail|outlook|yahoo)\.com$/;
+        if (!pattern.test(this.value)) {
+          this.setCustomValidity("Only Gmail, Outlook, or Yahoo addresses allowed.");
+          this.classList.add('is-invalid');
+          this.reportValidity();
+        } else {
+          this.setCustomValidity("");
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
+        }
+      });
+      // Real-time NRIC validation
+      document.getElementById('nric').addEventListener('input', function () {
+        const pattern = /^[STFG]\d{7}[A-Z]$/i;
+        if (!pattern.test(this.value.trim())) {
+          this.setCustomValidity("Invalid NRIC format. (e.g. S1234567A)");
+          this.classList.add('is-invalid');
+          this.reportValidity();
+        } else {
+          this.setCustomValidity("");
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
+        }
+      });
+      // Real-time password strength
+      function checkPasswordStrength(password) {
+        const strength = document.getElementById("strengthMsg");
+        const pwdInput = document.getElementById('password');
+        const errorDiv = document.getElementById('password-error');
+        let score = 0;
+        if (password.length >= 8) score++;
+        if (/[A-Z]/.test(password)) score++;
+        if (/[a-z]/.test(password)) score++;
+        if (/[0-9]/.test(password)) score++;
+        if (/[!@#$%^&*?]/.test(password)) score++;
+        let msg = '', color = '';
+        if (score <= 2) { msg = 'Weak'; color = '#f87171'; }
+        else if (score === 3) { msg = 'Medium'; color = '#facc15'; }
+        else if (score >= 4) { msg = 'Strong'; color = '#22c55e'; }
+        strength.textContent = msg;
+        strength.style.color = color;
+        if (score < 4) {
+          pwdInput.classList.add('is-invalid');
+          pwdInput.classList.remove('is-valid');
+          pwdInput.setCustomValidity('Password must be at least 8 characters, include uppercase, lowercase, number, and special character.');
+          if (errorDiv) errorDiv.style.display = '';
+        } else {
+          pwdInput.classList.remove('is-invalid');
+          pwdInput.classList.add('is-valid');
+          pwdInput.setCustomValidity('');
+          if (errorDiv) errorDiv.style.display = 'none';
+        }
+      }
+      // Confirm password validation
+      function validateConfirmPassword() {
+        const pwd = document.getElementById("password").value;
+        const confirm = document.getElementById("confirmPassword").value;
+        const msg = document.getElementById("confirmMsg");
+        const confirmInput = document.getElementById('confirmPassword');
+        if (confirm === "") {
+          msg.textContent = "";
+          confirmInput.classList.remove('is-invalid');
+          confirmInput.classList.remove('is-valid');
+          return;
+        }
+        if (pwd !== confirm) {
+          msg.textContent = "Passwords do not match ❌";
+          confirmInput.classList.add('is-invalid');
+          confirmInput.classList.remove('is-valid');
+        } else {
+          msg.textContent = "";
+          confirmInput.classList.remove('is-invalid');
+          confirmInput.classList.add('is-valid');
+        }
+      }
+      // Only declare phoneInput ONCE at the top of your script
+      const phoneInput = document.getElementById('phone');
+      let iti = null;
+      // intl-tel-input for phone (country code dropdown)
+      if (phoneInput) {
+        iti = window.intlTelInput(phoneInput, {
+          separateDialCode: true,
+          initialCountry: "sg",
+          utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
+        });
+      }
+      // Step validation
+      function validateStep(step) {
+        let valid = true;
+        const fs = document.querySelector(`fieldset[data-step='${step}']`);
+        let errorMessages = [];
+        fs.querySelectorAll('input, select').forEach(input => {
+          if (!input.checkValidity()) {
+            input.classList.add('is-invalid');
+            valid = false;
+            // Collect error message
+            let label = input.closest('.form-group')?.querySelector('label')?.textContent || input.name;
+            let msg = input.validationMessage || 'Invalid input.';
+            errorMessages.push(`${label}: ${msg}`);
+          } else {
+            input.classList.remove('is-invalid');
+            input.classList.add('is-valid');
+          }
+        });
+        // Show error summary if not valid
+        let errorSummary = document.getElementById('step-error-summary');
+        if (!errorSummary) {
+          errorSummary = document.createElement('div');
+          errorSummary.id = 'step-error-summary';
+          errorSummary.className = 'alert alert-danger';
+          errorSummary.style.marginTop = '1rem';
+          fs.insertBefore(errorSummary, fs.firstChild);
+        }
+        if (!valid) {
+          errorSummary.innerHTML = '<b>Please fix the following errors:</b><ul><li>' + errorMessages.join('</li><li>') + '</li></ul>';
+          errorSummary.style.display = '';
+        } else {
+          errorSummary.style.display = 'none';
+        }
+        return valid;
+      }
+      // Form submission
+      document.getElementById("signupForm").addEventListener("submit", function (e) {
+        let valid = validateStep(4);
+        // Check reCAPTCHA
+        var recaptchaResponse = window.grecaptcha && window.grecaptcha.getResponse ? window.grecaptcha.getResponse() : '';
+        var recaptchaError = document.getElementById('recaptcha-error');
+        if (!recaptchaResponse) {
+          recaptchaError.style.display = '';
+          valid = false;
+        } else {
+          recaptchaError.style.display = 'none';
+        }
+        // Check consent
+        var consentCheckbox = document.getElementById('agree');
+        var consentError = document.getElementById('consent-error');
+        if (!consentCheckbox.checked) {
+          consentError.style.display = '';
+          valid = false;
+        } else {
+          consentError.style.display = 'none';
+        }
+        if (!valid) {
+          e.preventDefault();
+          return false;
+        }
+      });
+      // Real-time full name validation
+      document.getElementById('full_name').addEventListener('input', function () {
+        const pattern = /^[A-Za-z]+( [A-ZaZ]+)+$/i;
+        if (!pattern.test(this.value.trim())) {
+          this.setCustomValidity("Please enter your full name (at least two words, letters only).");
+          this.classList.add('is-invalid');
+          this.reportValidity();
+        } else {
+          this.setCustomValidity("");
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
+        }
+      });
+      // Real-time NRIC validation
+      document.getElementById('nric').addEventListener('input', function () {
+        const pattern = /^[STFG]\d{7}[A-Z]$/i;
+        if (!pattern.test(this.value.trim())) {
+          this.setCustomValidity("Invalid NRIC format. (e.g. S1234567A)");
+          this.classList.add('is-invalid');
+          this.reportValidity();
+        } else {
+          this.setCustomValidity("");
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
+        }
+      });
+
+      // --- Standardized Email OTP verification logic (DB-backed) ---
+      const sendOtpBtn = document.getElementById('send-otp-btn');
+      const emailInput = document.getElementById('email');
+      const otpSection = document.getElementById('otp-section');
+      const verifyOtpBtn = document.getElementById('verify-otp-btn');
+      const otpInput = document.getElementById('otp');
+      const otpStatus = document.getElementById('otp-status');
+      let emailVerified = false;
+
+      sendOtpBtn.addEventListener('click', function() {
+        const email = emailInput.value.trim().toLowerCase();
+        if (!email || !emailInput.checkValidity()) {
+          emailInput.classList.add('is-invalid');
+          emailInput.reportValidity();
+          return;
+        }
+        sendOtpBtn.disabled = true;
+        sendOtpBtn.textContent = 'Sending...';
+        fetch('/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            otpSection.style.display = '';
+            otpStatus.textContent = 'OTP sent! Check your email.';
+            otpStatus.style.color = '#22c55e';
+          } else {
+            otpStatus.textContent = data.message || 'Failed to send OTP.';
+            otpStatus.style.color = '#f87171';
+          }
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.textContent = 'Verify';
+        })
+        .catch(() => {
+          otpStatus.textContent = 'Error sending OTP.';
+          otpStatus.style.color = '#f87171';
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.textContent = 'Verify';
+        });
+      });
+
+      verifyOtpBtn.addEventListener('click', function() {
+        const email = emailInput.value.trim().toLowerCase();
+        const otp = otpInput.value.trim();
+        if (!otp) {
+          otpStatus.textContent = 'Please enter the OTP.';
+          otpStatus.style.color = '#f87171';
+          return;
+        }
+        verifyOtpBtn.disabled = true;
+        verifyOtpBtn.textContent = 'Verifying...';
+        fetch('/verify-otp-signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, otp })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            otpStatus.textContent = 'Verified successfully!';
+            otpStatus.style.color = '#22c55e';
+            emailInput.readOnly = true;
+            sendOtpBtn.disabled = true;
+            otpInput.style.display = 'none';
+            verifyOtpBtn.style.display = 'none';
+            otpStatus.style.marginLeft = '0';
+            emailVerified = true;
+          } else {
+            otpStatus.textContent = data.message || 'Invalid OTP.';
+            otpStatus.style.color = '#f87171';
+          }
+          verifyOtpBtn.disabled = false;
+          verifyOtpBtn.textContent = 'Verify OTP';
+        })
+        .catch(() => {
+          otpStatus.textContent = 'Error verifying OTP.';
+          otpStatus.style.color = '#f87171';
+          verifyOtpBtn.disabled = false;
+          verifyOtpBtn.textContent = 'Verify OTP';
+        });
+      });
+      // Prevent form submission if email not verified
+      const signupForm = document.getElementById('signupForm');
+      signupForm.addEventListener('submit', function(e) {
+        if (!emailVerified) {
+          otpStatus.textContent = 'Please verify your email before submitting.';
+          otpStatus.style.color = '#f87171';
+          e.preventDefault();
+          return false;
+        }
+      });
+      // Add event listeners for all next/prev buttons
+      document.querySelectorAll('.next-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          // Find the current fieldset
+          const fieldset = btn.closest('fieldset');
+          let valid = true;
+          fieldset.querySelectorAll('input,select,textarea').forEach(input => {
+            if (input.hasAttribute('required')) {
+              if (!input.value || !input.checkValidity()) {
+                input.classList.add('is-invalid');
+                input.reportValidity();
+                valid = false;
+              } else {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+              }
+            }
+          });
+          if (valid) {
+            nextStep();
+          } else {
+            e.preventDefault();
+          }
+        });
+      });
+      document.querySelectorAll('.prev-btn').forEach(btn => {
+        btn.addEventListener('click', prevStep);
+      });
+      // Password mask toggle for password
+      document.getElementById('togglePwd').addEventListener('click', function() {
+        const pwdInput = document.getElementById('password');
+        const icon = document.getElementById('pwdIcon');
+        if (pwdInput.type === 'password') {
+          pwdInput.type = 'text';
+          icon.classList.remove('bi-eye');
+          icon.classList.add('bi-eye-slash');
+        } else {
+          pwdInput.type = 'password';
+          icon.classList.remove('bi-eye-slash');
+          icon.classList.add('bi-eye');
+        }
+      });
+      // Password mask toggle for confirm password
+      document.getElementById('toggleConfirmPwd').addEventListener('click', function() {
+        const confirmPwdInput = document.getElementById('confirmPassword');
+        const icon = document.getElementById('confirmPwdIcon');
+        if (confirmPwdInput.type === 'password') {
+          confirmPwdInput.type = 'text';
+          icon.classList.remove('bi-eye');
+          icon.classList.add('bi-eye-slash');
+        } else {
+          confirmPwdInput.type = 'password';
+          icon.classList.remove('bi-eye-slash');
+          icon.classList.add('bi-eye');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

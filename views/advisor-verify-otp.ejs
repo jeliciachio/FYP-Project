@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Verify OTP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-dark text-light">
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Verify OTP</h2>
+    <% if (typeof error !== 'undefined') { %>
+      <div class="alert alert-danger text-center"><%= error %></div>
+    <% } %>
+    <form method="POST" action="/advisor/verify-otp" class="mx-auto" style="max-width: 400px;">
+      <div class="mb-3">
+        <label class="form-label">Enter the 6-digit OTP sent to your email</label>
+        <input type="text" name="otp_code" class="form-control" required />
+      </div>
+      <button class="btn btn-success w-100">Verify</button>
+    </form>
+  </div>
+</body>
+</html>

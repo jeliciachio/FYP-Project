@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Financial Education Resources | HoH Bank</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Georgia', serif;
+      background: linear-gradient(120deg, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(125, 249, 255, 0.2);
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: #7df9ff !important;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.6);
+      letter-spacing: 1.2px;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .navbar-nav .nav-link {
+      color: #cbd5e1 !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem !important;
+      border-radius: 8px;
+      margin: 0 0.25rem;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #7df9ff !important;
+      background: rgba(125, 249, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .navbar-toggler {
+      border-color: rgba(125, 249, 255, 0.3);
+    }
+
+    .navbar-toggler-icon {
+      filter: brightness(0) invert(1) drop-shadow(0 0 2px #7df9ff);
+    }
+
+    /* Financial Learning Tool Dropdown Styles */
+    .dropdown-menu {
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border: 1px solid rgba(125, 249, 255, 0.3);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+      padding: 0.5rem 0;
+      margin-top: 0.5rem;
+    }
+
+    .dropdown-item {
+      color: #e0eaff !important;
+      padding: 0.5rem 1rem;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 0 0.25rem;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(125, 249, 255, 0.1) !important;
+      color: #7df9ff !important;
+      transform: translateX(5px);
+    }
+
+    .dropdown-item:focus {
+      background: rgba(125, 249, 255, 0.1) !important;
+      color: #7df9ff !important;
+    }
+
+    .dropdown-divider {
+      border-color: rgba(125, 249, 255, 0.2);
+      margin: 0.5rem 0;
+    }
+
+    .edu-resources-container {
+      max-width: 1000px;
+      margin: 100px auto 40px;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      padding: 40px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      text-shadow: 
+        0 0 20px rgba(125, 249, 255, 0.4),
+        0 0 40px rgba(125, 249, 255, 0.2);
+    }
+
+    section {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(125, 249, 255, 0.05) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 45px rgba(34, 197, 94, 0.2);
+    }
+
+    section h3 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.4);
+    }
+
+    section ul {
+      margin-left: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    section li {
+      color: #e0eaff;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    section ul li::before {
+      content: "▸";
+      color: #22c55e;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    section strong {
+      color: #7df9ff;
+      font-weight: 700;
+    }
+
+    table {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+      border-collapse: collapse;
+    }
+
+    table thead {
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+    }
+
+    table th {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 2px solid rgba(34, 197, 94, 0.3);
+      font-size: 1.1rem;
+    }
+
+    table td {
+      color: #e0eaff;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(125, 249, 255, 0.1);
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    table tbody tr:hover {
+      background: rgba(34, 197, 94, 0.1);
+      transform: scale(1.01);
+      transition: all 0.3s ease;
+    }
+
+    table a {
+      color: #22c55e;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    table a:hover {
+      color: #7df9ff;
+      border-bottom: 1px solid #7df9ff;
+      text-shadow: 0 0 8px rgba(125, 249, 255, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .edu-resources-container {
+        margin: 80px 20px 40px;
+        padding: 20px;
+      }
+      
+      h2 {
+        font-size: 2rem;
+      }
+      
+      section {
+        padding: 1.5rem;
+      }
+      
+      section h3 {
+        font-size: 1.3rem;
+      }
+
+      table {
+        font-size: 0.9rem;
+      }
+
+      table th,
+      table td {
+        padding: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+ <a class="navbar-brand" href="/dashboard">HoH Bank</a>      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/my-products">My Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="/goals">Goals</a></li>          
+          <li class="nav-item"><a class="nav-link" href="/customer/consultations">Consultations</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user-transactions">Transactions</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="financialLearningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Financial Learning Tool
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="financialLearningDropdown">
+              <li><a class="dropdown-item" href="/financial-education">📘 Student Financial Education</a></li>
+              <li><a class="dropdown-item" href="/financial-resources">📚 Financial Resources</a></li>
+              <li><a class="dropdown-item" href="/financial-quiz">🧠 Financial Quiz</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/profile-edit">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout/customer">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<div class="edu-resources-container">
+  <h2>📚 Student Financial Education Resources</h2>
+
+  <section>
+    <h3>🧭 Learn Key Financial Skills</h3>
+    <ul>
+      <li><strong>Budgeting Basics:</strong> Learn how to plan monthly income, expenses, and savings.</li>
+      <li><strong>Saving Smart:</strong> Tips to build and maintain an emergency fund.</li>
+      <li><strong>Understanding Credit:</strong> Know what credit scores are and how they affect your future.</li>
+      <li><strong>Debt Management:</strong> Learn the difference between good vs. bad debt.</li>
+      <li><strong>Financial Milestones:</strong> Discover goals to reach by age 20, 25, and beyond.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h3>🌐 Trusted External Resources</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Focus Area</th>
+          <th>Why It's Useful</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://www.moneysense.gov.sg" target="_blank">MoneySense</a></td>
+          <td>SG-based financial literacy</td>
+          <td>Simple guides on budgeting, savings, CPF, and insurance</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.imda.gov.sg" target="_blank">IMDA Digital Finance</a></td>
+          <td>Digital payments & safety</td>
+          <td>Learn how to use e-wallets securely and manage online payments</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.investopedia.com" target="_blank">Investopedia</a></td>
+          <td>Finance basics</td>
+          <td>Great resource for understanding credit, debt, and savings</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.khanacademy.org/economics-finance-domain/core-finance/personal-finance" target="_blank">Khan Academy</a></td>
+          <td>Free finance lessons</td>
+          <td>Visual, gamified learning for saving and budgeting</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.cpf.gov.sg/mymoneysense" target="_blank">MyMoneySense</a></td>
+          <td>CPF & goal-setting</td>
+          <td>Helps plan long-term financial goals tailored to students</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Terms and Conditions - HoH Bank</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+   <style>
+    /* Body & general */
+    body {
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      font-family: 'Inter', 'Georgia', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #f3f6fa;
+      font-size: 18px;
+      margin: 0;
+      padding-top: 120px;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    /* Container */
+    .terms-container {
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+      padding: 60px 80px 80px;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      box-shadow: 
+        0 20px 60px rgba(34, 197, 94, 0.15),
+        0 8px 32px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      margin-top: 40px;
+      margin-bottom: 60px;
+      animation: fadeInUp 0.8s ease-out;
+      color: #f3f6fa;
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .terms-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #22c55e 0%, #7df9ff 50%, #22c55e 100%);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .terms-container {
+        padding: 40px 30px 60px;
+        margin: 20px 15px 40px;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Main Heading */
+    .main-title {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 3.2rem;
+      letter-spacing: 0.08em;
+      text-shadow: 
+        0 0 20px rgba(125, 249, 255, 0.5),
+        0 0 40px rgba(125, 249, 255, 0.3);
+      position: relative;
+      padding-bottom: 20px;
+    }
+
+    .main-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 3px;
+      background: linear-gradient(90deg, #22c55e, #7df9ff, #22c55e);
+      border-radius: 2px;
+    }
+
+    /* Subtitle */
+    .subtitle {
+      text-align: center;
+      font-size: 1.3rem;
+      color: #cbd5e1;
+      margin-bottom: 50px;
+      font-weight: 400;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Section Headers */
+    .section-header {
+      color: #22c55e;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-top: 40px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .section-header::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: linear-gradient(45deg, #22c55e, #7df9ff);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+    }
+
+    /* Section Content */
+    .section-content {
+      font-size: 1.1rem;
+      color: #e2e8f0;
+      margin-bottom: 25px;
+      padding-left: 20px;
+      border-left: 3px solid rgba(125, 249, 255, 0.2);
+      background: rgba(24, 31, 47, 0.4);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Icon styling */
+    .section-icon {
+      color: #7df9ff;
+      font-size: 1.2rem;
+      margin-right: 8px;
+    }
+
+    /* Contact section special styling */
+    .contact-section {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(125, 249, 255, 0.05));
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 16px;
+      padding: 25px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .contact-email {
+      color: #7df9ff;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: rgba(125, 249, 255, 0.1);
+      transition: all 0.3s ease;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .contact-email:hover {
+      color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    /* Return Button */
+    .return-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #22c55e 0%, #7df9ff 100%);
+      color: #181f2f;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 50px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 
+        0 8px 25px rgba(34, 197, 94, 0.4),
+        0 4px 12px rgba(125, 249, 255, 0.2);
+      margin-top: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .return-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .return-btn:hover::before {
+      left: 100%;
+    }
+
+    .return-btn:hover {
+      color: #f3f6fa;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 
+        0 12px 35px rgba(34, 197, 94, 0.6),
+        0 6px 20px rgba(125, 249, 255, 0.3);
+    }
+
+    .btn-container {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(125, 249, 255, 0.2);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .main-title {
+        font-size: 2.5rem;
+      }
+      
+      .subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .section-header {
+        font-size: 1.3rem;
+      }
+      
+      .section-content {
+        font-size: 1rem;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="terms-container">
+    <h1 class="main-title">Terms & Conditions</h1>
+    <p class="subtitle">
+      <i class="bi bi-shield-check section-icon"></i>
+      Welcome to HoH Bank. Please read these terms and conditions carefully before using our digital banking services.
+    </p>
+
+    <div class="section-header">
+      <i class="bi bi-person-circle section-icon"></i>
+      1. Account Usage
+    </div>
+    <div class="section-content">
+      By creating an account with HoH Bank, you agree to provide accurate and complete information. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. We recommend using strong passwords and enabling two-factor authentication where available.
+    </div>
+
+    <div class="section-header">
+      <i class="bi bi-shield-lock section-icon"></i>
+      2. Security & Privacy
+    </div>
+    <div class="section-content">
+      We use advanced encryption and multi-layer security protocols to protect your personal and financial data. However, HoH Bank is not liable for any unauthorized access resulting from user negligence, phishing attempts, or sharing of account credentials. Always log out from shared devices and never share your login information.
+    </div>
+
+    <div class="section-header">
+      <i class="bi bi-credit-card section-icon"></i>
+      3. Transactions & Services
+    </div>
+    <div class="section-content">
+      All transactions processed through HoH Bank are subject to verification and compliance checks. Suspicious activity may be flagged, investigated, and reported to relevant authorities. Transaction limits may apply based on your account type and verification status. We reserve the right to decline transactions that violate our policies.
+    </div>
+
+    <div class="section-header">
+      <i class="bi bi-pencil-square section-icon"></i>
+      4. Modifications & Updates
+    </div>
+    <div class="section-content">
+      We reserve the right to update, modify, or change these terms at any time to comply with regulatory requirements or improve our services. Material changes will be communicated to users via email or in-app notifications. Continued use of our services after such changes constitutes acceptance of the new terms.
+    </div>
+
+    <div class="contact-section">
+      <div class="section-header" style="justify-content: center; border: none; margin-bottom: 15px;">
+        <i class="bi bi-envelope section-icon"></i>
+        5. Contact & Support
+      </div>
+      <p style="margin-bottom: 15px; color: #cbd5e1;">
+        If you have any questions regarding these terms or need assistance with your account, our dedicated support team is here to help.
+      </p>
+      <a href="mailto:support@hohbank.com" class="contact-email">
+        <i class="bi bi-envelope-fill"></i> support@hohbank.com
+      </a>
+    </div>
+
+    <div class="btn-container">
+      <a href="/" class="return-btn">
+        <i class="bi bi-house-fill"></i>
+        Return to Homepage
+      </a>
+    </div>
+  </div>
+</body>
+</html>

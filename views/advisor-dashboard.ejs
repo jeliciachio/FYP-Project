@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Advisor Dashboard | HoH Advisor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+    .stars {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0; left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: twinkle 2s infinite alternate;
+      box-shadow: 0 0 8px #7df9ff;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    .navbar {
+      background-color: #1a2238;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+    .navbar-brand {
+      font-weight: bold;
+      color: #7df9ff !important;
+      font-family: 'Orbitron', sans-serif;
+    }
+    .nav-link {
+      color: #e0e7ff !important;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover,
+    .nav-link.active {
+      color: #7df9ff !important;
+      text-decoration: underline;
+    }
+    .main-container {
+      max-width: 1300px;
+      margin: 40px auto;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow:
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      padding: 40px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2, h4 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 8px rgba(125, 249, 255, 0.3);
+    }
+    .btn-hoh {
+      background: linear-gradient(135deg, #22c55e, #7df9ff);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      padding: 10px 20px;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    }
+    .btn-hoh:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+    }
+    .form-control, .form-select {
+      background-color: #0f172a;
+      border: 1px solid #7df9ff;
+      color: #f3f6fa;
+    }
+    .table thead {
+      background-color: #22c55e;
+      color: #000;
+    }
+    .table td, .table th {
+      vertical-align: middle;
+    }
+    .bg-glass {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(125, 249, 255, 0.1);
+      border-radius: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="/advisor/dashboard">HoH Advisor</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav gap-3">
+          <li class="nav-item"><a class="nav-link active" href="/advisor/dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/advisor/notes">Clients</a></li>
+          <li class="nav-item"><a class="nav-link" href="/advisor/myslots">Calendar</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Tools</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/advisor/tools/budget">💰 Budget Calculator</a></li>
+              <li><a class="dropdown-item" href="/advisor/tools/goals">🎯 Goal Savings Calculator</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/advisor/profile">My Profile</a></li>
+          <li class="nav-item"><a class="btn btn-outline-warning btn-sm" href="/login/customer">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="container py-5">
+  <h2 class="mb-4">Financial Advisor Dashboard</h2>
+
+  <h4>Create New Consultation Slot</h4>
+  <form action="/advisor/consultations/create" method="POST" class="row g-3 mb-4">
+    <div class="col-md-6">
+      <input type="date" class="form-control" id="datePicker" name="date" min="2025-01-01" required />
+    </div>
+    <div class="col-md-6">
+      <select id="timeSlot" name="time" class="form-select" required disabled>
+        <option value="">Select a date first</option>
+      </select>
+    </div>
+    <input type="hidden" name="appointment_date" id="appointment_date" />
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-hoh w-100">Add Slot</button>
+    </div>
+  </form>
+
+  <form class="row g-3 mb-4" method="GET" action="/advisor/dashboard">
+    <div class="col-md-4">
+      <input type="text" class="form-control" name="search" placeholder="Search by student name" value="<%= search %>" />
+    </div>
+    <div class="col-md-3">
+      <select name="status" class="form-select">
+        <option value="">All Statuses</option>
+        <option value="available" <%= statusFilter === 'available' ? 'selected' : '' %>>Available</option>
+        <option value="booked" <%= statusFilter === 'booked' ? 'selected' : '' %>>Booked</option>
+        <option value="accepted" <%= statusFilter === 'accepted' ? 'selected' : '' %>>Accepted</option>
+        <option value="completed" <%= statusFilter === 'completed' ? 'selected' : '' %>>Completed</option>
+        <option value="pending_accept" <%= statusFilter === 'pending accept' ? 'selected' : '' %>>Pending Accept</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <input type="date" class="form-control" name="date" value="<%= dateFilter %>" />
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-hoh w-100">Filter</button>
+    </div>
+  </form>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Appointment Date</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (consultations.length === 0) { %>
+        <tr><td colspan="4" class="text-center">No consultations found.</td></tr>
+      <% } else { %>
+        <% consultations.forEach(c => { %>
+          <tr>
+            <td><%= c.student_name || '— Available Slot —' %></td>
+            <td><%= new Date(c.appointment_date).toLocaleString() %></td>
+            <td>
+              <% if (c.status === 'pending accept') { %>
+                Pending Accept
+              <% } else { %>
+                <%= c.status.charAt(0).toUpperCase() + c.status.slice(1) %>
+              <% } %>
+            </td>
+            <td>
+              <div class="d-flex flex-column gap-1">
+                <% if (c.status === 'booked') { %>
+                  <form action="/advisor/consultations/<%= c.consultation_id %>/accept" method="POST">
+                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                  </form>
+                <% } else if (c.status === 'accepted') { %>
+                  <form action="/advisor/consultations/<%= c.consultation_id %>/reschedule" method="POST" class="mb-1 d-flex gap-2 align-items-center flex-wrap">
+                    <input type="date" name="reschedule_date" class="form-control form-control-sm" required onchange="handleRescheduleDateChange(this, '<%= c.consultation_id %>')" id="reschedule-date-<%= c.consultation_id %>">
+                    <select name="reschedule_time" class="form-select form-select-sm" required id="reschedule-time-<%= c.consultation_id %>" disabled>
+                      <option value="">Select a date first</option>
+                    </select>
+                    <input type="hidden" name="new_date" id="combined-reschedule-<%= c.consultation_id %>">
+                    <button type="submit" class="btn btn-info btn-sm">Reschedule</button>
+                  </form>
+                  <form action="/advisor/consultations/<%= c.consultation_id %>/complete" method="POST">
+                    <button type="submit" class="btn btn-secondary btn-sm">Mark as Completed</button>
+                  </form>
+                <% } else if (c.status === 'available') { %>
+                  <form action="/advisor/consultations/<%= c.consultation_id %>/delete" method="POST">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                <% } else if (c.status === 'pending accept') { %>
+                  <button class="btn btn-secondary btn-sm" disabled>Pending</button>
+                <% } else if (c.status === 'completed') { %>
+                  <span class="text-success fw-bold">✔ Completed</span>
+                <% } %>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      <% } %>
+    </tbody>
+  </table>
+
+  <div class="row mb-4">
+  <div class="col-md-6">
+    <div class="p-3 bg-success text-white rounded shadow-sm">
+      <h5>Total Completed Consultations</h5>
+      <h2><%= completedCount || 0 %></h2>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="p-3 bg-info text-dark rounded shadow-sm">
+      <h5>Next Upcoming Consultation</h5>
+      <% if (nextConsultation) { %>
+        <p><strong><%= nextConsultation.student_name %></strong><br>
+        <%= new Date(nextConsultation.appointment_date).toLocaleString() %></p>
+      <% } else { %>
+        <p>No upcoming consultations.</p>
+      <% } %>
+    </div>  </div>
+</div>
+
+<div class="container mt-4">
+  <div style="background: #1e3a8a !important; border-radius: 24px; padding: 40px; border: 1px solid #3b82f6; position: relative; z-index: 1;">
+    <h4>Consultation Statistics</h4>
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <select id="yearSelect" class="form-select"></select>
+      </div>
+      <div class="col-md-3">
+        <select id="monthSelect" class="form-select">
+        <option value="">— Yearly View —</option>
+        <% ['January','February','March','April','May','June','July','August','September','October','November','December'].forEach((m, i) => { %>
+        <option value="<%= i + 1 %>"><%= m %></option>
+        <% }) %>
+        </select>
+
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-hoh w-100" onclick="fetchChartData()">View</button>
+      </div>
+    </div>
+    <canvas id="consultationChart" height="100"></canvas>
+  </div>
+</div>
+
+<div class="mt-5">
+  <h4>Completed Consultations</h4>
+  <a href="/advisor/completed" class="btn btn-hoh mt-2">View All Completed Consultations</a>
+</div>
+
+
+
+  <div class="mt-5">
+    <h4>Reminders (Consultation Days)</h4>
+    <form id="reminderForm" class="row g-3 mb-3">
+      <div class="col-md-4">
+        <input type="date" id="reminderDate" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <input type="text" id="reminderText" class="form-control" placeholder="Enter note for the day..." required>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-hoh w-100">Add Reminder</button>
+      </div>
+    </form>
+    <ul id="reminderList" class="list-group"></ul>
+  </div>
+</div>
+
+<script>
+    function createStars(num) {
+      const stars = document.querySelector('.stars');
+      for (let i = 0; i < num; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.opacity = Math.random() * 0.7 + 0.3;
+        star.style.animationDuration = `${1.5 + Math.random() * 2}s`;
+        stars.appendChild(star);
+      }
+    }
+    createStars(100);
+  </script>
+
+<script>
+  const reminderForm = document.getElementById('reminderForm');
+  const reminderList = document.getElementById('reminderList');
+  const reminderDate = document.getElementById('reminderDate');
+  const reminderText = document.getElementById('reminderText');
+  let reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
+
+  const renderReminders = () => {
+    reminderList.innerHTML = '';
+    reminders.forEach((r, i) => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center bg-dark text-white';
+      li.innerHTML = `<span><strong>${r.date}</strong>: ${r.text}</span>
+        <button class="btn btn-sm btn-danger" onclick="removeReminder(${i})">Delete</button>`;
+      reminderList.appendChild(li);
+    });
+  };
+
+  const removeReminder = (index) => {
+    reminders.splice(index, 1);
+    localStorage.setItem('reminders', JSON.stringify(reminders));
+    renderReminders();
+  };
+
+  reminderForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newReminder = {
+      date: reminderDate.value,
+      text: reminderText.value.trim()
+    };
+    reminders.push(newReminder);
+    localStorage.setItem('reminders', JSON.stringify(reminders));
+    reminderForm.reset();
+    renderReminders();
+  });
+
+  renderReminders();
+</script>
+
+<script>
+  const timeSlots = [
+    { value: "09:00:00", label: "09:00 – 10:00" },
+    { value: "11:00:00", label: "11:00 – 12:00" },
+    { value: "13:00:00", label: "13:00 – 14:00" },
+    { value: "15:00:00", label: "15:00 – 16:00" },
+    { value: "17:00:00", label: "17:00 – 18:00" }
+  ];
+
+  const dateInput = document.getElementById('datePicker');
+  const timeSelect = document.getElementById('timeSlot');
+  const appointmentInput = document.getElementById('appointment_date');
+
+  dateInput.addEventListener('change', () => {
+    const selectedDate = new Date(dateInput.value);
+    const day = selectedDate.getDay();
+    if (day === 0 || day === 6) {
+      timeSelect.innerHTML = '<option value="">Weekends not allowed</option>';
+      timeSelect.disabled = true;
+      appointmentInput.value = '';
+    } else {
+      timeSelect.innerHTML = '<option value="">Select time</option>';
+      timeSlots.forEach(slot => {
+        const option = document.createElement('option');
+        option.value = slot.value;
+        option.textContent = slot.label;
+        timeSelect.appendChild(option);
+      });
+      timeSelect.disabled = false;
+    }
+  });
+
+  timeSelect.addEventListener('change', () => {
+    if (dateInput.value && timeSelect.value) {
+      appointmentInput.value = `${dateInput.value}T${timeSelect.value}`;
+    }
+  });
+
+  function handleRescheduleDateChange(input, id) {
+    const day = new Date(input.value).getDay();
+    const timeDropdown = document.getElementById(`reschedule-time-${id}`);
+    const combined = document.getElementById(`combined-reschedule-${id}`);
+    if (day === 0 || day === 6) {
+      timeDropdown.innerHTML = '<option value="">Weekends not allowed</option>';
+      timeDropdown.disabled = true;
+      combined.value = '';
+    } else {
+      timeDropdown.disabled = false;
+      timeDropdown.innerHTML = '<option value="">Select time</option>';
+      timeSlots.forEach(slot => {
+        const option = document.createElement('option');
+        option.value = slot.value;
+        option.textContent = slot.label;
+        timeDropdown.appendChild(option);
+      });
+      timeDropdown.onchange = () => {
+        if (input.value && timeDropdown.value) {
+          combined.value = `${input.value}T${timeDropdown.value}`;
+        }
+      };
+    }
+  }
+
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  dateInput.setAttribute('min', `${yyyy}-${mm}-${dd}`);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const currentYear = new Date().getFullYear();
+  const selectedMonth = "<%= selectedMonth ? selectedMonth : 'null' %>";
+  const selectedYear = "<%= selectedYear ? selectedYear : new Date().getFullYear() %>";
+
+  const yearSelect = document.getElementById('yearSelect');
+  for (let y = currentYear; y >= currentYear - 5; y--) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
+  }
+  yearSelect.value = selectedYear;
+  if (selectedMonth !== "null") {
+    document.getElementById('monthSelect').value = selectedMonth;
+  }
+
+  function fetchChartData() {
+    const year = document.getElementById('yearSelect').value;
+    const month = document.getElementById('monthSelect').value;
+    window.location.href = `/advisor/dashboard?month=${month}&year=${year}`;
+  }
+
+  // Data from server
+  const monthlyData = JSON.parse('<%- JSON.stringify(monthlyData || []) %>');
+  const yearlyData = JSON.parse('<%- JSON.stringify(yearlyData || []) %>');
+
+  const monthlyLabels = Array.from({ length: 31 }, (_, i) => `${i + 1}`);
+  const monthlyCounts = monthlyLabels.map(day => {
+    const match = monthlyData.find(d => d.day == day);
+    return match ? match.count : 0;
+  });
+
+  const yearlyLabels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const yearlyCounts = Array.from({ length: 12 }, (_, i) => {
+    const match = yearlyData.find(d => d.month == (i + 1));
+    return match ? match.count : 0;
+  });
+
+  const ctx = document.getElementById('consultationChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: monthlyLabels,
+      datasets: [{
+        label: 'Consultations',
+        data: monthlyCounts,
+        backgroundColor: 'rgba(125, 249, 255, 0.5)',
+        borderColor: '#7df9ff',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          labels: { color: '#fff' }
+        },
+        tooltip: {
+          backgroundColor: '#181f2f',
+          titleColor: '#7df9ff',
+          bodyColor: '#fff'
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#fff' },
+          grid: { color: '#374151' }
+        },
+        y: {
+          beginAtZero: true,
+          max: 100,
+          ticks: { color: '#fff', stepSize: 20, precision: 0 },
+          grid: { color: '#374151' }       
+        }
+      }
+    }
+  });
+
+  // Check if we should show yearly view
+  const showingYearly = '<%= showingYearly ? "true" : "false" %>' === 'true';
+  
+  // Automatically adjust to year or month mode based on the query presence
+  if (showingYearly) {
+    chart.data.labels = yearlyLabels;
+    chart.data.datasets[0].data = yearlyCounts;
+    chart.options.scales.y.max = 100;
+    chart.options.scales.y.ticks.stepSize = 20;
+    chart.update();
+  }
+</script>
+
+
+
+</body>
+</html>
+

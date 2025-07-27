@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics & Insights - HoH Bank</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; min-height: 100vh; width: 100vw; box-sizing: border-box; font-family: 'Inter', 'Georgia', serif; background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%); color: #f3f6fa; overflow-x: hidden; }
+    .stars { position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: 0; pointer-events: none; opacity: 1; }
+    .star { position: absolute; background: white; border-radius: 50%; opacity: 0.7; animation: twinkle 2s infinite alternate; box-shadow: 0 0 8px #7df9ff, 0 0 2px #fff; }
+    @keyframes twinkle { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+       .navbar {
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(125, 249, 255, 0.2);
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: #7df9ff !important;
+      text-shadow: 0 0 15px rgba(125, 249, 255, 0.6);
+      letter-spacing: 1.2px;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .navbar-nav .nav-link {
+      color: #cbd5e1 !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem !important;
+      border-radius: 8px;
+      margin: 0 0.25rem;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #7df9ff !important;
+      background: rgba(125, 249, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: #22c55e !important;
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .navbar-toggler {
+      border-color: rgba(125, 249, 255, 0.3);
+    }
+
+    .navbar-toggler-icon {
+      filter: brightness(0) invert(1) drop-shadow(0 0 2px #7df9ff);
+    }    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow: 
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .main-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; z-index: 1; position: relative; }
+    .analytics-header { background: linear-gradient(90deg, #232946 60%, #22c55e22 100%); border-radius: 18px; box-shadow: 0 8px 32px #7df9ff22; padding: 2.5rem 2rem 2rem 2rem; margin-top: 32px; margin-bottom: 32px; text-align: center; max-width: 900px; width: 100%; }
+    .analytics-header h1 { font-family: 'Orbitron', 'Inter', 'Georgia', serif; color: #7df9ff; font-size: 2.4rem; margin-bottom: 0.5rem; }
+    .analytics-header .desc { color: #e0eaff; font-size: 1.2rem; margin-bottom: 1.2rem; }
+    .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; margin-bottom: 2rem; width: 100%; max-width: 1200px; }
+    .analytics-card { background: #181f2f; border-radius: 12px; padding: 1.5rem 1.2rem; box-shadow: 0 2px 8px #22c55e22; margin-bottom: 0; }
+    .analytics-card h3 { color: #22c55e; font-size: 1.3rem; margin-bottom: 1rem; }
+    .btn-hoh { background: linear-gradient(90deg, #22c55e 0%, #7df9ff 100%); color: #181f2f; font-weight: bold; border: none; border-radius: 8px; font-size: 1.1rem; padding: 10px 0; margin-top: 0.5rem; box-shadow: 0 2px 8px #22c55e33; transition: background 0.2s, color 0.2s; }
+    .btn-hoh:hover { background: linear-gradient(90deg, #7df9ff 0%, #22c55e 100%); color: #fff; }
+    @media (max-width: 900px) { .analytics-header, .analytics-grid { padding: 1rem; } }
+    @media (max-width: 600px) { .analytics-header { margin: 40px 8px; padding: 1.5rem 0.7rem; } .analytics-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+ <a class="navbar-brand" href="/dashboard">HoH Bank</a>      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/my-products">My Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="/goals">Goals</a></li>          
+          <li class="nav-item"><a class="nav-link" href="/customer/consultations">Consultations</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user-transactions">Transactions</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="financialLearningDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Financial Learning Tool
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="financialLearningDropdown">
+              <li><a class="dropdown-item" href="/financial-education">📘 Student Financial Education</a></li>
+              <li><a class="dropdown-item" href="/financial-resources">📚 Financial Resources</a></li>
+              <li><a class="dropdown-item" href="/financial-quiz">🧠 Financial Quiz</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="/profile-edit">Profile</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout/customer">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="stars"></div>
+  <div class="main-container">
+    <div class="analytics-header">
+      <h1><i class="bi bi-bar-chart"></i> Analytics & Insights</h1>
+      <div class="desc">Visualize your spending, balances, and budget goals. Use filters to explore your financial data in detail.</div>
+      <div class="row g-3 mb-3 justify-content-center" id="summaryCards" aria-label="Summary Cards">
+        <div class="col-md-3 col-6 mb-2">
+          <div class="card text-dark bg-light shadow-sm h-100">
+            <div class="card-body text-center">
+              <div class="fs-4 fw-bold" id="cardTotalBalance">$0.00</div>
+              <div class="text-secondary">Total Balance</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-2">
+          <div class="card text-dark bg-light shadow-sm h-100">
+            <div class="card-body text-center">
+              <div class="fs-4 fw-bold" id="cardTotalSpending">$0.00</div>
+              <div class="text-secondary">Spending (This Month)</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-2">
+          <div class="card text-dark bg-light shadow-sm h-100">
+            <div class="card-body text-center">
+              <div class="fs-4 fw-bold" id="cardTotalTopup">$0.00</div>
+              <div class="text-secondary">Top-up (This Month)</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-6 mb-2">
+          <div class="card text-dark bg-light shadow-sm h-100">
+            <div class="card-body text-center">
+              <div class="fs-4 fw-bold" id="cardTotalTransfer">$0.00</div>
+              <div class="text-secondary">Transfer (This Month)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form id="analyticsFilterForm" class="row g-3 mb-3 justify-content-center">
+        <div class="col-md-3">
+          <label for="filterDateFrom" class="form-label">From</label>
+          <input type="date" class="form-control" id="filterDateFrom" name="from">
+        </div>
+        <div class="col-md-3">
+          <label for="filterDateTo" class="form-label">To</label>
+          <input type="date" class="form-control" id="filterDateTo" name="to">
+        </div>
+        <div class="col-md-3">
+          <label for="filterAccount" class="form-label">Account</label>
+          <select class="form-select" id="filterAccount" name="account">
+            <option value="">All Accounts</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="filterCategory" class="form-label">Category</label>
+          <select class="form-select" id="filterCategory" name="category">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-hoh">Apply Filters</button>
+        </div>
+      </form>
+    </div>
+    <div class="analytics-grid">
+      <div class="analytics-card">
+        <h3><i class="bi bi-pie-chart"></i> Holdings Breakdown</h3>
+        <canvas id="holdingsChart" aria-label="Holdings Breakdown" role="img"></canvas>
+      </div>
+      <div class="analytics-card">
+        <h3><i class="bi bi-bar-chart"></i> Transactions by Type</h3>
+        <canvas id="spendingChart" aria-label="Transactions by Type" role="img"></canvas>
+      </div>
+      <div class="analytics-card">
+        <h3><i class="bi bi-graph-up"></i> Transactions by Month</h3>
+        <canvas id="balanceChart" aria-label="Transactions by Month" role="img"></canvas>
+        <div id="topupSpendingSummary" style="color:#7df9ff;font-size:1.1rem;margin-bottom:8px;"></div>
+      </div>
+      <div class="analytics-card">
+        <h3><i class="bi bi-activity"></i> Balance Over Time</h3>
+        <canvas id="balanceOverTimeChart" aria-label="Balance Over Time" role="img"></canvas>
+      </div>
+      <div class="analytics-card">
+        <h3><i class="bi bi-credit-card"></i> Projected Credit Card Cashflow</h3>
+        <div id="cashflowSummary"></div>
+        <canvas id="cashflowChart" aria-label="Credit Card Cashflow" role="img"></canvas>
+      </div>
+      <div class="analytics-card" style="grid-column: 1 / -1;">
+        <h3><i class="bi bi-bullseye"></i> Budget Goals</h3>
+        <canvas id="budgetChart" aria-label="Budget Goals" role="img"></canvas>
+      </div>
+      <div class="analytics-card" style="grid-column: 1 / -1;">
+        <h3><i class="bi bi-clock-history"></i> Recent Transactions</h3>
+        <div class="table-responsive">
+          <table class="table table-dark table-striped table-hover align-middle mb-0" aria-label="Recent Transactions">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody id="recentTransactionsTable">
+              <tr><td colspan="5" class="text-center text-secondary">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Starfield
+    function createStars(num) {
+      const stars = document.querySelector('.stars');
+      for (let i = 0; i < num; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.left = `${Math.random() * 100}vw`;
+        stars.appendChild(star);
+      }
+    }
+    document.addEventListener('DOMContentLoaded', function() { createStars(80); });
+    // Analytics logic (reuse dashboard logic, but fetch from /dashboard/analytics-data)
+    let analyticsData = null;
+    let spendingChart, balanceChart, budgetChart, holdingsChart, cashflowChart;
+    function renderCharts(filter) {
+      // Use new backend analytics data for charts
+      const monthlyLabels = analyticsData.monthlyLabels || [];
+      const monthlyTopup = analyticsData.monthlyTopup || [];
+      const monthlySpending = analyticsData.monthlySpending || [];
+      const monthlyTransfer = analyticsData.monthlyTransfer || [];
+      const totalTopup = analyticsData.totalTopup || 0;
+      const totalSpending = analyticsData.totalSpending || 0;
+      const totalTransfer = analyticsData.totalTransfer || 0;
+      const totalBalance = analyticsData.totalBalance || 0;
+      // --- Update summary cards ---
+      document.getElementById('cardTotalBalance').textContent = `$${totalBalance.toFixed(2)}`;
+      document.getElementById('cardTotalSpending').textContent = `$${monthlySpending[monthlySpending.length-1]?.toFixed(2) || '0.00'}`;
+      document.getElementById('cardTotalTopup').textContent = `$${monthlyTopup[monthlyTopup.length-1]?.toFixed(2) || '0.00'}`;
+      document.getElementById('cardTotalTransfer').textContent = `$${monthlyTransfer[monthlyTransfer.length-1]?.toFixed(2) || '0.00'}`;
+      // --- Top-up vs Spending by Month (Bar Chart) ---
+      if (balanceChart) balanceChart.destroy();
+      balanceChart = new Chart(document.getElementById('balanceChart'), {
+        type: 'bar',
+        data: {
+          labels: monthlyLabels,
+          datasets: [
+            {
+              label: 'Top-up',
+              data: monthlyTopup,
+              backgroundColor: '#7df9ff',
+              borderColor: '#22c55e',
+              borderWidth: 2
+            },
+            {
+              label: 'Spending',
+              data: monthlySpending,
+              backgroundColor: '#f87171',
+              borderColor: '#fbbf24',
+              borderWidth: 2
+            },
+            {
+              label: 'Transfer',
+              data: analyticsData.monthlyTransfer || [],
+              backgroundColor: '#a78bfa',
+              borderColor: '#6366f1',
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } }, tooltip: { enabled: true } },
+          responsive: true,
+          scales: { x: { ticks: { color: '#fff' } }, y: { ticks: { color: '#fff' } } }
+        }
+      });
+      // --- Show total top-up, spending, and transfer summary ---
+      const summaryDiv = document.getElementById('topupSpendingSummary');
+      if (summaryDiv) {
+        summaryDiv.innerHTML = `<b>Total Top-up:</b> $${totalTopup.toFixed(2)}<br><b>Total Spending:</b> $${totalSpending.toFixed(2)}<br><b>Total Transfer:</b> $${(analyticsData.totalTransfer||0).toFixed(2)}`;
+      }
+      // --- Transactions by Type (Bar Chart) ---
+      const txTypeTotals = {};
+      (analyticsData.transactions || []).forEach(tx => {
+        const type = tx.transaction_type || 'Other';
+        if (!txTypeTotals[type]) txTypeTotals[type] = 0;
+        txTypeTotals[type] += Math.abs(Number(tx.amount) || 0);
+      });
+      if (spendingChart) spendingChart.destroy();
+      const txTypeLabels = Object.keys(txTypeTotals);
+      const txTypeData = Object.values(txTypeTotals);
+      spendingChart = new Chart(document.getElementById('spendingChart'), {
+        type: 'bar',
+        data: {
+          labels: txTypeLabels,
+          datasets: [{
+            label: 'Transactions by Type',
+            data: txTypeData,
+            backgroundColor: ['#f87171','#7df9ff','#a78bfa','#fbbf24','#22c55e'],
+            borderColor: '#232946',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } }, tooltip: { enabled: true } },
+          scales: { x: { ticks: { color: '#fff' } }, y: { ticks: { color: '#fff' } } },
+          responsive: true
+        }
+      });
+      // --- Budget Progress (Real Data, with Category) ---
+      const goals = analyticsData.goals || [];
+      const goalLabels = goals.map(g => g.goal_name + (g.category ? ` (${g.category})` : ''));
+      const goalProgress = goals.map(g => g.current_savings);
+      const goalTargets = goals.map(g => g.goal_amount);
+      budgetChart = new Chart(document.getElementById('budgetChart'), {
+        type: 'bar',
+        data: {
+          labels: goalLabels,
+          datasets: [
+            {
+              label: 'Current Savings',
+              data: goalProgress,
+              backgroundColor: '#22c55e'
+            },
+            {
+              label: 'Goal Amount',
+              data: goalTargets,
+              backgroundColor: '#7df9ff'
+            }
+          ]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } }, tooltip: { enabled: true } },
+          scales: { x: { ticks: { color: '#fff' } }, y: { ticks: { color: '#fff' } } },
+          responsive: true
+        }
+      });
+      // --- Holdings Pie Chart ---
+      if (holdingsChart) holdingsChart.destroy();
+      const accounts = analyticsData.accounts || [];
+      const holdingLabels = accounts.map(a => a.account_type + ' (' + a.account_id + ')');
+      const holdingData = accounts.map(a => a.balance);
+      holdingsChart = new Chart(document.getElementById('holdingsChart'), {
+        type: 'pie',
+        data: {
+          labels: holdingLabels,
+          datasets: [{
+            data: holdingData,
+            backgroundColor: ['#7df9ff', '#22c55e', '#fbbf24', '#f87171', '#a78bfa', '#f472b6'],
+            borderColor: '#232946',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } }, tooltip: { enabled: true } },
+          responsive: true
+        }
+      });
+      // --- Projected Credit Card Cashflow ---
+      if (cashflowChart) cashflowChart.destroy();
+      const creditCards = accounts.filter(a => a.account_type && a.account_type.toLowerCase().includes('credit'));
+      let cashflowData = [];
+      let cashflowLabels = [];
+      let summary = '';
+      if (creditCards.length > 0) {
+        // For each credit card, find next payment due and outstanding balance
+        creditCards.forEach(card => {
+          // Find last transaction (assume statement date is last tx date)
+          const txs = (analyticsData.transactions || []).filter(tx => tx.account_id === card.account_id);
+          const lastTx = txs.length > 0 ? txs.reduce((a, b) => new Date(a.transaction_date) > new Date(b.transaction_date) ? a : b) : null;
+          const dueDate = lastTx ? new Date(new Date(lastTx.transaction_date).getTime() + 30*24*60*60*1000) : null;
+          cashflowLabels.push(card.account_id + (dueDate ? ' (Due ' + dueDate.toISOString().slice(0,10) + ')' : ''));
+          cashflowData.push(card.balance);
+          summary += `<div>Card <b>${card.account_id}</b>: Outstanding $${card.balance.toFixed(2)}${dueDate ? ', Due: ' + dueDate.toISOString().slice(0,10) : ''}</div>`;
+        });
+      } else {
+        summary = 'No credit card accounts found.';
+      }
+      document.getElementById('cashflowSummary').innerHTML = summary;
+      cashflowChart = new Chart(document.getElementById('cashflowChart'), {
+        type: 'bar',
+        data: {
+          labels: cashflowLabels,
+          datasets: [{
+            label: 'Outstanding Balance',
+            data: cashflowData,
+            backgroundColor: '#fbbf24',
+            borderColor: '#7df9ff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } }, tooltip: { enabled: true } },
+          responsive: true,
+          scales: { x: { ticks: { color: '#fff' } }, y: { ticks: { color: '#fff' } } }
+        }
+      });
+      // --- Account Balance Over Time (Line Chart) ---
+      if (window.balanceOverTimeChart) window.balanceOverTimeChart.destroy();
+      const balanceOverTimeLabels = [];
+      const balanceOverTimeData = [];
+      if (analyticsData.accounts && analyticsData.transactions) {
+        // Reconstruct daily balance for last 30 days
+        const now = new Date();
+        for (let d = 29; d >= 0; d--) {
+          const day = new Date(now.getFullYear(), now.getMonth(), now.getDate() - d);
+          balanceOverTimeLabels.push(day.toLocaleDateString());
+          let dayTotal = 0;
+          analyticsData.accounts.forEach(acc => {
+            const txs = analyticsData.transactions.filter(tx => tx.account_id === acc.account_id && new Date(tx.transaction_date) <= day);
+            if (txs.length > 0) {
+              const lastTx = txs.reduce((a, b) => new Date(a.transaction_date) > new Date(b.transaction_date) ? a : b);
+              dayTotal += lastTx.balance_after || acc.balance;
+            } else {
+              dayTotal += acc.balance;
+            }
+          });
+          balanceOverTimeData.push(dayTotal);
+        }
+      }
+      const ctxBalanceOverTime = document.getElementById('balanceOverTimeChart').getContext('2d');
+      window.balanceOverTimeChart = new Chart(ctxBalanceOverTime, {
+        type: 'line',
+        data: {
+          labels: balanceOverTimeLabels,
+          datasets: [{
+            label: 'Total Balance',
+            data: balanceOverTimeData,
+            fill: true,
+            backgroundColor: 'rgba(125,249,255,0.1)',
+            borderColor: '#7df9ff',
+            tension: 0.3,
+            pointRadius: 0
+          }]
+        },
+        options: {
+          plugins: { legend: { labels: { color: '#fff' } }, tooltip: { enabled: true } },
+          responsive: true,
+          scales: { x: { ticks: { color: '#fff' } }, y: { ticks: { color: '#fff' } } }
+        }
+      });
+      // --- Recent Transactions Table ---
+      const recentTx = analyticsData.recentTransactions || [];
+      const table = document.getElementById('recentTransactionsTable');
+      if (table) {
+        if (recentTx.length === 0) {
+          table.innerHTML = '<tr><td colspan="5" class="text-center text-secondary">No recent transactions.</td></tr>';
+        } else {
+          table.innerHTML = recentTx.map(tx => `<tr>
+            <td>${tx.transaction_date ? new Date(tx.transaction_date).toLocaleString() : ''}</td>
+            <td>${tx.account_id}</td>
+            <td>${tx.transaction_type}</td>
+            <td>${tx.category || '-'}</td>
+            <td>${Number(tx.amount).toFixed(2)}</td>
+          </tr>`).join('');
+        }
+      }
+      // Populate account and category filters
+      const accSelect = document.getElementById('filterAccount');
+      if (accSelect) {
+        const uniqueAccs = Array.from(new Set((analyticsData.transactions || []).map(tx => tx.account_id)));
+        accSelect.innerHTML = '<option value="">All Accounts</option>' + uniqueAccs.map(a => `<option value="${a}">${a}</option>`).join('');
+        accSelect.value = filter.account || '';
+      }
+      const catSelect = document.getElementById('filterCategory');
+      if (catSelect) {
+        const uniqueCats = Array.from(new Set((analyticsData.transactions || []).map(tx => tx.category || tx.transaction_type || 'Other')));
+        catSelect.innerHTML = '<option value="">All Categories</option>' + uniqueCats.map(c => `<option value="${c}">${c}</option>`).join('');
+        catSelect.value = filter.category || '';
+      }
+    }
+    function fetchAndRenderAnalytics(filter = {}) {
+      // Build query string from filter
+      const params = new URLSearchParams();
+      if (filter.from) params.append('from', filter.from);
+      if (filter.to) params.append('to', filter.to);
+      if (filter.account) params.append('account', filter.account);
+      if (filter.category) params.append('category', filter.category);
+      fetch('/dashboard/analytics-data' + (params.toString() ? '?' + params.toString() : ''))
+        .then(res => res.json())
+        .then(data => {
+          analyticsData = data;
+          renderCharts(filter);
+        });
+    }
+    // Initial load
+    fetchAndRenderAnalytics();
+    document.getElementById('analyticsFilterForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const filter = {
+        from: document.getElementById('filterDateFrom').value,
+        to: document.getElementById('filterDateTo').value,
+        account: document.getElementById('filterAccount').value,
+        category: document.getElementById('filterCategory').value
+      };
+      fetchAndRenderAnalytics(filter);
+    });
+  </script>
+  <%- include("partials/footer.ejs") %>
+</body>
+</html>
