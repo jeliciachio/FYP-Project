@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config();
@@ -46,6 +47,14 @@ const db = mysql.createConnection({
 
 const sessionSecret = process.env.SESSION_SECRET;
 
+const sessionStore = new MySQLStore({
+  host: process.env.DB_HOST,
+  port: 3306,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+});
+
 const admin = require('firebase-admin');
 
 const firebaseConfig = {
@@ -69,9 +78,10 @@ app.use(express.json());
 
 
 app.use(session({
-    secret: 'rp_digital_bank_secret',
+    secret: process.env.SESSION_SECRET || 'rp_digital_bank_secret',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    store: sessionStore
 }));
 
 // ✅ Profile route goes BELOW session
