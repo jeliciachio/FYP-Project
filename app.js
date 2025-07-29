@@ -3,7 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const db = require('./db');
+const mysql = require('mysql');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
