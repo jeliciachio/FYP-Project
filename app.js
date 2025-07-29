@@ -3,7 +3,11 @@ const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config();
+<<<<<<<<< Temporary merge branch 1
 
+=========
+const mysql = require('mysql');
+>>>>>>>>> Temporary merge branch 2
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
