@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Application Processed | HoH Digital Bank</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet"/>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      width: 100vw;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(ellipse at 60% 10%, #232946 0%, #0f172a 100%);
+      color: #f3f6fa;
+      overflow-x: hidden;
+    }
+    .stars {
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0; left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.7;
+      animation: twinkle 2s infinite alternate;
+      box-shadow: 0 0 8px #7df9ff;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    .confirmation-container {
+      max-width: 800px;
+      margin: 80px auto;
+      background: linear-gradient(135deg, #232946 0%, #1e2a3a 100%);
+      border-radius: 24px;
+      box-shadow:
+        0 25px 60px rgba(34, 197, 94, 0.15),
+        0 10px 30px rgba(125, 249, 255, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(125, 249, 255, 0.2);
+      padding: 60px;
+      animation: fadeInUp 0.6s ease-out;
+      position: relative;
+      z-index: 1;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .success-icon {
+      font-size: 4rem;
+      color: #22c55e;
+      margin-bottom: 20px;
+      animation: successPulse 2s infinite;
+    }
+    @keyframes successPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    h1 {
+      color: #7df9ff;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 8px rgba(125, 249, 255, 0.3);
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+    .application-details {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(125, 249, 255, 0.1);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 30px 0;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(125, 249, 255, 0.1);
+    }
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    .detail-label {
+      font-weight: 600;
+      color: #7df9ff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .detail-value {
+      font-weight: 500;
+      color: #f3f6fa;
+    }
+    .status-badge {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.875rem;
+      letter-spacing: 0.5px;
+    }
+    .status-approved {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+    }
+    .status-pending {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+    }
+    .status-rejected {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+    .btn-hoh {
+      background: linear-gradient(135deg, #22c55e, #7df9ff);
+      color: #0f172a;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      padding: 15px 30px;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+    }
+    .btn-hoh:hover {
+      background: linear-gradient(135deg, #16a34a 0%, #0ff 100%);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+      text-decoration: none;
+    }
+    .text-center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <div class="confirmation-container">    <div class="text-center">
+      <i class="bi bi-check-circle-fill success-icon"></i>
+      <h1><%= message || 'Application Processed Successfully' %></h1>
+      <p class="lead mb-4">Your application has been reviewed and processed. Here are the details:</p>
+    </div>
+
+    <div class="application-details">
+      <div class="detail-row">
+        <div class="detail-label">
+          <i class="bi bi-person-fill"></i>
+          Full Name
+        </div>
+        <div class="detail-value"><%= application.full_name %></div>
+      </div>
+      
+      <div class="detail-row">
+        <div class="detail-label">
+          <i class="bi bi-envelope-fill"></i>
+          Email Address
+        </div>
+        <div class="detail-value"><%= application.email %></div>
+      </div>
+      
+      <div class="detail-row">
+        <div class="detail-label">
+          <i class="bi bi-telephone-fill"></i>
+          Phone Number
+        </div>
+        <div class="detail-value"><%= application.phone_number %></div>
+      </div>
+      
+      <% if (application.card_type) { %>
+      <div class="detail-row">
+        <div class="detail-label">
+          <i class="bi bi-credit-card-fill"></i>
+          Card Type
+        </div>
+        <div class="detail-value"><%= application.card_type %></div>
+      </div>
+      <% } %>
+      
+      <% if (application.application_id) { %>
+      <div class="detail-row">
+        <div class="detail-label">
+          <i class="bi bi-hash"></i>
+          Application ID
+        </div>
+        <div class="detail-value">#<%= application.application_id %></div>
+      </div>
+      <% } %>
+      
+      <div class="detail-row">
+        <div class="detail-label">
+          <i class="bi bi-clipboard-check-fill"></i>
+          Application Status
+        </div>
+        <div class="detail-value">
+          <span class="status-badge status-<%= application.status.toLowerCase() %>">
+            <%= application.status %>
+          </span>
+        </div>
+      </div>
+
+      <% if (typeof emailSent !== 'undefined') { %>
+      <div class="detail-row">
+        <div class="detail-label">
+          <i class="bi bi-envelope-<%= emailSent ? 'check' : 'x' %>-fill"></i>
+          Email Notification
+        </div>
+        <div class="detail-value">
+          <span class="status-badge <%= emailSent ? 'status-approved' : 'status-rejected' %>">
+            <%= emailSent ? 'Sent Successfully' : 'Failed to Send' %>
+          </span>
+        </div>
+      </div>
+      <% } %>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/dashboard" class="btn-hoh">
+        <i class="bi bi-house-fill"></i>
+        Back to Dashboard
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function createStars(num) {
+      const stars = document.querySelector('.stars');
+      for (let i = 0; i < num; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.opacity = Math.random() * 0.7 + 0.3;
+        star.style.animationDuration = `${1.5 + Math.random() * 2}s`;
+        stars.appendChild(star);
+      }
+    }
+    createStars(100);
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

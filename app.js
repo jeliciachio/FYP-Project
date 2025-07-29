@@ -20,6 +20,8 @@ function setRole(role) {
 }
 
 
+
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -33,6 +35,28 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+
+const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+});
+
+const sessionSecret = process.env.SESSION_SECRET;
+
+const firebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
+};
+
+firebase.initializeApp(firebaseConfig);
+
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -75,9 +99,9 @@ app.get('/', (req, res) => {
   db.query('SELECT * FROM product_catalog', (err, products) => {
     if (err) {
       console.error('DB error:', err);
-      return res.render('homepage', { products: [] });
+      return res.render('index', { products: [] });
     }
-    res.render('homepage', { products });
+    res.render('index', { products });
   });
 });
 app.get('/terms', (req, res) => res.render('terms'));
@@ -86,7 +110,19 @@ app.get('/notices', (req, res) => res.render('notices'));
 
 // Customer Login & Signup
 app.get('/login/customer', (req, res) => res.render('customer-login'));
-app.get('/signup/customer', (req, res) => res.render('customer-signup', { myinfo: null }));
+app.get('/signup/customer', (req, res) => {
+  res.render('customer-signup', {
+    myinfo: null,
+    firebasePublic: {
+      apiKey: process.env.FIREBASE_API_KEY,
+      authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+      appId: process.env.FIREBASE_APP_ID,
+      measurementId: process.env.FIREBASE_MEASUREMENT_ID
+    }
+  });
+});
 app.post('/signup/customer', (req, res) =>
   authController.register({ ...req, body: { ...req.body, role: 'customer' } }, res)
 );
@@ -2262,19 +2298,20 @@ app.post('/pay-bank', (req, res) => {
                   sender.email,
                   "Credit Card Repayment Successful",
                   `Hello ${sender.full_name},<br><br>You have successfully repaid <strong>$${payAmount.toFixed(2)}</strong> of your credit card debt.<br><br>Thank you for using RP Digital Bank.`
-                );
-
-                // Render payment success page
+                );                // Redirect to success page
                 res.render('payment-success', {
                   title: 'Payment Successful!',
-                  message: `You have successfully repaid $${payAmount.toFixed(2)} towards your credit card debt.`,
+                  message: 'Your credit card debt repayment has been processed successfully.',
                   amount: payAmount.toFixed(2),
+                  accountType: sender.account_type.replace('_', ' '),
+                  senderName: sender.full_name,
                   paymentDetails: {
                     title: 'Payment Details',
                     recipient: 'Alice Tan',
                     type: 'Credit Card Debt Repayment',
-                    reference: `AUTO-${Date.now()}`
+                    reference: `PAY-${Date.now()}`
                   },
+                  creditRemaining: null, // Will be calculated separately if needed
                   redirectUrl: '/my-products',
                   redirectText: 'View My Products'
                 });
@@ -2549,19 +2586,12 @@ app.post('/transfer', (req, res) => {
                       sendEmail(recipientAccount.email || 'recipient@example.com', "Transfer Received", `You have received $${transferAmount.toFixed(2)} from ${user.full_name}.`)
                     ]).catch(err => console.error("Email error:", err));
 
-                    // Render payment success page
-                    res.render('payment-success', {
-                      title: 'Transfer Successful!',
-                      message: `You have successfully transferred $${transferAmount.toFixed(2)} to ${recipient_full_name}.`,
+                    // Redirect to success page
+                    res.render('transfer-success', {
                       amount: transferAmount.toFixed(2),
-                      paymentDetails: {
-                        title: 'Transfer Details',
-                        recipient: `${recipient_full_name} (${to_account_type.replace('_', ' ')} account)`,
-                        type: 'Bank Transfer',
-                        reference: `TXN-${Date.now()}`
-                      },
-                      redirectUrl: '/dashboard',
-                      redirectText: 'Back to Dashboard'
+                      recipientName: recipient_full_name,
+                      accountType: to_account_type.replace('_', ' '),
+                      senderName: user.full_name
                     });
                   });
                 };
@@ -2575,7 +2605,6 @@ app.post('/transfer', (req, res) => {
     });
   });
 });
-
 app.get('/my-products', (req, res) => {
   if (!req.session.user) {
     return res.redirect('/login/customer-login');
@@ -4847,8 +4876,7 @@ function sendConfirmationEmailStatus(toEmail, fullName, type, status, accountNum
 }
 
 
-// Add this at the top of your app.js file
-require('dotenv').config();
+
 
 // Replace your existing transporter code with:
 const transporter = nodemailer.createTransport({

@@ -128,16 +128,16 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyBLBqUyBM6NTgrFU2lyGfmd0WiqjQibq38",
-      authDomain: "rpfyp-1381b.firebaseapp.com",
-      projectId: "rpfyp-1381b",
-      storageBucket: "rpfyp-1381b.firebasestorage.app",
-      messagingSenderId: "41766588318",
-      appId: "1:41766588318:web:6fb609151f7e621a23908f",
-      measurementId: "G-BWFJ7QF3B8"
+      apiKey: "<%= firebasePublic.apiKey %>",
+      authDomain: "<%= firebasePublic.authDomain %>",
+      projectId: "<%= firebasePublic.projectId %>",
+      storageBucket: "<%= firebasePublic.projectId %>.firebasestorage.app",
+      messagingSenderId: "<%= firebasePublic.messagingSenderId %>",
+      appId: "<%= firebasePublic.appId %>",
+      measurementId: "<%= firebasePublic.measurementId %>"
     };
     firebase.initializeApp(firebaseConfig);
-  </script>
+</script>
 </head>
 <body>
   <div class="container">
@@ -329,6 +329,7 @@
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Singpass autofill logic
