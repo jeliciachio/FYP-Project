@@ -46,6 +46,8 @@ const db = mysql.createConnection({
 
 const sessionSecret = process.env.SESSION_SECRET;
 
+const admin = require('firebase-admin');
+
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -55,7 +57,6 @@ const firebaseConfig = {
   appId: process.env.FIREBASE_APP_ID
 };
 
-firebase.initializeApp(firebaseConfig);
 
 
 // Middleware
