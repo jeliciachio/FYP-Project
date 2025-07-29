@@ -3,7 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 require('dotenv').config();
-const db = require('./db');
+
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
@@ -20,7 +20,7 @@ function setRole(role) {
 }
 
 
-
+const mysql = require('mysql'); 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
